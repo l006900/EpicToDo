@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Day theme colors -->
+    <color name="day_purple">#6200EE</color>
+    <color name="day_purple_light">#9E47FF</color>
+    <color name="day_green1">#4CAF50</color>
+    <color name="day_green2">#8BC34A</color>
+    <color name="day_background">#FAFAFA</color>
+    <color name="day_text">#212121</color>
+    <color name="day_text_primary">#000000</color>
+
+    <!-- Night theme colors -->
+    <color name="night_purple">#BB86FC</color>
+    <color name="night_purple_light">#D0BCFF</color>
+    <color name="night_green1">#03DAC5</color>
+    <color name="night_green2">#018786</color>
+    <color name="night_background">#121212</color>
+    <color name="night_text">#E0E0E0</color>
+    <color name="night_text_primary">#FFFFFF</color>
+
+    <!-- Common colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>

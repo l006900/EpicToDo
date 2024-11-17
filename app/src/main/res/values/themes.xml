@@ -1,0 +1,34 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+     <style name="Base.Theme.EpicToDo" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/day_purple</item>
+        <item name="colorPrimaryVariant">@color/day_purple_light</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/day_green2</item>
+        <item name="colorSecondaryVariant">@color/day_green1</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">@color/day_purple</item>
+        <item name="android:windowBackground">@color/day_background</item>
+        <item name="android:textColor">@color/day_text</item>
+        <item name="android:textColorPrimary">@color/day_text_primary</item>
+        <item name="android:fontFamily">@font/b</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+      <!-- Night theme -->
+    <style name="Theme.EpicToDo.Night" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/night_purple</item>
+        <item name="colorPrimaryVariant">@color/night_purple_light</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/night_green2</item>
+        <item name="colorSecondaryVariant">@color/night_green1</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/night_purple</item>
+        <item name="android:windowBackground">@color/night_background</item>
+        <item name="android:textColor">@color/night_text</item>
+        <item name="android:textColorPrimary">@color/night_text_primary</item>
+        <item name="android:fontFamily">@font/b</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+</resources>
