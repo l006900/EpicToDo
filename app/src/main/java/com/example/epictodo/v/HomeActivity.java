@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -21,7 +22,7 @@ import com.example.epictodo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity{
 
     private BottomNavigationView bottomNavigationView;
 
@@ -55,15 +56,15 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.bottom_home){
+                if (item.getItemId() == R.id.bottom_home) {
                     selectedFragment(0);
-                }else if (item.getItemId() == R.id.bottom_group){
+                } else if (item.getItemId() == R.id.bottom_group) {
                     selectedFragment(1);
-                }else if (item.getItemId() == R.id.bottom_epic){
+                } else if (item.getItemId() == R.id.bottom_epic) {
                     selectedFragment(2);
-                }else if (item.getItemId() == R.id.bottom_find){
+                } else if (item.getItemId() == R.id.bottom_find) {
                     selectedFragment(3);
-                }else if (item.getItemId() == R.id.bottom_person){
+                } else if (item.getItemId() == R.id.bottom_person) {
                     selectedFragment(4);
                 }
                 return true;
@@ -75,39 +76,39 @@ public class HomeActivity extends AppCompatActivity {
     private void selectedFragment(int position) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         hideFragment(fragmentTransaction);
-        if (position == 0){
-            if (mHomeFragment == null){
+        if (position == 0) {
+            if (mHomeFragment == null) {
                 mHomeFragment = new HomeFragment();
                 fragmentTransaction.add(R.id.home_framelayout, mHomeFragment);
-            }else {
+            } else {
                 fragmentTransaction.show(mHomeFragment);
             }
-        }else if (position == 1){
-            if (mGroupFragment == null){
+        } else if (position == 1) {
+            if (mGroupFragment == null) {
                 mGroupFragment = new GroupFragment();
                 fragmentTransaction.add(R.id.home_framelayout, mGroupFragment);
-            }else {
+            } else {
                 fragmentTransaction.show(mGroupFragment);
             }
-        }else if (position == 2){
-            if (mEpicFragment == null){
+        } else if (position == 2) {
+            if (mEpicFragment == null) {
                 mEpicFragment = new EpicFragment();
                 fragmentTransaction.add(R.id.home_framelayout, mEpicFragment);
-            }else {
+            } else {
                 fragmentTransaction.show(mEpicFragment);
             }
-        }else if (position == 3){
-            if (mFindFragment == null){
+        } else if (position == 3) {
+            if (mFindFragment == null) {
                 mFindFragment = new FindFragment();
                 fragmentTransaction.add(R.id.home_framelayout, mFindFragment);
-            }else {
+            } else {
                 fragmentTransaction.show(mFindFragment);
             }
-        }else {
-            if (mPersonFragment == null){
+        } else {
+            if (mPersonFragment == null) {
                 mPersonFragment = new PersonFragment();
                 fragmentTransaction.add(R.id.home_framelayout, mPersonFragment);
-            }else {
+            } else {
                 fragmentTransaction.show(mPersonFragment);
             }
         }
@@ -116,19 +117,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void hideFragment(FragmentTransaction fragmentTransaction) {
-        if (mHomeFragment != null){
+        if (mHomeFragment != null) {
             fragmentTransaction.hide(mHomeFragment);
         }
-        if (mGroupFragment != null){
+        if (mGroupFragment != null) {
             fragmentTransaction.hide(mGroupFragment);
         }
-        if (mEpicFragment != null){
+        if (mEpicFragment != null) {
             fragmentTransaction.hide(mEpicFragment);
         }
-        if (mFindFragment != null){
+        if (mFindFragment != null) {
             fragmentTransaction.hide(mFindFragment);
         }
-        if (mPersonFragment != null){
+        if (mPersonFragment != null) {
             fragmentTransaction.hide(mPersonFragment);
         }
     }

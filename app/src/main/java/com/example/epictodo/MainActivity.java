@@ -26,9 +26,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        tx = findViewById(R.id.tx);
-        tx.setTypeface(typeface = Typeface.createFromAsset(getAssets(), "font/素材集市酷方体.ttf"));
-
 
     }
 }

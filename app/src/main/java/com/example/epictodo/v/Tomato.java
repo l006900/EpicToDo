@@ -1,20 +1,28 @@
 package com.example.epictodo.v;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.epictodo.R;
@@ -27,6 +35,7 @@ public class Tomato extends View {
     private Paint progressBottomPaint;
     private Paint progressTopPaint;
     private Paint numberPaint;
+    private Paint backgroundPaint;
 
     private int totalTime = 25 * 60;
     private int remainingTime = 25 * 60;
@@ -37,6 +46,11 @@ public class Tomato extends View {
 
     private float lastTouchX;
     private boolean isDragging;
+
+    private boolean touchEnabled = true;
+
+    private boolean isVibrating = false;
+
 
     public Tomato(Context context) {
         super(context);
@@ -77,11 +91,17 @@ public class Tomato extends View {
         if (typeface != null) {
             numberPaint.setTypeface(typeface);
         }
+
+        backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        backgroundPaint.setStyle(Paint.Style.FILL);
+        backgroundPaint.setColor(Color.GRAY);
+        backgroundPaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
     public void start() {
         if (!running) {
             running = true;
+            touchEnabled = false;
             updateTime();
         }
     }
@@ -96,6 +116,7 @@ public class Tomato extends View {
         remainingTime = totalTime;
 //        totalTime = 25 * 60;
         backgroundHandler.removeCallbacksAndMessages(null);
+        touchEnabled = true;
         invalidate();
     }
 
@@ -112,6 +133,9 @@ public class Tomato extends View {
                         }
                     });
                     updateTime();
+                } else {
+                    running = false;
+                    vibrateDevice();
                 }
             }
         }, 1000);
@@ -146,6 +170,7 @@ public class Tomato extends View {
         super.onDraw(canvas);
         drawBottomProgress(canvas);
         drawTopProgress(canvas);
+        drawBackgroundCircle(canvas);
         drawText(canvas);
     }
 
@@ -166,6 +191,15 @@ public class Tomato extends View {
         canvas.drawArc(oval, -90, angle, false, progressTopPaint);
     }
 
+    private void drawBackgroundCircle(Canvas canvas) {
+        float radius = width * 0.37f;
+        float centerX = width / 2f;
+        float centerY = width / 2f;
+        RectF oval = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+        float angle = 360f * (totalTime - remainingTime) / totalTime;
+        canvas.drawArc(oval, -90, angle, true, backgroundPaint);
+    }
+
     private void drawText(Canvas canvas) {
         String time = String.format("%02d:%02d", remainingTime / 60, remainingTime % 60);
         float textWidth = numberPaint.measureText(time);
@@ -178,6 +212,9 @@ public class Tomato extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!touchEnabled) {
+            return true;
+        }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 lastTouchX = event.getX();
@@ -190,7 +227,7 @@ public class Tomato extends View {
                     int newTotalTime;
                     if (deltaX > 0) {
                         newTotalTime = Math.min(180 * 60, totalTime + 60);
-                    }else {
+                    } else {
                         newTotalTime = Math.max(60, totalTime - 60);
                     }
                     if (newTotalTime != totalTime) {
@@ -213,8 +250,8 @@ public class Tomato extends View {
     private void toggleTimer() {
         if (running) {
             pause();
-        }else {
-            start();
+        } else {
+//            start();
         }
     }
 
@@ -225,6 +262,15 @@ public class Tomato extends View {
             handlerThread.quitSafely();
         }
     }
+
+    private void vibrateDevice() {
+        Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null && vibrator.hasVibrator()) {
+            long[] pattern = {0, 500, 500, 500, 500, 500};
+            vibrator.vibrate(pattern, -1);
+        }
+    }
+
 
     private int dp2px(int dpVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, getResources().getDisplayMetrics());
