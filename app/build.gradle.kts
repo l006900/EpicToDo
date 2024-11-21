@@ -47,4 +47,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     implementation("androidx.appcompat:appcompat:1.7.0")
+    // Room components
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    androidTestImplementation("androidx.room:room-testing:2.6.1")
 }

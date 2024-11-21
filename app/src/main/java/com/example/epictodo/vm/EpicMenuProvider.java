@@ -1,5 +1,8 @@
 package com.example.epictodo.vm;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,6 +12,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.epictodo.R;
+import com.example.epictodo.v.StatisticsActivity;
 
 /**
  * EpicMenuProvider
@@ -35,7 +39,14 @@ public class EpicMenuProvider implements MenuProvider {
     }
 
     @Override
-    public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+    public boolean onMenuItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.epic_statistics) {
+            Intent intent = new Intent(fragment.requireActivity(), StatisticsActivity.class);
+            startActivity(fragment.requireActivity(), intent, null);
+            return true;
+        }else if (item.getItemId() == R.id.epic_add) {
+
+        }
         return false;
     }
 }

@@ -1,7 +1,11 @@
 package com.example.epictodo.v
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -23,11 +27,12 @@ class EpicFragment: Fragment(){
     ): View? {
         view = inflater.inflate(R.layout.fragment_epic, container, false)
 
+        // 设置菜单
         val menuProvider = EpicMenuProvider(this)
+
         requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
         toolbar = view?.findViewById(R.id.epic_toolbar)
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
-
         return view
     }
 
@@ -62,15 +67,6 @@ class EpicFragment: Fragment(){
             pause.visibility = View.GONE
             reset.visibility = View.GONE
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        onFragmentPause()
-    }
-
-    private fun onFragmentPause() {
-        tomato.pause()
     }
 }
 
