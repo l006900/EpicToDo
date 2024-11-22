@@ -16,21 +16,21 @@ import com.example.epictodo.m.FocusSessionRepository;
 import java.util.Random;
 
 /**
- * StatisticsDayFragment
+ * StatisticsWeekFragment
  *
  * @author 31112
- * @date 2024/11/21
+ * @date 2024/11/22
  */
-public class StatisticsDayFragment extends Fragment {
-    private FocusProportionCard focusProportionCard;
+public class StatisticsWeekFragment extends Fragment {
+     private FocusProportionCard focusProportionCard;
     private FocusSessionRepository repository;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_statistics_day, container, false);
+        View view = inflater.inflate(R.layout.fragment_statistics_week, container, false);
 
-        focusProportionCard = view.findViewById(R.id.day_focusProportionCard);
+        focusProportionCard = view.findViewById(R.id.week_focusProportionCard);
 
         repository = new FocusSessionRepository(requireActivity().getApplication());
 
@@ -40,8 +40,8 @@ public class StatisticsDayFragment extends Fragment {
         });
 
 
-        Button add = view.findViewById(R.id.day_add);
-        Button delete = view.findViewById(R.id.day_delete);
+        Button add = view.findViewById(R.id.week_add);
+        Button delete = view.findViewById(R.id.week_delete);
 
         add.setOnClickListener(v -> addRandomSession());
         delete.setOnClickListener(v -> deleteSessionById());
@@ -91,6 +91,5 @@ public class StatisticsDayFragment extends Fragment {
             Toast.makeText(requireContext(), "没有可删除的记录", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 }

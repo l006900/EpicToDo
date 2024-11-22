@@ -1,7 +1,5 @@
 package com.example.epictodo.v;
 
-import static androidx.core.util.TimeUtils.formatDuration;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -20,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -40,12 +37,17 @@ public class FocusProportionCard extends View {
     private Paint piePaint;
     private Paint textPaint;
     private Paint linePaint;
+    private Paint circlePaint;
+    private Paint whitePaint;
     private List<FocusSession> focusSessions = new ArrayList<>();
-     private int[] colors = {Color.parseColor("#FF4081"), Color.parseColor("#3F51B5"),
-                            Color.parseColor("#009688"), Color.parseColor("#FF9800"),
-                            Color.parseColor("#9C27B0")};
+    private static final int[] COLORS = {
+            Color.parseColor("#FF4081"), Color.parseColor("#3F51B5"),
+            Color.parseColor("#009688"), Color.parseColor("#FF9800"),
+            Color.parseColor("#9C27B0")
+    };
 
-    private RectF pieRect;
+    private RectF pieRect;//饼状图矩形区域
+    private int lastMeasuredHeight = 0;
 
     public FocusProportionCard(Context context) {
         super(context);
@@ -63,7 +65,6 @@ public class FocusProportionCard extends View {
     }
 
     private void init() {
-
         initPaint();
     }
 
@@ -81,11 +82,20 @@ public class FocusProportionCard extends View {
         textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(45);
         textPaint.setTextAlign(Paint.Align.LEFT);
+        textPaint.setTypeface(typeface);
 
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         linePaint.setColor(Color.GRAY);
-        linePaint.setStrokeWidth(dp2px(1));
+        linePaint.setStrokeWidth(2);
         linePaint.setStyle(Paint.Style.STROKE);
+
+        circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        circlePaint.setStyle(Paint.Style.FILL);
+
+        whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        whitePaint.setColor(Color.WHITE);
+        whitePaint.setStrokeWidth(dp2px(1));
+        whitePaint.setStyle(Paint.Style.STROKE);
 
         pieRect = new RectF();
     }
@@ -93,17 +103,32 @@ public class FocusProportionCard extends View {
     public void setFocusSessions(List<FocusSession> focusSessions) {
         this.focusSessions = new ArrayList<>(focusSessions);
         Collections.sort(this.focusSessions, (a, b) -> Long.compare(b.getDuration(), a.getDuration()));
+        requestLayout();//重新计算大小
         invalidate();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int size = MeasureSpec.getSize(widthMeasureSpec);
-        int mode = MeasureSpec.getMode(widthMeasureSpec);
-        if (mode == MeasureSpec.EXACTLY) {
-            width = size;
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = calculateMinimumHeight();
+        setMeasuredDimension(width, height);
+        lastMeasuredHeight = height;
+    }
+
+    private int calculateMinimumHeight() {
+        if (focusSessions.isEmpty()) {
+            return dp2px(180);
         }
-        setMeasuredDimension(2 * width, width);
+        int pieChartHeight = width;
+        int padding = dp2px(30);
+        // Count unique tags
+        int uniqueTagsCount = (int) focusSessions.stream()
+                .map(FocusSession::getTag)
+                .distinct()
+                .count();
+
+        int detailsHeight = dp2px(35) * ((uniqueTagsCount + 1) / 2);
+        return pieChartHeight + detailsHeight + padding;
     }
 
     @Override
@@ -113,83 +138,136 @@ public class FocusProportionCard extends View {
         int viewWidth = getWidth();
         int viewHeight = getHeight();
 
-        // 绘制背景
-        RectF rectF = new RectF(0, 0, viewWidth, viewHeight);
-        float cornerRadius = viewWidth / 16;
-        canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, backgroundPaint);
-
+        drawBackground(canvas, viewWidth, viewHeight);
+        drawTitle(canvas);
 
         if (focusSessions.isEmpty()) {
             drawNoDataMessage(canvas);
             return;
         }
 
-        float centerX = getWidth() / 2f;
-        float centerY = getHeight() / 2f;
-        float radius = Math.min(centerX, centerY) * 0.8f;
+        float titleY = dp2px(30);
+        float pieSize = viewWidth * 0.4f;
+        float centerX = viewWidth / 2f;
+        float centerY = titleY + pieSize / 2 + dp2px(20);
+        float margin = dp2px(30);
+        pieRect.set(centerX - pieSize / 2 + margin, centerY - pieSize / 2 + margin,
+                centerX + pieSize / 2 - margin, centerY + pieSize / 2 - margin);
 
-         pieRect.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+        drawPieChart(canvas, centerX, centerY, pieSize / 2 - margin);
+        drawDetailedData(canvas, centerY + pieSize / 2 + dp2px(20));
+    }
 
-        // Draw title
+    private void drawBackground(Canvas canvas, int width, int height) {
+        RectF rectF = new RectF(0, 0, width, height);
+        float cornerRadius = width / 16f;
+        canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, backgroundPaint);
+    }
+
+    private void drawTitle(Canvas canvas) {
         textPaint.setTextSize(45);
-        textPaint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("专注统计", centerX, dp2px(30), textPaint);
+        textPaint.setTextAlign(Paint.Align.LEFT);
+        canvas.drawText("专注统计", dp2px(30), dp2px(30), textPaint);
+    }
 
-        long totalDuration = 0;
+    private void drawPieChart(Canvas canvas, float centerX, float centerY, float radius) {
+        Map<String, Long> tagDurations = new HashMap<>();
         for (FocusSession session : focusSessions) {
-            totalDuration += session.getDuration();
+            tagDurations.merge(session.getTag(), (long) session.getDuration(), Long::sum);
         }
 
-        float startAngle = 0;
-        for (int i = 0; i < focusSessions.size(); i++) {
-            FocusSession session = focusSessions.get(i);
-            float sweepAngle = 360f * session.getDuration() / totalDuration;
+        long totalDuration = tagDurations.values().stream().mapToLong(Long::longValue).sum();
+        float startAngle = -90;
 
-            piePaint.setColor(colors[i % colors.length]);
+        List<Map.Entry<String, Long>> sortedEntries = new ArrayList<>(tagDurations.entrySet());
+        sortedEntries.sort((a, b) -> Long.compare(b.getValue(), a.getValue()));
+
+        for (int i = 0; i < sortedEntries.size(); i++) {
+            Map.Entry<String, Long> entry = sortedEntries.get(i);
+            String tag = entry.getKey();
+            long duration = entry.getValue();
+            float sweepAngle = 360f * duration / totalDuration;
+
+            piePaint.setColor(COLORS[i % COLORS.length]);
             canvas.drawArc(pieRect, startAngle, sweepAngle, true, piePaint);
 
-            // Draw extended label
-            float labelAngle = (float) Math.toRadians(startAngle + sweepAngle / 2);
-            float labelX = centerX + (float) (radius * 1.2 * Math.cos(labelAngle));
-            float labelY = centerY + (float) (radius * 1.2 * Math.sin(labelAngle));
+            // Draw white separation line at the start of each slice
+            if (sortedEntries.size() > 1) {
+                float lineAngle = (float) Math.toRadians(startAngle);
+                float startX = centerX + (float) (radius * Math.cos(lineAngle));
+                float startY = centerY + (float) (radius * Math.sin(lineAngle));
+                canvas.drawLine(centerX, centerY, startX, startY, whitePaint);
+            }
 
-            Path linePath = new Path();
-            linePath.moveTo(centerX + (float) (radius * Math.cos(labelAngle)),
-                            centerY + (float) (radius * Math.sin(labelAngle)));
-            linePath.lineTo(labelX, labelY);
-            linePath.lineTo(labelX + (labelX > centerX ? dp2px(20) : -dp2px(20)), labelY);
-            canvas.drawPath(linePath, linePaint);
-
-            String percentage = String.format(Locale.getDefault(), "%.1f%%", 100f * session.getDuration() / totalDuration);
-            String time = formatDuration(session.getDuration());
-            textPaint.setTextSize(35);
-            textPaint.setTextAlign(labelX > centerX ? Paint.Align.LEFT : Paint.Align.RIGHT);
-            canvas.drawText(session.getTag() + ": " + percentage,
-                            labelX + (labelX > centerX ? dp2px(25) : -dp2px(25)),
-                            labelY - dp2px(6), textPaint);
-            canvas.drawText(time,
-                            labelX + (labelX > centerX ? dp2px(25) : -dp2px(25)),
-                            labelY + dp2px(12), textPaint);
+            drawPieLabel(canvas, centerX, centerY, radius, startAngle, sweepAngle, tag, duration, totalDuration);
 
             startAngle += sweepAngle;
         }
+    }
 
-        // Draw detailed data below the chart
-        float y = centerY * 2 + dp2px(20);
+    private void drawPieLabel(Canvas canvas, float centerX, float centerY, float radius,
+                              float startAngle, float sweepAngle, String tag, long duration, long totalDuration) {
+        float labelAngle = (float) Math.toRadians(startAngle + sweepAngle / 2);
+        float labelX = centerX + (float) (radius * 1.2 * Math.cos(labelAngle));
+        float labelY = centerY + (float) (radius * 1.2 * Math.sin(labelAngle));
+
+        Path linePath = new Path();
+        linePath.moveTo(centerX + (float) (radius * Math.cos(labelAngle)),
+                centerY + (float) (radius * Math.sin(labelAngle)));
+        linePath.lineTo(labelX, labelY);
+        linePath.lineTo(labelX + (labelX > centerX ? dp2px(20) : -dp2px(20)), labelY);
+        canvas.drawPath(linePath, linePaint);
+
+        String percentage = String.format(Locale.getDefault(), "%.1f%%", 100f * duration / totalDuration);
         textPaint.setTextSize(35);
+        textPaint.setTextAlign(labelX > centerX ? Paint.Align.LEFT : Paint.Align.RIGHT);
+        canvas.drawText(tag + ": " + percentage,
+                labelX + (labelX > centerX ? dp2px(25) : -dp2px(25)),
+                labelY - dp2px(6), textPaint);
+    }
+
+    private void drawDetailedData(Canvas canvas, float startY) {
+        textPaint.setTextSize(30);
         textPaint.setTextAlign(Paint.Align.LEFT);
-        for (int i = 0; i < focusSessions.size(); i++) {
-            FocusSession session = focusSessions.get(i);
-            String text = String.format(Locale.getDefault(), "%s: %s (%.1f%%)",
-                                        session.getTag(),
-                                        formatDuration(session.getDuration()),
-                                        100f * session.getDuration() / totalDuration);
-            canvas.drawText(text, dp2px(20), y, textPaint);
-            y += dp2px(25);
+        float columnWidth = getWidth() / 2f;
+        float leftX = dp2px(30);
+        float rightX = columnWidth + dp2px(20);
+        float y = startY;
+        long totalDuration = focusSessions.stream().mapToLong(FocusSession::getDuration).sum();
+
+        Map<String, Long> tagDurations = new HashMap<>();
+        for (FocusSession session : focusSessions) {
+            tagDurations.merge(session.getTag(), (long) session.getDuration(), Long::sum);
+        }
+
+        List<Map.Entry<String, Long>> sortedEntries = new ArrayList<>(tagDurations.entrySet());
+        sortedEntries.sort((a, b) -> Long.compare(b.getValue(), a.getValue()));
+
+        for (int i = 0; i < sortedEntries.size(); i++) {
+            Map.Entry<String, Long> entry = sortedEntries.get(i);
+            String tag = entry.getKey();
+            long duration = entry.getValue();
+            String text = String.format(Locale.getDefault(), "%s: %s ",
+                    tag,
+                    formatDuration(duration));
+            float x = (i % 2 == 0) ? leftX : rightX;
+
+            // Draw color circle
+            circlePaint.setColor(COLORS[i % COLORS.length]);
+            float circleY = y + textPaint.getTextSize() / 2 - dp2px(2); // Align circle with text
+            canvas.drawCircle(x, circleY, dp2px(4), circlePaint);
+
+            // Draw text
+            float textX = x + dp2px(12);
+            canvas.drawText(text, textX, y + textPaint.getTextSize(), textPaint);
+
+            if (i % 2 == 1 || i == sortedEntries.size() - 1) {
+                y += dp2px(35);
+            }
         }
     }
 
-     private void drawNoDataMessage(Canvas canvas) {
+    private void drawNoDataMessage(Canvas canvas) {
         textPaint.setTextSize(35);
         textPaint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText("还没有开始专注", getWidth() / 2f, getHeight() / 2f, textPaint);

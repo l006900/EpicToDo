@@ -1,5 +1,6 @@
 package com.example.epictodo.v;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,6 +15,14 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.epictodo.m.FocusSession;
+import com.example.epictodo.m.FocusSessionRepository;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 /**
  * BasicDataCard
  *
@@ -26,24 +35,26 @@ public class BasicDataCard extends View {
     private Paint backgroundPaint;
     private Paint fixedTextPaint;
     private Paint variableTextPaint;
-    private String dayAllTime;
-    private String dayTimes;
-    private String dayMostTime;
-    private String label;
+    private String dayAllTime = "10小时10分钟";
+    private String dayTimes = "10";
+    private String dayMostTime = "1小时1分钟";
+    private String label = "学习";
+
+    private FocusSessionRepository repository;
 
     public BasicDataCard(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public BasicDataCard(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public BasicDataCard(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context);
     }
 
     public void setDayAllTime(String dayAllTime) {
@@ -62,8 +73,11 @@ public class BasicDataCard extends View {
         this.label = label;
     }
 
-    private void init() {
+    private void init(Context context) {
         initPaint();
+        Application application = (Application) context.getApplicationContext();
+        repository = new FocusSessionRepository(application);
+        updateData();
     }
 
     private void initPaint() {
@@ -84,6 +98,48 @@ public class BasicDataCard extends View {
         variableTextPaint.setColor(Color.BLACK);
         variableTextPaint.setAntiAlias(true);
         variableTextPaint.setTypeface(typeface);
+    }
+
+    private void updateData() {
+        repository.getAllFocusSession().observeForever(focusSessions -> {
+            if (focusSessions != null) {
+                calculateStatistics(focusSessions);
+                invalidate();
+            }
+        });
+    }
+
+    private void calculateStatistics(List<FocusSession> focusSessions) {
+        long totalDuration = 0;
+        int sessionCount = 0;
+        long longestDuration = 0;
+        Map<String, Integer> tagFrequency = new HashMap<>();
+
+        long currentDayStart = System.currentTimeMillis() / 86400000 * 86400000;
+        long currentDayEnd = currentDayStart + 86400000;
+
+        for (FocusSession session : focusSessions) {
+            if (session.getStartTime() >= currentDayStart && session.getStartTime() < currentDayEnd) {
+                totalDuration += session.getDuration();
+                sessionCount++;
+                longestDuration = Math.max(longestDuration, session.getDuration());
+                tagFrequency.put(session.getTag(), tagFrequency.getOrDefault(session.getTag(), 0) + 1);
+            }
+        }
+
+        dayAllTime = formatDuration(totalDuration);
+        dayTimes = String.valueOf(sessionCount);
+        dayMostTime = formatDuration(longestDuration);
+        label = tagFrequency.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse("无");
+    }
+
+    private String formatDuration(long duration) {
+        long hours = TimeUnit.MILLISECONDS.toHours(duration);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(duration) % 60;
+        return String.format("%d小时%d分钟", hours, minutes);
     }
 
     @Override
@@ -109,15 +165,10 @@ public class BasicDataCard extends View {
 
         float x = viewWidth / 16;
         float y = viewHeight / 16;
-        canvas.drawText("累计专注时长",2 * x, 4 * y, fixedTextPaint);
+        canvas.drawText("累计专注时长", 2 * x, 4 * y, fixedTextPaint);
         canvas.drawText("专注次数", 9 * x, 4 * y, fixedTextPaint);
         canvas.drawText("今日最长专注", 2 * x, 11 * y, fixedTextPaint);
         canvas.drawText("最多专注标签", 9 * x, 11 * y, fixedTextPaint);
-
-        dayAllTime = "10小时10分钟";
-        dayTimes = "10";
-        dayMostTime = "1小时1分钟";
-        label = "学习";
 
         canvas.drawText(dayAllTime, 2 * x, 6 * y, variableTextPaint);
         canvas.drawText(dayTimes, 9 * x, 6 * y, variableTextPaint);

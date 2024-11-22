@@ -8,6 +8,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.epictodo.v.StatisticsDayFragment;
+import com.example.epictodo.v.StatisticsMonthFragment;
+import com.example.epictodo.v.StatisticsWeekFragment;
+import com.example.epictodo.v.StatisticsYearFragment;
 
 /**
  * StatisticsFragmentStateAdapter
@@ -30,11 +33,11 @@ public class StatisticsFragmentStateAdapter extends FragmentStateAdapter {
             case 0:
                 return new StatisticsDayFragment();
             case 1:
-                return new StatisticsDayFragment();
+                return new StatisticsWeekFragment();
             case 2:
-                return new StatisticsDayFragment();
+                return new StatisticsMonthFragment();
             case 3:
-                return new StatisticsDayFragment();
+                return new StatisticsYearFragment();
             default:
                 return new StatisticsDayFragment();
         }

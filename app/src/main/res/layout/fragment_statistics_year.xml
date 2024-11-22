@@ -7,87 +7,87 @@
     android:background="#11333333">
 
     <TextView
-        android:id="@+id/day_title"
+        android:id="@+id/year_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="10dp"
         android:text="11月18日 周一"
-        app:layout_constraintEnd_toStartOf="@+id/day_button_right"
-        app:layout_constraintStart_toEndOf="@+id/day_button_left"
+        app:layout_constraintEnd_toStartOf="@+id/year_button_right"
+        app:layout_constraintStart_toEndOf="@+id/year_button_left"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/day_button_left"
+        android:id="@+id/year_button_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBaselineOf="@+id/day_title"
-        app:layout_constraintEnd_toStartOf="@+id/day_title"
+        app:layout_constraintBaseline_toBaselineOf="@+id/year_title"
+        app:layout_constraintEnd_toStartOf="@+id/year_title"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/day_button_right"
+        android:id="@+id/year_button_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBaselineOf="@+id/day_title"
+        app:layout_constraintBaseline_toBaselineOf="@+id/year_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/day_title"
+        app:layout_constraintStart_toEndOf="@+id/year_title"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/day_scrollview"
+        android:id="@+id/year_scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/day_button_right"
-        app:layout_constraintBottom_toTopOf="@+id/day_add">
+        app:layout_constraintTop_toBottomOf="@+id/year_button_right"
+        app:layout_constraintBottom_toTopOf="@+id/year_add">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.example.epictodo.v.BasicDataCard
-                android:id="@+id/day_basicDataCard"
+                android:id="@+id/year_basicDataCard"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/day_focusProportionCard"
+                app:layout_constraintBottom_toTopOf="@+id/year_focusProportionCard"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.example.epictodo.v.FocusProportionCard
-                android:id="@+id/day_focusProportionCard"
+                android:id="@+id/year_focusProportionCard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/day_basicDataCard"
-                app:layout_constraintStart_toStartOf="@+id/day_basicDataCard"
-                app:layout_constraintTop_toBottomOf="@+id/day_basicDataCard" />
+                app:layout_constraintEnd_toEndOf="@+id/year_basicDataCard"
+                app:layout_constraintStart_toStartOf="@+id/year_basicDataCard"
+                app:layout_constraintTop_toBottomOf="@+id/year_basicDataCard" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <Button
-        android:id="@+id/day_add"
+        android:id="@+id/year_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/day_scrollview" />
+        app:layout_constraintTop_toBottomOf="@+id/year_scrollview" />
 
     <Button
-        android:id="@+id/day_delete"
+        android:id="@+id/year_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/day_scrollview" />
+        app:layout_constraintTop_toBottomOf="@+id/year_scrollview" />
 </androidx.constraintlayout.widget.ConstraintLayout>
