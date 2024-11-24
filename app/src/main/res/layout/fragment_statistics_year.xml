@@ -17,20 +17,26 @@
         app:layout_constraintStart_toEndOf="@+id/year_button_left"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/year_button_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="&lt;"
+        android:textSize="40dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/year_title"
         app:layout_constraintEnd_toStartOf="@+id/year_title"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/year_button_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="&gt;"
+        android:textSize="40dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/year_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/year_title"
@@ -41,10 +47,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/year_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/year_button_right"
-        app:layout_constraintBottom_toTopOf="@+id/year_add">
+        app:layout_constraintTop_toBottomOf="@+id/year_button_right">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

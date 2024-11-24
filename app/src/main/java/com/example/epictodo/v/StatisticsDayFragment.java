@@ -1,19 +1,28 @@
 package com.example.epictodo.v;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import com.example.epictodo.R;
 import com.example.epictodo.m.FocusSession;
 import com.example.epictodo.m.FocusSessionRepository;
+
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * StatisticsDayFragment
@@ -24,6 +33,10 @@ import java.util.Random;
 public class StatisticsDayFragment extends Fragment {
     private FocusProportionCard focusProportionCard;
     private FocusSessionRepository repository;
+    private long startOfDay;
+    private long endOfDay;
+    private TextView dayTitle;
+
 
     @Nullable
     @Override
@@ -32,7 +45,11 @@ public class StatisticsDayFragment extends Fragment {
 
         focusProportionCard = view.findViewById(R.id.day_focusProportionCard);
 
+        dayTitle = view.findViewById(R.id.day_title);
+
         repository = new FocusSessionRepository(requireActivity().getApplication());
+
+        calculateDailyTimeRange();
 
         // Observe focus sessions
         repository.getAllFocusSession().observe(getViewLifecycleOwner(), focusSessions -> {
@@ -92,5 +109,22 @@ public class StatisticsDayFragment extends Fragment {
         }
     }
 
+    private void calculateDailyTimeRange() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        long startOfDay = calendar.getTimeInMillis();
+        long endOfDay = startOfDay + 24 * 60 * 60 * 1000;
+
+        focusProportionCard.setTimeRange(startOfDay, endOfDay);
+
+        // 观察当日的数据
+        repository.getFocusSessionsForDay(startOfDay, endOfDay).observe(getViewLifecycleOwner(), focusSessions -> {
+            focusProportionCard.setFocusSessions(focusSessions);
+        });
+
+    }
 
 }

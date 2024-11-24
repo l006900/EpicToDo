@@ -56,6 +56,26 @@ public class FocusSessionRepository {
         return focusSessionDao.getAllTags();
     }
 
+    public LiveData<List<FocusSession>> getFocusSessionsForDay(long startOfDay, long endOfDay) {
+        return focusSessionDao.getFocusSessionsByDateRange(startOfDay, endOfDay);
+    }
+
+    public LiveData<List<FocusSession>> getFocusSessionsForWeek(long startOfWeek, long endOfWeek) {
+        return focusSessionDao.getFocusSessionsByDateRange(startOfWeek, endOfWeek);
+    }
+
+    public LiveData<List<FocusSession>> getFocusSessionsForMonth(long startOfMonth, long endOfMonth) {
+        return focusSessionDao.getFocusSessionsByDateRange(startOfMonth, endOfMonth);
+    }
+
+    public LiveData<List<FocusSession>> getFocusSessionsForYear(long startOfYear, long endOfYear) {
+        return focusSessionDao.getFocusSessionsByDateRange(startOfYear, endOfYear);
+    }
+
+    public LiveData<List<FocusSession>> getFocusSessionsByDateRange(long startTime, long endTime) {
+        return focusSessionDao.getFocusSessionsByDateRange(startTime, endTime);
+    }
+
     private void updateTotals(FocusSession focusSession) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(focusSession.getStartTime());

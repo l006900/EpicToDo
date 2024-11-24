@@ -37,6 +37,19 @@ public class StatisticsActivity extends AppCompatActivity {
 
         viewPager2.setAdapter(new StatisticsFragmentStateAdapter(this, this));
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            // 重置所有RadioButton的背景
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
+                radioButton.setBackground(getResources().getDrawable(R.drawable.radio_button_default_background));
+            }
+
+            // 获取选中的RadioButton并更改其背景
+            RadioButton checkedRadioButton = radioGroup.findViewById(checkedId);
+            if (checkedRadioButton != null) {
+                checkedRadioButton.setBackground(getResources().getDrawable(R.drawable.radio_button_selected_background));
+            }
+
+            // 设置ViewPager2的页面
             if (checkedId == R.id.day) {
                 viewPager2.setCurrentItem(0);
             } else if (checkedId == R.id.week) {

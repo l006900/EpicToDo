@@ -52,4 +52,7 @@ public interface FocusSessionDao {
 
     @Query("SELECT SUM(duration) FROM focus_session WHERE startTime >= :startOfYear AND startTime < :endOfYear")
     long getYearlyTotal(long startOfYear, long endOfYear);
+
+    @Query("SELECT * FROM focus_session WHERE startTime >= :start AND endTime <= :end")
+    LiveData<List<FocusSession>> getFocusSessionsByDateRange(long start, long end);
 }

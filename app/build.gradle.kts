@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.epictodo"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.epictodo"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -47,8 +47,16 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     implementation("androidx.appcompat:appcompat:1.7.0")
+
     // Room components
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     androidTestImplementation("androidx.room:room-testing:2.6.1")
+
+    //WorkManager
+    implementation("androidx.work:work-runtime:2.10.0")
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+    implementation("androidx.work:work-rxjava2:2.10.0")
+    implementation("androidx.work:work-gcm:2.10.0")
+    implementation("androidx.work:work-testing:2.10.0")
 }

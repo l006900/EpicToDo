@@ -49,6 +49,9 @@ public class FocusProportionCard extends View {
     private RectF pieRect;//饼状图矩形区域
     private int lastMeasuredHeight = 0;
 
+    private long startTime;
+    private long endTime;
+
     public FocusProportionCard(Context context) {
         super(context);
         init();
@@ -100,8 +103,15 @@ public class FocusProportionCard extends View {
         pieRect = new RectF();
     }
 
+     public void setTimeRange(long startTime, long endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        invalidate();
+    }
+
     public void setFocusSessions(List<FocusSession> focusSessions) {
         this.focusSessions = new ArrayList<>(focusSessions);
+        this.focusSessions.removeIf(session -> session.getStartTime() < startTime || session.getEndTime() > endTime);
         Collections.sort(this.focusSessions, (a, b) -> Long.compare(b.getDuration(), a.getDuration()));
         requestLayout();//重新计算大小
         invalidate();

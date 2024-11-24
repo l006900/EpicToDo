@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -42,6 +41,9 @@ public class BasicDataCard extends View {
 
     private FocusSessionRepository repository;
 
+    private long startTime;
+    private long endTime;
+
     public BasicDataCard(Context context) {
         super(context);
         init(context);
@@ -77,7 +79,6 @@ public class BasicDataCard extends View {
         initPaint();
         Application application = (Application) context.getApplicationContext();
         repository = new FocusSessionRepository(application);
-        updateData();
     }
 
     private void initPaint() {
@@ -100,8 +101,14 @@ public class BasicDataCard extends View {
         variableTextPaint.setTypeface(typeface);
     }
 
+    public void setTimeRange(long startTime, long endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        updateData();
+    }
+
     private void updateData() {
-        repository.getAllFocusSession().observeForever(focusSessions -> {
+        repository.getFocusSessionsByDateRange(startTime, endTime).observeForever(focusSessions -> {
             if (focusSessions != null) {
                 calculateStatistics(focusSessions);
                 invalidate();

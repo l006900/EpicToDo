@@ -17,20 +17,26 @@
         app:layout_constraintStart_toEndOf="@+id/month_button_left"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/month_button_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="&lt;"
+        android:textSize="40dp"
+        android:clickable="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/month_title"
         app:layout_constraintEnd_toStartOf="@+id/month_title"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <Button
+    <TextView
         android:id="@+id/month_button_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="&gt;"
+        android:textSize="40dp"
+        android:clickable="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/month_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/month_title"
@@ -41,10 +47,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/month_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/month_button_right"
-        app:layout_constraintBottom_toTopOf="@+id/day_add">
+        app:layout_constraintTop_toBottomOf="@+id/month_button_right">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

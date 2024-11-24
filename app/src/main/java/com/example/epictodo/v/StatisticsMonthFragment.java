@@ -1,5 +1,6 @@
 package com.example.epictodo.v;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.example.epictodo.R;
 import com.example.epictodo.m.FocusSession;
 import com.example.epictodo.m.FocusSessionRepository;
+
 import java.util.Random;
 
 /**
@@ -22,7 +25,7 @@ import java.util.Random;
  * @date 2024/11/22
  */
 public class StatisticsMonthFragment extends Fragment {
-     private FocusProportionCard focusProportionCard;
+    private FocusProportionCard focusProportionCard;
     private FocusSessionRepository repository;
 
     @Nullable
@@ -33,6 +36,8 @@ public class StatisticsMonthFragment extends Fragment {
         focusProportionCard = view.findViewById(R.id.month_focusProportionCard);
 
         repository = new FocusSessionRepository(requireActivity().getApplication());
+
+        calculateMonthlyTimeRange();
 
         // Observe focus sessions
         repository.getAllFocusSession().observe(getViewLifecycleOwner(), focusSessions -> {
@@ -92,4 +97,28 @@ public class StatisticsMonthFragment extends Fragment {
         }
     }
 
+    private void calculateMonthlyTimeRange() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        long startOfMonth = calendar.getTimeInMillis();
+
+        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        long endOfMonth = calendar.getTimeInMillis() + 24 * 60 * 60 * 1000 - 1;
+
+        focusProportionCard.setTimeRange(startOfMonth, endOfMonth);
+
+        // 获取本月的数据
+        repository.getFocusSessionsForMonth(startOfMonth, endOfMonth).observe(getViewLifecycleOwner(), focusSessions -> {
+            focusProportionCard.setFocusSessions(focusSessions);
+        });
+    }
 }

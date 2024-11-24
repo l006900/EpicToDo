@@ -1,5 +1,6 @@
 package com.example.epictodo.v;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.example.epictodo.R;
 import com.example.epictodo.m.FocusSession;
 import com.example.epictodo.m.FocusSessionRepository;
+
 import java.util.Random;
 
 /**
@@ -22,7 +25,7 @@ import java.util.Random;
  * @date 2024/11/22
  */
 public class StatisticsYearFragment extends Fragment {
-     private FocusProportionCard focusProportionCard;
+    private FocusProportionCard focusProportionCard;
     private FocusSessionRepository repository;
 
     @Nullable
@@ -34,11 +37,12 @@ public class StatisticsYearFragment extends Fragment {
 
         repository = new FocusSessionRepository(requireActivity().getApplication());
 
+        calculateYearlyTimeRange();
+
         // Observe focus sessions
         repository.getAllFocusSession().observe(getViewLifecycleOwner(), focusSessions -> {
             focusProportionCard.setFocusSessions(focusSessions);
         });
-
 
         Button add = view.findViewById(R.id.year_add);
         Button delete = view.findViewById(R.id.year_delete);
@@ -92,4 +96,29 @@ public class StatisticsYearFragment extends Fragment {
         }
     }
 
+    private void calculateYearlyTimeRange() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, Calendar.JANUARY);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        long startOfYear = calendar.getTimeInMillis();
+
+        calendar.set(Calendar.MONTH, Calendar.DECEMBER);
+        calendar.set(Calendar.DAY_OF_MONTH, 31);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        long endOfYear = calendar.getTimeInMillis() + 24 * 60 * 60 * 1000 - 1;
+
+                focusProportionCard.setTimeRange(startOfYear, endOfYear);
+
+        // 获取本年的数据
+        repository.getFocusSessionsForYear(startOfYear, endOfYear).observe(getViewLifecycleOwner(), focusSessions -> {
+            focusProportionCard.setFocusSessions(focusSessions);
+        });
+    }
 }

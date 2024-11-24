@@ -1,5 +1,6 @@
 package com.example.epictodo.v;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.example.epictodo.R;
 import com.example.epictodo.m.FocusSession;
 import com.example.epictodo.m.FocusSessionRepository;
+
 import java.util.Random;
 
 /**
@@ -22,7 +25,7 @@ import java.util.Random;
  * @date 2024/11/22
  */
 public class StatisticsWeekFragment extends Fragment {
-     private FocusProportionCard focusProportionCard;
+    private FocusProportionCard focusProportionCard;
     private FocusSessionRepository repository;
 
     @Nullable
@@ -33,6 +36,8 @@ public class StatisticsWeekFragment extends Fragment {
         focusProportionCard = view.findViewById(R.id.week_focusProportionCard);
 
         repository = new FocusSessionRepository(requireActivity().getApplication());
+
+        calculateWeeklyTimeRange();
 
         // Observe focus sessions
         repository.getAllFocusSession().observe(getViewLifecycleOwner(), focusSessions -> {
@@ -92,4 +97,25 @@ public class StatisticsWeekFragment extends Fragment {
         }
     }
 
+    private void calculateWeeklyTimeRange() {
+        Calendar calendar = Calendar.getInstance();
+        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        long startOfWeek = calendar.getTimeInMillis();
+
+        calendar.add(Calendar.DAY_OF_WEEK, 6);
+        long endOfWeek = calendar.getTimeInMillis() + 24 * 60 * 60 * 1000;
+
+                focusProportionCard.setTimeRange(startOfWeek, endOfWeek);
+
+        // 获取本周的数据
+        repository.getFocusSessionsForWeek(startOfWeek, endOfWeek).observe(getViewLifecycleOwner(), focusSessions -> {
+            focusProportionCard.setFocusSessions(focusSessions);
+        });
+    }
 }
