@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="10dp"
-        android:text="11月18日 周一"
+        android:text="11月25日-12月01日"
         app:layout_constraintEnd_toStartOf="@+id/week_button_right"
         app:layout_constraintStart_toEndOf="@+id/week_button_left"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,11 +24,11 @@
         android:clickable="true"
         android:text="&lt;"
         android:textSize="40dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/week_title"
         app:layout_constraintEnd_toStartOf="@+id/week_title"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/week_title"
+        app:layout_constraintBottom_toBottomOf="@+id/week_title"/>
 
     <TextView
         android:id="@+id/week_button_right"
@@ -37,10 +37,10 @@
         android:clickable="true"
         android:text="&gt;"
         android:textSize="40dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/week_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/week_title"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/week_title"
+        app:layout_constraintBottom_toBottomOf="@+id/week_title"/>
 
     <ScrollView
         android:id="@+id/week_scrollview"

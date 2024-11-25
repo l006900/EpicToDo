@@ -1,11 +1,11 @@
 package com.example.epictodo.v;
 
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +16,9 @@ import com.example.epictodo.R;
 import com.example.epictodo.m.FocusSession;
 import com.example.epictodo.m.FocusSessionRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -24,10 +27,15 @@ import java.util.Random;
  * @author 31112
  * @date 2024/11/22
  */
-public class StatisticsYearFragment extends Fragment {
+public class StatisticsYearFragment extends Fragment implements DatePickerBottomSheet.DateSelectedListener {
     private FocusProportionCard focusProportionCard;
     private BasicDataCard basicDataCard;
     private FocusSessionRepository repository;
+    private TextView yearTitle;
+    private TextView leftButton;
+    private TextView rightButton;
+    private Calendar currentDate;
+    private SimpleDateFormat dateFormat;
 
     @Nullable
     @Override
@@ -39,8 +47,17 @@ public class StatisticsYearFragment extends Fragment {
         basicDataCard = view.findViewById(R.id.year_basicDataCard);
         basicDataCard.setLifecycleOwner(getViewLifecycleOwner());
 
+        yearTitle = view.findViewById(R.id.year_title);
+        leftButton = view.findViewById(R.id.year_button_left);
+        rightButton = view.findViewById(R.id.year_button_right);
+
         repository = new FocusSessionRepository(requireActivity().getApplication());
 
+        currentDate = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("yyyy年", Locale.CHINESE);
+
+        setupNavigation();
+        updateYearTitle();
         calculateYearlyTimeRange();
 
         // Observe focus sessions
@@ -54,7 +71,22 @@ public class StatisticsYearFragment extends Fragment {
         add.setOnClickListener(v -> addRandomSession());
         delete.setOnClickListener(v -> deleteSessionById());
 
+        yearTitle.setOnClickListener(v -> showDatePicker());
+
         return view;
+    }
+
+    private void showDatePicker() {
+        DatePickerBottomSheet datePickerBottomSheet = DatePickerBottomSheet.newInstance(currentDate);
+        datePickerBottomSheet.setDateSelectedListener(this);
+        datePickerBottomSheet.show(getChildFragmentManager(), "datePicker");
+    }
+
+    @Override
+    public void onDateSelected(int year, int month, int dayOfMonth) {
+        currentDate.set(Calendar.YEAR, year);
+        updateYearTitle();
+        calculateYearlyTimeRange();
     }
 
     private void addRandomSession() {
@@ -101,29 +133,43 @@ public class StatisticsYearFragment extends Fragment {
     }
 
     private void calculateYearlyTimeRange() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, Calendar.JANUARY);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        long startOfYear = calendar.getTimeInMillis();
+        Calendar startOfYear = (Calendar) currentDate.clone();
+        startOfYear.set(Calendar.DAY_OF_YEAR, 1);
+        startOfYear.set(Calendar.HOUR_OF_DAY
+                , 0);
+        startOfYear.set(Calendar.MINUTE, 0);
+        startOfYear.set(Calendar.SECOND, 0);
+        startOfYear.set(Calendar.MILLISECOND, 0);
+        long startOfYearMillis = startOfYear.getTimeInMillis();
 
-        calendar.set(Calendar.MONTH, Calendar.DECEMBER);
-        calendar.set(Calendar.DAY_OF_MONTH, 31);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        long endOfYear = calendar.getTimeInMillis() + 24 * 60 * 60 * 1000 - 1;
+        Calendar endOfYear = (Calendar) startOfYear.clone();
+        endOfYear.add(Calendar.YEAR, 1);
+        endOfYear.add(Calendar.MILLISECOND, -1);
+        long endOfYearMillis = endOfYear.getTimeInMillis();
 
-        focusProportionCard.setTimeRange(startOfYear, endOfYear);
-        basicDataCard.setTimeRange(startOfYear, endOfYear);
+        focusProportionCard.setTimeRange(startOfYearMillis, endOfYearMillis);
+        basicDataCard.setTimeRange(startOfYearMillis, endOfYearMillis);
 
-        // 获取本年的数据
-        repository.getFocusSessionsForYear(startOfYear, endOfYear).observe(getViewLifecycleOwner(), focusSessions -> {
+        repository.getFocusSessionsForYear(startOfYearMillis, endOfYearMillis).observe(getViewLifecycleOwner(), focusSessions -> {
             focusProportionCard.setFocusSessions(focusSessions);
         });
+    }
+
+    private void setupNavigation() {
+        leftButton.setOnClickListener(v -> {
+            currentDate.add(Calendar.YEAR, -1);
+            updateYearTitle();
+            calculateYearlyTimeRange();
+        });
+
+        rightButton.setOnClickListener(v -> {
+            currentDate.add(Calendar.YEAR, 1);
+            updateYearTitle();
+            calculateYearlyTimeRange();
+        });
+    }
+
+    private void updateYearTitle() {
+        yearTitle.setText(dateFormat.format(currentDate.getTime()));
     }
 }

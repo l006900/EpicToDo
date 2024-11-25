@@ -24,11 +24,11 @@
         android:clickable="true"
         android:text="&lt;"
         android:textSize="40dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/day_title"
         app:layout_constraintEnd_toStartOf="@+id/day_title"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/day_title"
+        app:layout_constraintBottom_toBottomOf="@+id/day_title"/>
 
     <TextView
         android:id="@+id/day_button_right"
@@ -37,10 +37,10 @@
         android:clickable="true"
         android:text="&gt;"
         android:textSize="40dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/day_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/day_title"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/day_title"
+        app:layout_constraintBottom_toBottomOf="@+id/day_title"/>
 
     <ScrollView
         android:id="@+id/day_scrollview"

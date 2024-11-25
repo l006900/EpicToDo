@@ -1,8 +1,6 @@
 package com.example.epictodo.v;
 
-import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +11,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import com.example.epictodo.R;
 import com.example.epictodo.m.FocusSession;
 import com.example.epictodo.m.FocusSessionRepository;
 
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * StatisticsDayFragment
@@ -30,13 +27,15 @@ import java.util.concurrent.TimeUnit;
  * @author 31112
  * @date 2024/11/21
  */
-public class StatisticsDayFragment extends Fragment {
+public class StatisticsDayFragment extends Fragment implements DatePickerBottomSheet.DateSelectedListener {
     private FocusProportionCard focusProportionCard;
     private BasicDataCard basicDataCard;
     private FocusSessionRepository repository;
-    private long startOfDay;
-    private long endOfDay;
     private TextView dayTitle;
+    private TextView leftButton;
+    private TextView rightButton;
+    private Calendar currentDate;
+    private SimpleDateFormat dateFormat;
 
 
     @Nullable
@@ -50,9 +49,16 @@ public class StatisticsDayFragment extends Fragment {
         basicDataCard.setLifecycleOwner(getViewLifecycleOwner());
 
         dayTitle = view.findViewById(R.id.day_title);
+        leftButton = view.findViewById(R.id.day_button_left);
+        rightButton = view.findViewById(R.id.day_button_right);
 
         repository = new FocusSessionRepository(requireActivity().getApplication());
 
+        currentDate = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E", Locale.CHINESE);
+
+        setupNavigation();
+        updateDateDisplay();
         calculateDailyTimeRange();
 
         // Observe focus sessions
@@ -67,8 +73,24 @@ public class StatisticsDayFragment extends Fragment {
         add.setOnClickListener(v -> addRandomSession());
         delete.setOnClickListener(v -> deleteSessionById());
 
+        dayTitle.setOnClickListener(v -> showDatePicker());
+
         return view;
     }
+
+    private void showDatePicker() {
+        DatePickerBottomSheet datePickerBottomSheet = DatePickerBottomSheet.newInstance(currentDate);
+        datePickerBottomSheet.setDateSelectedListener(this);
+        datePickerBottomSheet.show(getChildFragmentManager(), "datePicker");
+    }
+
+    @Override
+    public void onDateSelected(int year, int month, int dayOfMonth) {
+        currentDate.set(year, month, dayOfMonth);
+        updateDateDisplay();
+        calculateDailyTimeRange();
+    }
+
 
     private void addRandomSession() {
         Random random = new Random();
@@ -92,7 +114,6 @@ public class StatisticsDayFragment extends Fragment {
         Toast.makeText(requireContext(), "已添加随机记录", Toast.LENGTH_SHORT).show();
     }
 
-
     private String getRandomTag() {
         String[] tags = {"学习", "工作", "运动", "阅读", "编程"};
         Random random = new Random();
@@ -114,13 +135,16 @@ public class StatisticsDayFragment extends Fragment {
     }
 
     private void calculateDailyTimeRange() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        long startOfDay = calendar.getTimeInMillis();
-        long endOfDay = startOfDay + 24 * 60 * 60 * 1000;
+        Calendar startCalendar = (Calendar) currentDate.clone();
+        startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        startCalendar.set(Calendar.MINUTE, 0);
+        startCalendar.set(Calendar.SECOND, 0);
+        startCalendar.set(Calendar.MILLISECOND, 0);
+        long startOfDay = startCalendar.getTimeInMillis();
+
+        Calendar endCalendar = (Calendar) startCalendar.clone();
+        endCalendar.add(Calendar.DAY_OF_MONTH, 1);
+        long endOfDay = endCalendar.getTimeInMillis() - 1;
 
         focusProportionCard.setTimeRange(startOfDay, endOfDay);
         basicDataCard.setTimeRange(startOfDay, endOfDay);
@@ -130,6 +154,24 @@ public class StatisticsDayFragment extends Fragment {
             focusProportionCard.setFocusSessions(focusSessions);
         });
 
+    }
+
+    private void setupNavigation() {
+        leftButton.setOnClickListener(v -> {
+            currentDate.add(Calendar.DAY_OF_MONTH, -1);
+            updateDateDisplay();
+            calculateDailyTimeRange();
+        });
+
+        rightButton.setOnClickListener(v -> {
+            currentDate.add(Calendar.DAY_OF_MONTH, 1);
+            updateDateDisplay();
+            calculateDailyTimeRange();
+        });
+    }
+
+    private void updateDateDisplay() {
+        dayTitle.setText(dateFormat.format(currentDate.getTime()));
     }
 
 }

@@ -24,11 +24,11 @@
         android:text="&lt;"
         android:textSize="40dp"
         android:clickable="true"
-        app:layout_constraintBaseline_toBaselineOf="@+id/month_title"
         app:layout_constraintEnd_toStartOf="@+id/month_title"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/month_title"
+        app:layout_constraintBottom_toBottomOf="@+id/month_title"/>
 
     <TextView
         android:id="@+id/month_button_right"
@@ -37,10 +37,10 @@
         android:text="&gt;"
         android:textSize="40dp"
         android:clickable="true"
-        app:layout_constraintBaseline_toBaselineOf="@+id/month_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/month_title"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/month_title"
+        app:layout_constraintBottom_toBottomOf="@+id/month_title"/>
 
     <ScrollView
         android:id="@+id/month_scrollview"

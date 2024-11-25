@@ -1,11 +1,11 @@
 package com.example.epictodo.v;
 
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +16,9 @@ import com.example.epictodo.R;
 import com.example.epictodo.m.FocusSession;
 import com.example.epictodo.m.FocusSessionRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -24,10 +27,15 @@ import java.util.Random;
  * @author 31112
  * @date 2024/11/22
  */
-public class StatisticsMonthFragment extends Fragment {
+public class StatisticsMonthFragment extends Fragment implements DatePickerBottomSheet.DateSelectedListener {
     private FocusProportionCard focusProportionCard;
     private BasicDataCard basicDataCard;
     private FocusSessionRepository repository;
+    private TextView monthTitle;
+    private TextView leftButton;
+    private TextView rightButton;
+    private Calendar currentDate;
+    private SimpleDateFormat dateFormat;
 
     @Nullable
     @Override
@@ -39,8 +47,17 @@ public class StatisticsMonthFragment extends Fragment {
         basicDataCard = view.findViewById(R.id.month_basicDataCard);
         basicDataCard.setLifecycleOwner(getViewLifecycleOwner());
 
+        monthTitle = view.findViewById(R.id.month_title);
+        leftButton = view.findViewById(R.id.month_button_left);
+        rightButton = view.findViewById(R.id.month_button_right);
+
         repository = new FocusSessionRepository(requireActivity().getApplication());
 
+        currentDate = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("yyyy年MM月", Locale.CHINESE);
+
+        setupNavigation();
+        updateMonthTitle();
         calculateMonthlyTimeRange();
 
         // Observe focus sessions
@@ -48,14 +65,28 @@ public class StatisticsMonthFragment extends Fragment {
             focusProportionCard.setFocusSessions(focusSessions);
         });
 
-
         Button add = view.findViewById(R.id.month_add);
         Button delete = view.findViewById(R.id.month_delete);
 
         add.setOnClickListener(v -> addRandomSession());
         delete.setOnClickListener(v -> deleteSessionById());
 
+        monthTitle.setOnClickListener(v -> showDatePicker());
+
         return view;
+    }
+
+    private void showDatePicker() {
+        DatePickerBottomSheet datePickerBottomSheet = DatePickerBottomSheet.newInstance(currentDate);
+        datePickerBottomSheet.setDateSelectedListener(this);
+        datePickerBottomSheet.show(getChildFragmentManager(), "datePicker");
+    }
+
+    @Override
+    public void onDateSelected(int year, int month, int dayOfMonth) {
+        currentDate.set(year, month, 1);
+        updateMonthTitle();
+        calculateMonthlyTimeRange();
     }
 
     private void addRandomSession() {
@@ -102,28 +133,42 @@ public class StatisticsMonthFragment extends Fragment {
     }
 
     private void calculateMonthlyTimeRange() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        long startOfMonth = calendar.getTimeInMillis();
+        Calendar startOfMonth = (Calendar) currentDate.clone();
+        startOfMonth.set(Calendar.DAY_OF_MONTH, 1);
+        startOfMonth.set(Calendar.HOUR_OF_DAY, 0);
+        startOfMonth.set(Calendar.MINUTE, 0);
+        startOfMonth.set(Calendar.SECOND, 0);
+        startOfMonth.set(Calendar.MILLISECOND, 0);
+        long startOfMonthMillis = startOfMonth.getTimeInMillis();
 
-        calendar.add(Calendar.MONTH, 1);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        long endOfMonth = calendar.getTimeInMillis() + 24 * 60 * 60 * 1000 - 1;
+        Calendar endOfMonth = (Calendar) startOfMonth.clone();
+        endOfMonth.add(Calendar.MONTH, 1);
+        endOfMonth.add(Calendar.MILLISECOND, -1);
+        long endOfMonthMillis = endOfMonth.getTimeInMillis();
 
-        focusProportionCard.setTimeRange(startOfMonth, endOfMonth);
-        basicDataCard.setTimeRange(startOfMonth, endOfMonth);
+        focusProportionCard.setTimeRange(startOfMonthMillis, endOfMonthMillis);
+        basicDataCard.setTimeRange(startOfMonthMillis, endOfMonthMillis);
 
-        // 获取本月的数据
-        repository.getFocusSessionsForMonth(startOfMonth, endOfMonth).observe(getViewLifecycleOwner(), focusSessions -> {
+        repository.getFocusSessionsForMonth(startOfMonthMillis, endOfMonthMillis).observe(getViewLifecycleOwner(), focusSessions -> {
             focusProportionCard.setFocusSessions(focusSessions);
         });
+    }
+
+    private void setupNavigation() {
+        leftButton.setOnClickListener(v -> {
+            currentDate.add(Calendar.MONTH, -1);
+            updateMonthTitle();
+            calculateMonthlyTimeRange();
+        });
+
+        rightButton.setOnClickListener(v -> {
+            currentDate.add(Calendar.MONTH, 1);
+            updateMonthTitle();
+            calculateMonthlyTimeRange();
+        });
+    }
+
+    private void updateMonthTitle() {
+        monthTitle.setText(dateFormat.format(currentDate.getTime()));
     }
 }

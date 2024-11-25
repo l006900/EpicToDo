@@ -1,11 +1,11 @@
 package com.example.epictodo.v;
 
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +16,9 @@ import com.example.epictodo.R;
 import com.example.epictodo.m.FocusSession;
 import com.example.epictodo.m.FocusSessionRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -24,10 +27,15 @@ import java.util.Random;
  * @author 31112
  * @date 2024/11/22
  */
-public class StatisticsWeekFragment extends Fragment {
+public class StatisticsWeekFragment extends Fragment implements DatePickerBottomSheet.DateSelectedListener {
     private FocusProportionCard focusProportionCard;
     private BasicDataCard basicDataCard;
     private FocusSessionRepository repository;
+    private TextView weekTitle;
+    private TextView leftButton;
+    private TextView rightButton;
+    private Calendar currentDate;
+    private SimpleDateFormat dateFormat;
 
     @Nullable
     @Override
@@ -39,8 +47,17 @@ public class StatisticsWeekFragment extends Fragment {
         basicDataCard = view.findViewById(R.id.week_basicDataCard);
         basicDataCard.setLifecycleOwner(getViewLifecycleOwner());
 
+        weekTitle = view.findViewById(R.id.week_title);
+        leftButton = view.findViewById(R.id.week_button_left);
+        rightButton = view.findViewById(R.id.week_button_right);
+
         repository = new FocusSessionRepository(requireActivity().getApplication());
 
+        currentDate = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("MM月dd日", Locale.CHINESE);
+
+        setupNavigation();
+        updateWeekTitle();
         calculateWeeklyTimeRange();
 
         // Observe focus sessions
@@ -55,7 +72,22 @@ public class StatisticsWeekFragment extends Fragment {
         add.setOnClickListener(v -> addRandomSession());
         delete.setOnClickListener(v -> deleteSessionById());
 
+        weekTitle.setOnClickListener(v -> showDatePicker());
+
         return view;
+    }
+
+    private void showDatePicker() {
+        DatePickerBottomSheet datePickerBottomSheet = DatePickerBottomSheet.newInstance(currentDate);
+        datePickerBottomSheet.setDateSelectedListener(this);
+        datePickerBottomSheet.show(getChildFragmentManager(), "datePicker");
+    }
+
+    @Override
+    public void onDateSelected(int year, int month, int dayOfMonth) {
+        currentDate.set(year, month, dayOfMonth);
+        updateWeekTitle();
+        calculateWeeklyTimeRange();
     }
 
     private void addRandomSession() {
@@ -80,7 +112,6 @@ public class StatisticsWeekFragment extends Fragment {
         Toast.makeText(requireContext(), "已添加随机记录", Toast.LENGTH_SHORT).show();
     }
 
-
     private String getRandomTag() {
         String[] tags = {"学习", "工作", "运动", "阅读", "编程"};
         Random random = new Random();
@@ -102,25 +133,51 @@ public class StatisticsWeekFragment extends Fragment {
     }
 
     private void calculateWeeklyTimeRange() {
-        Calendar calendar = Calendar.getInstance();
-        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-            calendar.add(Calendar.DAY_OF_MONTH, -1);
-        }
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        long startOfWeek = calendar.getTimeInMillis();
+        Calendar startOfWeek = (Calendar) currentDate.clone();
+        startOfWeek.set(Calendar.DAY_OF_WEEK, startOfWeek.getFirstDayOfWeek());
+        startOfWeek.set(Calendar.HOUR_OF_DAY, 0);
+        startOfWeek.set(Calendar.MINUTE, 0);
+        startOfWeek.set(Calendar.SECOND, 0);
+        startOfWeek.set(Calendar.MILLISECOND, 0);
+        long startOfWeekMillis = startOfWeek.getTimeInMillis();
 
-        calendar.add(Calendar.DAY_OF_WEEK, 6);
-        long endOfWeek = calendar.getTimeInMillis() + 24 * 60 * 60 * 1000;
+        Calendar endOfWeek = (Calendar) startOfWeek.clone();
+        endOfWeek.add(Calendar.DAY_OF_WEEK, 6);
+        endOfWeek.set(Calendar.HOUR_OF_DAY, 23);
+        endOfWeek.set(Calendar.MINUTE, 59);
+        endOfWeek.set(Calendar.SECOND, 59);
+        endOfWeek.set(Calendar.MILLISECOND, 999);
+        long endOfWeekMillis = endOfWeek.getTimeInMillis();
 
-        focusProportionCard.setTimeRange(startOfWeek, endOfWeek);
-        basicDataCard.setTimeRange(startOfWeek, endOfWeek);
+        focusProportionCard.setTimeRange(startOfWeekMillis, endOfWeekMillis);
+        basicDataCard.setTimeRange(startOfWeekMillis, endOfWeekMillis);
 
-        // 获取本周的数据
-        repository.getFocusSessionsForWeek(startOfWeek, endOfWeek).observe(getViewLifecycleOwner(), focusSessions -> {
+        repository.getFocusSessionsForWeek(startOfWeekMillis, endOfWeekMillis).observe(getViewLifecycleOwner(), focusSessions -> {
             focusProportionCard.setFocusSessions(focusSessions);
         });
+    }
+
+    private void setupNavigation() {
+        leftButton.setOnClickListener(v -> {
+            currentDate.add(Calendar.WEEK_OF_YEAR, -1);
+            updateWeekTitle();
+            calculateWeeklyTimeRange();
+        });
+
+        rightButton.setOnClickListener(v -> {
+            currentDate.add(Calendar.WEEK_OF_YEAR, 1);
+            updateWeekTitle();
+            calculateWeeklyTimeRange();
+        });
+    }
+
+    private void updateWeekTitle() {
+        Calendar startOfWeek = (Calendar) currentDate.clone();
+        startOfWeek.set(Calendar.DAY_OF_WEEK, startOfWeek.getFirstDayOfWeek());
+        Calendar endOfWeek = (Calendar) startOfWeek.clone();
+        endOfWeek.add(Calendar.DAY_OF_WEEK, 6);
+
+        String weekRange = dateFormat.format(startOfWeek.getTime()) + "-" + dateFormat.format(endOfWeek.getTime());
+        weekTitle.setText(weekRange);
     }
 }
