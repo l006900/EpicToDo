@@ -26,6 +26,7 @@ import java.util.Random;
  */
 public class StatisticsMonthFragment extends Fragment {
     private FocusProportionCard focusProportionCard;
+    private BasicDataCard basicDataCard;
     private FocusSessionRepository repository;
 
     @Nullable
@@ -34,6 +35,9 @@ public class StatisticsMonthFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_statistics_month, container, false);
 
         focusProportionCard = view.findViewById(R.id.month_focusProportionCard);
+
+        basicDataCard = view.findViewById(R.id.month_basicDataCard);
+        basicDataCard.setLifecycleOwner(getViewLifecycleOwner());
 
         repository = new FocusSessionRepository(requireActivity().getApplication());
 
@@ -115,6 +119,7 @@ public class StatisticsMonthFragment extends Fragment {
         long endOfMonth = calendar.getTimeInMillis() + 24 * 60 * 60 * 1000 - 1;
 
         focusProportionCard.setTimeRange(startOfMonth, endOfMonth);
+        basicDataCard.setTimeRange(startOfMonth, endOfMonth);
 
         // 获取本月的数据
         repository.getFocusSessionsForMonth(startOfMonth, endOfMonth).observe(getViewLifecycleOwner(), focusSessions -> {

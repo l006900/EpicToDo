@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class StatisticsDayFragment extends Fragment {
     private FocusProportionCard focusProportionCard;
+    private BasicDataCard basicDataCard;
     private FocusSessionRepository repository;
     private long startOfDay;
     private long endOfDay;
@@ -44,6 +45,9 @@ public class StatisticsDayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_statistics_day, container, false);
 
         focusProportionCard = view.findViewById(R.id.day_focusProportionCard);
+
+        basicDataCard = view.findViewById(R.id.day_basicDataCard);
+        basicDataCard.setLifecycleOwner(getViewLifecycleOwner());
 
         dayTitle = view.findViewById(R.id.day_title);
 
@@ -119,6 +123,7 @@ public class StatisticsDayFragment extends Fragment {
         long endOfDay = startOfDay + 24 * 60 * 60 * 1000;
 
         focusProportionCard.setTimeRange(startOfDay, endOfDay);
+        basicDataCard.setTimeRange(startOfDay, endOfDay);
 
         // 观察当日的数据
         repository.getFocusSessionsForDay(startOfDay, endOfDay).observe(getViewLifecycleOwner(), focusSessions -> {

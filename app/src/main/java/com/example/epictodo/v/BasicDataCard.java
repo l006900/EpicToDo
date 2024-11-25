@@ -13,6 +13,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.example.epictodo.m.FocusSession;
 import com.example.epictodo.m.FocusSessionRepository;
@@ -34,15 +35,17 @@ public class BasicDataCard extends View {
     private Paint backgroundPaint;
     private Paint fixedTextPaint;
     private Paint variableTextPaint;
-    private String dayAllTime = "10小时10分钟";
-    private String dayTimes = "10";
-    private String dayMostTime = "1小时1分钟";
-    private String label = "学习";
+    private String totalFocusTime = "0小时0分钟";
+    private String focusCount = "0";
+    private String longestFocusTime = "0小时0分钟";
+    private String mostFrequentTag = "无";
 
     private FocusSessionRepository repository;
 
     private long startTime;
     private long endTime;
+
+    private LifecycleOwner lifecycleOwner;
 
     public BasicDataCard(Context context) {
         super(context);
@@ -59,20 +62,8 @@ public class BasicDataCard extends View {
         init(context);
     }
 
-    public void setDayAllTime(String dayAllTime) {
-        this.dayAllTime = dayAllTime;
-    }
-
-    public void setDayMostTime(String dayMostTime) {
-        this.dayMostTime = dayMostTime;
-    }
-
-    public void setDayTimes(String dayTimes) {
-        this.dayTimes = dayTimes;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
+    public void setLifecycleOwner(LifecycleOwner owner) {
+        this.lifecycleOwner = owner;
     }
 
     private void init(Context context) {
@@ -108,12 +99,9 @@ public class BasicDataCard extends View {
     }
 
     private void updateData() {
-        repository.getFocusSessionsByDateRange(startTime, endTime).observeForever(focusSessions -> {
-            if (focusSessions != null) {
-                calculateStatistics(focusSessions);
-                invalidate();
-            }
-        });
+        if (lifecycleOwner != null) {
+            repository.getFocusSessionsByDateRange(startTime, endTime).observe(lifecycleOwner, this::calculateStatistics);
+        }
     }
 
     private void calculateStatistics(List<FocusSession> focusSessions) {
@@ -122,11 +110,8 @@ public class BasicDataCard extends View {
         long longestDuration = 0;
         Map<String, Integer> tagFrequency = new HashMap<>();
 
-        long currentDayStart = System.currentTimeMillis() / 86400000 * 86400000;
-        long currentDayEnd = currentDayStart + 86400000;
-
         for (FocusSession session : focusSessions) {
-            if (session.getStartTime() >= currentDayStart && session.getStartTime() < currentDayEnd) {
+            if (session.getStartTime() >= startTime && session.getStartTime() < endTime) {
                 totalDuration += session.getDuration();
                 sessionCount++;
                 longestDuration = Math.max(longestDuration, session.getDuration());
@@ -134,13 +119,15 @@ public class BasicDataCard extends View {
             }
         }
 
-        dayAllTime = formatDuration(totalDuration);
-        dayTimes = String.valueOf(sessionCount);
-        dayMostTime = formatDuration(longestDuration);
-        label = tagFrequency.entrySet().stream()
+        totalFocusTime = formatDuration(totalDuration);
+        focusCount = String.valueOf(sessionCount);
+        longestFocusTime = formatDuration(longestDuration);
+        mostFrequentTag = tagFrequency.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
                 .orElse("无");
+
+        invalidate();
     }
 
     private String formatDuration(long duration) {
@@ -177,10 +164,10 @@ public class BasicDataCard extends View {
         canvas.drawText("今日最长专注", 2 * x, 11 * y, fixedTextPaint);
         canvas.drawText("最多专注标签", 9 * x, 11 * y, fixedTextPaint);
 
-        canvas.drawText(dayAllTime, 2 * x, 6 * y, variableTextPaint);
-        canvas.drawText(dayTimes, 9 * x, 6 * y, variableTextPaint);
-        canvas.drawText(dayMostTime, 2 * x, 13 * y, variableTextPaint);
-        canvas.drawText(label, 9 * x, 13 * y, variableTextPaint);
+        canvas.drawText(totalFocusTime, 2 * x, 6 * y, variableTextPaint);
+        canvas.drawText(focusCount, 9 * x, 6 * y, variableTextPaint);
+        canvas.drawText(longestFocusTime, 2 * x, 13 * y, variableTextPaint);
+        canvas.drawText(mostFrequentTag, 9 * x, 13 * y, variableTextPaint);
     }
 
     private int dp2px(int dpVal) {

@@ -26,6 +26,7 @@ import java.util.Random;
  */
 public class StatisticsYearFragment extends Fragment {
     private FocusProportionCard focusProportionCard;
+    private BasicDataCard basicDataCard;
     private FocusSessionRepository repository;
 
     @Nullable
@@ -34,6 +35,9 @@ public class StatisticsYearFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_statistics_year, container, false);
 
         focusProportionCard = view.findViewById(R.id.year_focusProportionCard);
+
+        basicDataCard = view.findViewById(R.id.year_basicDataCard);
+        basicDataCard.setLifecycleOwner(getViewLifecycleOwner());
 
         repository = new FocusSessionRepository(requireActivity().getApplication());
 
@@ -114,7 +118,8 @@ public class StatisticsYearFragment extends Fragment {
         calendar.set(Calendar.MILLISECOND, 0);
         long endOfYear = calendar.getTimeInMillis() + 24 * 60 * 60 * 1000 - 1;
 
-                focusProportionCard.setTimeRange(startOfYear, endOfYear);
+        focusProportionCard.setTimeRange(startOfYear, endOfYear);
+        basicDataCard.setTimeRange(startOfYear, endOfYear);
 
         // 获取本年的数据
         repository.getFocusSessionsForYear(startOfYear, endOfYear).observe(getViewLifecycleOwner(), focusSessions -> {

@@ -26,6 +26,7 @@ import java.util.Random;
  */
 public class StatisticsWeekFragment extends Fragment {
     private FocusProportionCard focusProportionCard;
+    private BasicDataCard basicDataCard;
     private FocusSessionRepository repository;
 
     @Nullable
@@ -34,6 +35,9 @@ public class StatisticsWeekFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_statistics_week, container, false);
 
         focusProportionCard = view.findViewById(R.id.week_focusProportionCard);
+
+        basicDataCard = view.findViewById(R.id.week_basicDataCard);
+        basicDataCard.setLifecycleOwner(getViewLifecycleOwner());
 
         repository = new FocusSessionRepository(requireActivity().getApplication());
 
@@ -111,7 +115,8 @@ public class StatisticsWeekFragment extends Fragment {
         calendar.add(Calendar.DAY_OF_WEEK, 6);
         long endOfWeek = calendar.getTimeInMillis() + 24 * 60 * 60 * 1000;
 
-                focusProportionCard.setTimeRange(startOfWeek, endOfWeek);
+        focusProportionCard.setTimeRange(startOfWeek, endOfWeek);
+        basicDataCard.setTimeRange(startOfWeek, endOfWeek);
 
         // 获取本周的数据
         repository.getFocusSessionsForWeek(startOfWeek, endOfWeek).observe(getViewLifecycleOwner(), focusSessions -> {
