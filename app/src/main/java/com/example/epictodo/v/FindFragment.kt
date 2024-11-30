@@ -8,7 +8,7 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import com.example.epictodo.R
 
-class FindFragment: Fragment(){
+class FindFragment : Fragment() {
 
     private var view: View? = null
 

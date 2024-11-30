@@ -4,6 +4,12 @@
 
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <!--阿里云一键登录-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,7 +22,31 @@
         tools:targetApi="31"
         android:resizeableActivity="true">
 
-        <activity android:name=".v.HomeActivity"
+
+        <!--登录Activity-->
+        <activity
+            android:name=".v.LoginActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <!--主页Activity-->
+        <activity
+            android:name=".v.HomeActivity"
+            android:exported="true">
+
+
+        </activity>
+
+        <!--统计页面Activity-->
+        <activity
+            android:name=".v.StatisticsActivity"
             android:exported="true">
 
         </activity>
@@ -26,17 +56,14 @@
             android:exported="true">
         </activity>
 
+
+        <!--实际登录页面-->
         <activity
-            android:name=".v.StatisticsActivity"
+            android:name=".v.LoginingActivity"
             android:exported="true">
 
-             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
 
     </application>
 

@@ -59,4 +59,13 @@ dependencies {
     implementation("androidx.work:work-rxjava2:2.10.0")
     implementation("androidx.work:work-gcm:2.10.0")
     implementation("androidx.work:work-testing:2.10.0")
+
+    //material
+    implementation("com.google.android.material:material:1.12.0")
+
+
+//    implementation("androidx.appcompat:appcompat-resources:1.7.0")
+//    implementation("androidx.appcompat:appcompat:1.7.0")
+//    implementation("com.android.support:design:28.0.0")
+
 }
