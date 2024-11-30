@@ -21,4 +21,22 @@
     <!-- Common colors -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
+    <color name="color_light_blue">#98BCF8</color>
+
+    <color name="colorPrimary">#E0E0E0</color>
+    <color name="colorPrimaryDark">#357FFF</color>
+    <color name="colorAccent">#FF4638</color>
+    <color name="textColorPrimary">#FF000000</color>
+    <color name="toolbarIconColor">@color/textColorPrimary</color>
+    <color name="loginPageBackgroundColor">#FFFFFF</color>
+    <color name="productGridBackgroundColor">#FFFBFA</color>
+    <color name="textInputOutlineColor">#357FFF</color>
+
+    <color name="color_grey">#FF333333</color>
+    <color name="color_blue">#FF38CDD8</color>
+    <color name="color_grey1">#FFF0F0F5</color>
+    <color name="color_grey2">#FFB4B8BD</color>
+    <color name="color_black">#FF2A363E</color>
+    <color name="color_red">#FF4638</color>
 </resources>

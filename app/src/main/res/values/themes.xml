@@ -22,7 +22,7 @@
 
         <!-- 字体和文本大小 -->
         <item name="android:fontFamily">@font/b</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Theme.EpicToDo.Night" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -47,9 +47,19 @@
 
         <!-- 字体和文本大小 -->
         <item name="android:fontFamily">@font/b</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
+    <!--弹窗-->
+    <style name="customDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+
+    </style>
 
 
 

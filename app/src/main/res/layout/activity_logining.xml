@@ -5,88 +5,148 @@
     android:layout_height="match_parent"
     android:padding="20dp">
 
-    <TextView
-        android:id="@+id/logining_big_title"
+    <LinearLayout
+        android:id="@+id/login_problem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="登录"
-        android:textSize="30sp"
+        android:orientation="horizontal"
+        android:textSize="12sp"
+        android:clickable="true"
+        android:paddingVertical="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/ic_problem_icon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="遇见问题"
+            android:textSize="12dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/login_big_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="Epic ToDo"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/logining_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="欢迎使用Epic ToDo"
+        android:text="欢迎使用史诗代办"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logining_big_title" />
+        app:layout_constraintTop_toBottomOf="@+id/login_big_title" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/logining_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="手机号/邮箱"
-        app:endIconMode="clear_text"
+    <RadioGroup
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logining_title">
+        app:layout_constraintTop_toBottomOf="@+id/login_big_title">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/login_radio_number"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingStart="0dp"
-            android:paddingEnd="0dp"
-            android:textSize="18sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:background="@drawable/selector_radio_drawable"
+            android:button="@null"
+            android:text="手机号登录"
+            android:textColor="@color/slector_radio_color"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/logining_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="密码"
-        app:endIconMode="clear_text"
-        app:errorEnabled="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logining_number">
+        <View
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/black" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password_edit_text"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/login_radio_account"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:paddingStart="0dp"
-            android:paddingEnd="0dp"
-            android:textSize="18sp" />
+            android:background="@drawable/selector_radio_drawable"
+            android:button="@null"
+            android:text="账号登录"
+            android:textColor="@color/slector_radio_color"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/black" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/logining_next_button"
+        <RadioButton
+            android:id="@+id/login_radio_fast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_radio_drawable"
+            android:button="@null"
+            android:text="一键登录"
+            android:textColor="@color/slector_radio_color"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/login_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginVertical="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/login_tips"
+        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+
+    <TextView
+        android:id="@+id/login_tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="12dp"
-        android:text="登录"
-        app:cornerRadius="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logining_password" />
+        android:layout_marginBottom="45dp"
+        android:paddingVertical="8dp"
+        android:text="更多登录方式"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/logining_cancel_button"
+    <ImageView
+        android:id="@+id/login_wechat"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_wechat_icon"
+        app:layout_constraintEnd_toStartOf="@+id/login_more"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_tips" />
+
+    <com.example.epictodo.v.MoreLoginButton
+        android:id="@+id/login_more"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:paddingVertical="12dp"
-        android:text="取消"
-        app:cornerRadius="6dp"
-        app:layout_constraintEnd_toStartOf="@+id/logining_next_button"
-        app:layout_constraintTop_toTopOf="@+id/logining_next_button" />
+        android:layout_height="35dp"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/login_wechat"
+        app:layout_constraintTop_toBottomOf="@+id/login_tips" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/expand_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginHorizontal="5dp"
+        android:src="@drawable/ic_arrow_left_icon"
+        android:contentDescription="Expand Icon"/>
+
+    <ImageView
+        android:id="@+id/qq_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginHorizontal="5dp"
+        android:src="@drawable/ic_qq_icon"
+        android:contentDescription="line Icon"/>
+
+    <ImageView
+        android:id="@+id/google_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginHorizontal="5dp"
+        android:src="@drawable/ic_google_icon"
+        android:contentDescription="google Icon"/>
+
+    <ImageView
+        android:id="@+id/shrink_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginHorizontal="5dp"
+        android:src="@drawable/ic_arrow_right_icon"
+        android:contentDescription="shrink Icon"/>
+
+</LinearLayout>
