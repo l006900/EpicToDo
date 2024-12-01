@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/setting_arrow_tip">
+
+        <TextView
+            android:id="@+id/setting_arrow_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注销账号"
+            android:textColor="@color/color_grey"/>
+
+        <TextView
+            android:id="@+id/setting_arrow_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注销后"
+            android:textSize="10sp"
+            android:textColor="@color/color_grey2"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/setting_arrow_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="3dp"
+        android:text="实时"
+        android:textSize="12sp"
+        android:textColor="@color/color_grey2"
+        app:layout_constraintBottom_toBottomOf="@+id/setting_arrow_item"
+        app:layout_constraintEnd_toStartOf="@+id/setting_arrow_item"
+        app:layout_constraintTop_toTopOf="@+id/setting_arrow_item" />
+
+    <ImageView
+        android:id="@+id/setting_arrow_item"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_arrow_left_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

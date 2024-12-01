@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_grey1">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_grey1">
+
+        <ImageView
+            android:id="@+id/mine_image"
+            android:layout_width="0dp"
+            android:layout_height="210dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/mine_card_one"
+            android:layout_width="0dp"
+            android:layout_height="96dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/background_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mine_image" />
+
+        <LinearLayout
+            android:id="@+id/mine_shop"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_card_one"
+            app:layout_constraintEnd_toStartOf="@+id/mine_order"
+            app:layout_constraintStart_toStartOf="@+id/mine_card_one"
+            app:layout_constraintTop_toTopOf="@+id/mine_card_one">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的商城"
+                android:textColor="@color/color_grey"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mine_order"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_card_one"
+            app:layout_constraintEnd_toStartOf="@+id/mine_share"
+            app:layout_constraintStart_toEndOf="@+id/mine_shop"
+            app:layout_constraintTop_toTopOf="@+id/mine_card_one">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的订单"
+                android:textColor="@color/color_grey"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mine_share"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_card_one"
+            app:layout_constraintEnd_toStartOf="@+id/mine_video"
+            app:layout_constraintStart_toEndOf="@+id/mine_order"
+            app:layout_constraintTop_toTopOf="@+id/mine_card_one">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的分享"
+                android:textColor="@color/color_grey"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mine_video"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_card_one"
+            app:layout_constraintEnd_toEndOf="@+id/mine_card_one"
+            app:layout_constraintStart_toEndOf="@+id/mine_share"
+            app:layout_constraintTop_toTopOf="@+id/mine_card_one">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="截图录像"
+                android:textColor="@color/color_grey"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/mine_card_two"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/background_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mine_card_one" />
+
+        <TextView
+            android:id="@+id/mine_card_two_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="增值服务"
+            android:textColor="@color/color_grey"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/mine_card_two"
+            app:layout_constraintTop_toTopOf="@+id/mine_card_two" />
+
+        <LinearLayout
+            android:id="@+id/mine_store"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_card_two"
+            app:layout_constraintEnd_toStartOf="@+id/mine_AI"
+            app:layout_constraintStart_toStartOf="@+id/mine_card_two"
+            app:layout_constraintTop_toBottomOf="@+id/mine_card_two_title">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="云储存"
+                android:textColor="@color/color_grey"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mine_AI"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_card_two"
+            app:layout_constraintEnd_toStartOf="@+id/mine_4g"
+            app:layout_constraintStart_toEndOf="@+id/mine_store"
+            app:layout_constraintTop_toBottomOf="@+id/mine_card_two_title">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AI智能告警"
+                android:textColor="@color/color_grey"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mine_4g"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_card_two"
+            app:layout_constraintEnd_toEndOf="@+id/mine_card_two"
+            app:layout_constraintStart_toEndOf="@+id/mine_AI"
+            app:layout_constraintTop_toBottomOf="@+id/mine_card_two_title">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4G流量"
+                android:textColor="@color/color_grey"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mine_recycler"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/background_card"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mine_card_two" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

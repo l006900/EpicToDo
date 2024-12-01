@@ -70,7 +70,7 @@
             android:background="@drawable/selector_radio_drawable"
             android:button="@null"
             android:text="手机号登录"
-            android:textColor="@color/slector_radio_color"
+            android:textColor="@color/selector_radio_color"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -88,7 +88,7 @@
             android:background="@drawable/selector_radio_drawable"
             android:button="@null"
             android:text="账号登录"
-            android:textColor="@color/slector_radio_color"
+            android:textColor="@color/selector_radio_color"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
             android:background="@drawable/selector_radio_drawable"
             android:button="@null"
             android:text="一键登录"
-            android:textColor="@color/slector_radio_color"
+            android:textColor="@color/selector_radio_color"
             android:textSize="12sp"
             android:textStyle="bold" />
 

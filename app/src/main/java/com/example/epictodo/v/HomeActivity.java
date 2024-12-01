@@ -3,19 +3,13 @@ package com.example.epictodo.v;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.epictodo.R;
@@ -30,7 +24,7 @@ public class HomeActivity extends AppCompatActivity{
     private GroupFragment mGroupFragment;
     private EpicFragment mEpicFragment;
     private FindFragment mFindFragment;
-    private PersonFragment mPersonFragment;
+    private MineFragment mPersonFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,7 +100,7 @@ public class HomeActivity extends AppCompatActivity{
             }
         } else {
             if (mPersonFragment == null) {
-                mPersonFragment = new PersonFragment();
+                mPersonFragment = new MineFragment();
                 fragmentTransaction.add(R.id.home_framelayout, mPersonFragment);
             } else {
                 fragmentTransaction.show(mPersonFragment);

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="20dp"
+        android:clickable="false"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/setting_button_item">
+
+        <TextView
+            android:id="@+id/setting_button_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="硬编码"
+            android:textColor="@color/color_grey" />
+
+        <TextView
+            android:id="@+id/setting_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关闭后"
+            android:textColor="@color/color_grey2"
+            android:textSize="10sp"/>
+
+    </LinearLayout>
+
+    <Switch
+        android:id="@+id/setting_button_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:thumb="@drawable/selector_thumb"
+        android:track="@drawable/selector_track"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
