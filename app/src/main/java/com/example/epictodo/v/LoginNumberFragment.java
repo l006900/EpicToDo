@@ -99,7 +99,7 @@ public class LoginNumberFragment extends Fragment {
     private void setupFocusChangeListeners() {
         View.OnFocusChangeListener onFocusChangeListener = (v, hasFocus) -> {
             View bottomLine = (View) v.getTag();
-            int colorId = hasFocus ? R.color.colorPrimaryDark : R.color.color_grey1;
+            int colorId = hasFocus ? R.color.new_blue : R.color.gray_light;
             bottomLine.setBackgroundResource(colorId);
         };
 
@@ -116,10 +116,10 @@ public class LoginNumberFragment extends Fragment {
 
         loginButton.setEnabled(isNumberValid && isPasswordValid);
         if (isNumberValid && isPasswordValid) {
-            loginButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            loginButton.setBackgroundColor(getResources().getColor(R.color.new_blue));
             loginButton.setEnabled(true);
         } else {
-            loginButton.setBackgroundColor(getResources().getColor(R.color.color_light_blue));
+            loginButton.setBackgroundColor(getResources().getColor(R.color.new_blue));
         }
 
         clearButtonNumber.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);

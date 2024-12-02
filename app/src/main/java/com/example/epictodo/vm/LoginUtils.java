@@ -79,8 +79,8 @@ public class LoginUtils {
             }
         }, startPrivacyPolicy, endPrivacyPolicy, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.night_text)), startClick, endClick, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.night_purple)), startUserAgreement, endPrivacyPolicy, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.gray_dark)), startClick, endClick, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.blue_dark)), startUserAgreement, endPrivacyPolicy, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         textView.setText(spannableString);
         textView.setHighlightColor(Color.TRANSPARENT);

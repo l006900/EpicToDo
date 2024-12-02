@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="注销账号"
-            android:textColor="@color/color_grey"/>
+            android:textColor="@color/gray_dark"/>
 
         <TextView
             android:id="@+id/setting_arrow_text"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="注销后"
             android:textSize="10sp"
-            android:textColor="@color/color_grey2"/>
+            android:textColor="@color/gray_dark"/>
 
 
     </LinearLayout>
@@ -42,7 +42,7 @@
         android:layout_marginEnd="3dp"
         android:text="实时"
         android:textSize="12sp"
-        android:textColor="@color/color_grey2"
+        android:textColor="@color/gray_dark"
         app:layout_constraintBottom_toBottomOf="@+id/setting_arrow_item"
         app:layout_constraintEnd_toStartOf="@+id/setting_arrow_item"
         app:layout_constraintTop_toTopOf="@+id/setting_arrow_item" />

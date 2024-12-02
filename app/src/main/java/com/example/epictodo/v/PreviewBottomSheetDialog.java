@@ -74,8 +74,8 @@ public class PreviewBottomSheetDialog extends BottomSheetDialogFragment {
     private void updateUI() {
         Context context = getContext();
         if (context != null) {
-            int primaryDarkColor = ContextCompat.getColor(context, R.color.colorPrimaryDark);
-            int greyColor = ContextCompat.getColor(context, R.color.color_grey);
+            int primaryDarkColor = ContextCompat.getColor(context, R.color.new_blue);
+            int greyColor = ContextCompat.getColor(context, R.color.gray_dark);
 
             switch (selected) {
                 case 0:

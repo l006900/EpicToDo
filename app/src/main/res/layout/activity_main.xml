@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:gravity="center"
-    android:background="@color/night_purple_light">
+    android:gravity="center">
 
     <com.example.epictodo.v.BasicDataCard
         android:layout_width="wrap_content"

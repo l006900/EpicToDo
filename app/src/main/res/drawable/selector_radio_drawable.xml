@@ -10,7 +10,7 @@
             </item>
             <item android:gravity="bottom|center_horizontal">
                 <shape android:shape="rectangle">
-                    <solid android:color="#357FFF"/> <!-- 蓝色横线 -->
+                    <solid android:color="@color/new_blue"/> <!-- 蓝色横线 -->
                     <size android:height="3dp" android:width="20dp"/> <!-- 4dp 高，24dp 长 -->
                     <corners android:radius="2dp"/>
                 </shape>

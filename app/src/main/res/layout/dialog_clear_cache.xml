@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="清理缓存后不会丢失您的设备数据和个人消息"
-        android:textColor="@color/color_grey"
+        android:textColor="@color/gray_dark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dialog_cache_view"

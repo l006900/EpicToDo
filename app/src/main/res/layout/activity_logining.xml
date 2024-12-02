@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
             android:clickable="false"
             android:text="遇见问题"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:textColor="@color/gray_dark"/>
 
     </LinearLayout>
 
@@ -40,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:text="Epic ToDo"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/new_blue"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="欢迎使用史诗代办"
-        android:textColor="@color/black"
+        android:textColor="@color/gray_dark"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +82,7 @@
             android:layout_height="10dp"
             android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
-            android:background="@color/black" />
+            android:background="@color/gray_dark" />
 
         <RadioButton
             android:id="@+id/login_radio_account"
@@ -99,7 +100,7 @@
             android:layout_height="10dp"
             android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
-            android:background="@color/black" />
+            android:background="@color/gray_dark" />
 
         <RadioButton
             android:id="@+id/login_radio_fast"
@@ -130,6 +131,7 @@
         android:paddingVertical="8dp"
         android:text="更多登录方式"
         android:textSize="12sp"
+        android:textColor="@color/gray_dark"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

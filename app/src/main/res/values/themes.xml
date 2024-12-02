@@ -2,23 +2,24 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.EpicToDo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- 主要颜色 -->
-        <item name="colorPrimary">#FF6200EE</item> <!-- 深紫色 -->
-        <item name="colorPrimaryVariant">#FF3700B3</item> <!-- 较暗的深紫色 -->
-        <item name="colorOnPrimary">#FFFFFF</item> <!-- 白色 -->
+        <item name="colorPrimary">@color/new_blue</item>
+        <item name="colorPrimaryVariant">@color/new_deep_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
 
         <!-- 次要颜色 -->
-        <item name="colorSecondary">#FF03DAC5</item> <!-- 青绿色 -->
-        <item name="colorSecondaryVariant">#FF018786</item> <!-- 较暗的青绿色 -->
-        <item name="colorOnSecondary">#000000</item> <!-- 黑色 -->
+        <item name="colorSecondary">@color/new_yellow</item>
+        <item name="colorSecondaryVariant">@color/new_deep_yellow</item>
+        <item name="colorOnSecondary">@color/black</item>
 
         <!-- 状态栏和窗口背景 -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowBackground">#FFFFFFFF</item> <!-- 白色背景 -->
+        <item name="android:windowBackground">@color/gray_light</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
 
         <!-- 文本颜色 -->
-        <item name="android:textColor">#000000</item> <!-- 黑色 -->
-        <item name="android:textColorPrimary">#000000</item> <!-- 黑色 -->
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">@color/black</item>
 
         <!-- 字体和文本大小 -->
         <item name="android:fontFamily">@font/b</item>
@@ -27,30 +28,30 @@
 
     <style name="Theme.EpicToDo.Night" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- 主要颜色 -->
-        <item name="colorPrimary">#FFBB86FC</item> <!-- 浅紫色 -->
-        <item name="colorPrimaryVariant">#FF3700B3</item> <!-- 较暗的深紫色 -->
-        <item name="colorOnPrimary">#FFFFFF</item> <!-- 白色 -->
+        <item name="colorPrimary">@color/new_deep_blue</item>
+        <item name="colorPrimaryVariant">@color/new_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
 
         <!-- 次要颜色 -->
-        <item name="colorSecondary">#FF03DAC5</item> <!-- 青绿色 -->
-        <item name="colorSecondaryVariant">#FF018786</item> <!-- 较暗的青绿色 -->
-        <item name="colorOnSecondary">#FFFFFF</item> <!-- 白色 -->
+        <item name="colorSecondary">@color/new_deep_yellow</item>
+        <item name="colorSecondaryVariant">@color/new_yellow</item>
+        <item name="colorOnSecondary">@color/white</item>
 
         <!-- 状态栏和窗口背景 -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowBackground">#FF121212</item> <!-- 深灰色背景 -->
+        <item name="android:windowBackground">@color/gray_dark</item>
 
         <!-- 文本颜色 -->
-        <item name="android:textColor">#FFFFFF</item> <!-- 白色 -->
-        <item name="android:textColorPrimary">#FFFFFF</item> <!-- 白色 -->
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
 
         <!-- 字体和文本大小 -->
         <item name="android:fontFamily">@font/b</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <!--弹窗-->
+    <!-- 弹窗 -->
     <style name="customDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -58,19 +59,15 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
-
     </style>
 
     <style name="bottom_tab_title_active">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/new_blue</item>
     </style>
 
     <style name="bottom_tab_title_inactive">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/gray_medium</item>
     </style>
-
-
-
-
 </resources>
-

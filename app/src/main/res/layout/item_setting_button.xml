@@ -24,14 +24,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="硬编码"
-            android:textColor="@color/color_grey" />
+            android:textColor="@color/gray_dark" />
 
         <TextView
             android:id="@+id/setting_button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="关闭后"
-            android:textColor="@color/color_grey2"
+            android:textColor="@color/gray_dark"
             android:textSize="10sp"/>
 
     </LinearLayout>
