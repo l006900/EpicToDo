@@ -55,7 +55,7 @@ class LoginingActivity : AppCompatActivity() {
         }
 
         buttonProblem.setOnClickListener {
-//            startActivity(Intent(this, LoginProblem::class.java))
+            startActivity(Intent(this, LoginProblem::class.java))
         }
 
     }

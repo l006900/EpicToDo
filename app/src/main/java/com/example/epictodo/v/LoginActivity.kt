@@ -17,6 +17,7 @@ import com.example.epictodo.R
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
     private lateinit var moreLogin: TextView
+    private lateinit var skipLogin: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -25,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton = findViewById(R.id.login_number)
         moreLogin = findViewById(R.id.login_more)
+        skipLogin = findViewById(R.id.login_skip)
 
         loginButton.setOnClickListener {
             val intent = Intent(this, LoginingActivity::class.java)
@@ -33,6 +35,12 @@ class LoginActivity : AppCompatActivity() {
 
         moreLogin.setOnClickListener {
             showMoreButton()
+        }
+
+        skipLogin.setOnClickListener{
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

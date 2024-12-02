@@ -2,6 +2,7 @@ package com.example.epictodo.v;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,7 @@ public class LoginAccountFragment extends Fragment {
     private View bottomLineAccount;
     private View bottomLinePassword;
     private TextView user;
-    private ImageView clearButtonAccount, clearButtonPassword;
+    private ImageView clearButtonAccount, clearButtonPassword, eyeButton;
     private CheckBox checkBox;
     private AgreementBottomSheetDialog agreementBottomSheetDialog;
 
@@ -50,6 +51,7 @@ public class LoginAccountFragment extends Fragment {
         clearButtonAccount = view.findViewById(R.id.clear_button_account);
         clearButtonPassword = view.findViewById(R.id.clear_button_account_password);
         checkBox = view.findViewById(R.id.account_check_button);
+        eyeButton = view.findViewById(R.id.toggle_password_visibility);
 
         agreementBottomSheetDialog = new AgreementBottomSheetDialog(getActivity(), checkBox);
 
@@ -122,5 +124,16 @@ public class LoginAccountFragment extends Fragment {
 
         clearButtonAccount.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
         clearButtonPassword.setVisibility(isPasswordValid ? View.VISIBLE : View.GONE);
+    }
+
+    private void passwordVisibility() {
+        if (passwordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            eyeButton.setImageResource(R.drawable.ic_eye_show_icon); // 切换为显示密码的图标
+        } else {
+            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            eyeButton.setImageResource(R.drawable.ic_eye_hide_icon); // 切换为隐藏密码的图标
+        }
+        passwordEditText.setSelection(passwordEditText.length()); // 保持光标位置
     }
 }

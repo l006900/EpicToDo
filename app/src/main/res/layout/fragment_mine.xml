@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="我的商城"
                 android:textColor="@color/color_grey"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:text="我的订单"
                 android:textColor="@color/color_grey"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:text="截图录像"
                 android:textColor="@color/color_grey"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -171,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:text="云储存"
                 android:textColor="@color/color_grey"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -196,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:text="AI智能告警"
                 android:textColor="@color/color_grey"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -221,7 +221,7 @@
                 android:layout_height="wrap_content"
                 android:text="4G流量"
                 android:textColor="@color/color_grey"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -230,6 +230,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:paddingVertical="5dp"
             android:background="@drawable/background_card"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

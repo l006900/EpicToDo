@@ -2,13 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!--阿里云一键登录-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
 
     <application
         android:allowBackup="true"
@@ -16,17 +15,17 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.EpicToDo"
-        tools:targetApi="31"
-        android:resizeableActivity="true">
-
+        tools:targetApi="31">
 
         <!--登录Activity-->
         <activity
             android:name=".v.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,11 +35,24 @@
 
         </activity>
 
+        <!--实际登录页面-->
+        <activity
+            android:name=".v.LoginingActivity"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".v.LoginProblem"
+            android:exported="true">
+
+        </activity>
+
         <!--主页Activity-->
         <activity
             android:name=".v.HomeActivity"
-            android:exported="true">
-
+            android:exported="true"
+            android:launchMode="singleTask">
 
         </activity>
 
@@ -51,17 +63,16 @@
 
         </activity>
 
+        <!--设置页面-->
+        <activity
+            android:name=".v.SettingActivity"
+            android:exported="true">
+
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
-        </activity>
-
-
-        <!--实际登录页面-->
-        <activity
-            android:name=".v.LoginingActivity"
-            android:exported="true">
-
 
         </activity>
 

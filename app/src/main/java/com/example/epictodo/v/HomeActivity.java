@@ -24,7 +24,7 @@ public class HomeActivity extends AppCompatActivity{
     private GroupFragment mGroupFragment;
     private EpicFragment mEpicFragment;
     private FindFragment mFindFragment;
-    private MineFragment mPersonFragment;
+    private MineFragment mMineFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +46,7 @@ public class HomeActivity extends AppCompatActivity{
         }
 
         bottomNavigationView = findViewById(R.id.home_navigation);
+        bottomNavigationView.setItemIconTintList(null);
         selectedFragment(0);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -58,7 +59,7 @@ public class HomeActivity extends AppCompatActivity{
                     selectedFragment(2);
                 } else if (item.getItemId() == R.id.bottom_find) {
                     selectedFragment(3);
-                } else if (item.getItemId() == R.id.bottom_person) {
+                } else if (item.getItemId() == R.id.bottom_mine) {
                     selectedFragment(4);
                 }
                 return true;
@@ -99,11 +100,11 @@ public class HomeActivity extends AppCompatActivity{
                 fragmentTransaction.show(mFindFragment);
             }
         } else {
-            if (mPersonFragment == null) {
-                mPersonFragment = new MineFragment();
-                fragmentTransaction.add(R.id.home_framelayout, mPersonFragment);
+            if (mMineFragment == null) {
+                mMineFragment = new MineFragment();
+                fragmentTransaction.add(R.id.home_framelayout, mMineFragment);
             } else {
-                fragmentTransaction.show(mPersonFragment);
+                fragmentTransaction.show(mMineFragment);
             }
         }
 
@@ -123,8 +124,8 @@ public class HomeActivity extends AppCompatActivity{
         if (mFindFragment != null) {
             fragmentTransaction.hide(mFindFragment);
         }
-        if (mPersonFragment != null) {
-            fragmentTransaction.hide(mPersonFragment);
+        if (mMineFragment != null) {
+            fragmentTransaction.hide(mMineFragment);
         }
     }
 

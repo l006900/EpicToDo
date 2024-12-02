@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/bottom_home"
-        android:title="首页"/>
+        android:icon="@drawable/ic_home_icon"
+        android:title="首页"
+        app:itemBackground="@null"/>
 
     <item
         android:id="@+id/bottom_group"
+        android:icon="@drawable/ic_group_icon"
         android:title="社区"/>
 
     <item
         android:id="@+id/bottom_epic"
+        android:icon="@drawable/ic_epic_icon"
         android:title="epic"/>
 
     <item
         android:id="@+id/bottom_find"
+        android:icon="@drawable/ic_find_icon"
         android:title="发现"/>
 
     <item
-        android:id="@+id/bottom_person"
+        android:id="@+id/bottom_mine"
+        android:icon="@drawable/ic_mine_icon"
         android:title="我的"/>
 
 </menu>
