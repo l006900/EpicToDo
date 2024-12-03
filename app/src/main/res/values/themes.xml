@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.EpicToDo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- 主要颜色 -->
-        <item name="colorPrimary">@color/new_blue</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryVariant">@color/new_deep_blue</item>
         <item name="colorOnPrimary">@color/white</item>
 
@@ -29,7 +29,7 @@
     <style name="Theme.EpicToDo.Night" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- 主要颜色 -->
         <item name="colorPrimary">@color/new_deep_blue</item>
-        <item name="colorPrimaryVariant">@color/new_blue</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/white</item>
 
         <!-- 次要颜色 -->
@@ -41,6 +41,9 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowBackground">@color/gray_dark</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowFullscreen">true</item>
 
         <!-- 文本颜色 -->
         <item name="android:textColor">@color/white</item>
@@ -63,11 +66,12 @@
 
     <style name="bottom_tab_title_active">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/new_blue</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="bottom_tab_title_inactive">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/gray_medium</item>
     </style>
+
 </resources>

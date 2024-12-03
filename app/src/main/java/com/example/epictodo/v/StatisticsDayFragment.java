@@ -115,7 +115,7 @@ public class StatisticsDayFragment extends Fragment implements DatePickerBottomS
     }
 
     private String getRandomTag() {
-        String[] tags = {"学习", "工作", "运动", "阅读", "编程"};
+        String[] tags = {"学习", "工作", "运动", "阅读", "编程", "睡觉", "发呆", "刷视频", "社交软件"};
         Random random = new Random();
         return tags[random.nextInt(tags.length)];
     }

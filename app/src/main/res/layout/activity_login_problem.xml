@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:paddingVertical="10dp"
-        android:backgroundTint="@color/new_blue"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:text="我知道了"
         android:textSize="18sp"
         app:cornerRadius="100dp"

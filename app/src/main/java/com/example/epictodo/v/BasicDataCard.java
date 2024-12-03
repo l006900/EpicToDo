@@ -159,6 +159,11 @@ public class BasicDataCard extends View {
 
         float x = viewWidth / 16;
         float y = viewHeight / 16;
+
+        fixedTextPaint.setTextSize(viewHeight / 10); // 根据视图高度调整字体大小
+        variableTextPaint.setTextSize(viewHeight / 8); // 根据视图高度调整字体大小
+
+
         canvas.drawText("累计专注时长", 2 * x, 4 * y, fixedTextPaint);
         canvas.drawText("专注次数", 9 * x, 4 * y, fixedTextPaint);
         canvas.drawText("今日最长专注", 2 * x, 11 * y, fixedTextPaint);

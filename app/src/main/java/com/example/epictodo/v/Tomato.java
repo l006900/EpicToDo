@@ -51,6 +51,12 @@ public class Tomato extends View {
 
     private boolean isVibrating = false;
 
+    private String currentTag = "学习";
+
+    public void setTag(String tag) {
+        this.currentTag = tag;
+    }
+
 
     public Tomato(Context context) {
         super(context);
@@ -78,15 +84,15 @@ public class Tomato extends View {
     private void initPaint() {
         progressBottomPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressBottomPaint.setStyle(Paint.Style.STROKE);
-        progressBottomPaint.setColor(Color.GRAY);
+        progressBottomPaint.setColor(ContextCompat.getColor(getContext(), R.color.blue_shallow));
 
         progressTopPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressTopPaint.setStyle(Paint.Style.STROKE);
-        progressTopPaint.setColor(Color.BLUE);
+        progressTopPaint.setColor(ContextCompat.getColor(getContext(), R.color.blue_primary));
         progressTopPaint.setStrokeCap(Paint.Cap.ROUND);
 
         numberPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        numberPaint.setColor(Color.BLACK);
+        numberPaint.setColor(ContextCompat.getColor(getContext(), R.color.gray_dark));
         Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.b);
         if (typeface != null) {
             numberPaint.setTypeface(typeface);
@@ -94,9 +100,10 @@ public class Tomato extends View {
 
         backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         backgroundPaint.setStyle(Paint.Style.FILL);
-        backgroundPaint.setColor(Color.GRAY);
+        backgroundPaint.setColor(ContextCompat.getColor(getContext(), R.color.gray_medium));
         backgroundPaint.setStrokeCap(Paint.Cap.ROUND);
     }
+
 
     public void start() {
         if (!running) {
@@ -170,7 +177,7 @@ public class Tomato extends View {
         super.onDraw(canvas);
         drawBottomProgress(canvas);
         drawTopProgress(canvas);
-        drawBackgroundCircle(canvas);
+//        drawBackgroundCircle(canvas);
         drawText(canvas);
     }
 

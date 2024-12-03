@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ public class LoginNumberFragment extends Fragment {
     private ImageView clearButtonNumber, clearButtonPassword;
     private CheckBox checkBox;
     private AgreementBottomSheetDialog agreementBottomSheetDialog;
+    private LinearLayout errorTip;
 
     @Nullable
     @Override
@@ -52,6 +54,7 @@ public class LoginNumberFragment extends Fragment {
         clearButtonNumber = view.findViewById(R.id.clear_button_number);
         clearButtonPassword = view.findViewById(R.id.clear_button_number_password);
         checkBox = view.findViewById(R.id.number_check_button);
+        errorTip = view.findViewById(R.id.login_number_error);
 
         agreementBottomSheetDialog = new AgreementBottomSheetDialog(getActivity(), checkBox);
 
@@ -66,11 +69,15 @@ public class LoginNumberFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!checkBox.isChecked()) {
+                String phoneNumber = numberEditText.getText().toString().trim();
+                if (!isValidPhoneNumber(phoneNumber)) {
+                    errorTip.setVisibility(View.VISIBLE);
+                } else if (!checkBox.isChecked()) {
                     agreementBottomSheetDialog.show();
                 } else {
                     Intent intent = new Intent(getContext(), HomeActivity.class);
                     startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
@@ -86,6 +93,7 @@ public class LoginNumberFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateLoginButtonState();
+                errorTip.setVisibility(View.GONE);
             }
 
             @Override
@@ -99,7 +107,7 @@ public class LoginNumberFragment extends Fragment {
     private void setupFocusChangeListeners() {
         View.OnFocusChangeListener onFocusChangeListener = (v, hasFocus) -> {
             View bottomLine = (View) v.getTag();
-            int colorId = hasFocus ? R.color.new_blue : R.color.gray_light;
+            int colorId = hasFocus ? R.color.colorPrimaryDark : R.color.gray_medium;
             bottomLine.setBackgroundResource(colorId);
         };
 
@@ -116,13 +124,19 @@ public class LoginNumberFragment extends Fragment {
 
         loginButton.setEnabled(isNumberValid && isPasswordValid);
         if (isNumberValid && isPasswordValid) {
-            loginButton.setBackgroundColor(getResources().getColor(R.color.new_blue));
+            loginButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             loginButton.setEnabled(true);
         } else {
-            loginButton.setBackgroundColor(getResources().getColor(R.color.new_blue));
+            loginButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         }
 
         clearButtonNumber.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
         clearButtonPassword.setVisibility(isPasswordValid ? View.VISIBLE : View.GONE);
+    }
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        // 验证手机号码的正则表达式
+        String regex = "^1[3-9]\\d{9}$";
+        return phoneNumber.matches(regex);
     }
 }

@@ -7,13 +7,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray_light">
 
         <ImageView
             android:id="@+id/mine_image"
             android:layout_width="0dp"
             android:layout_height="210dp"
-            android:background="@color/new_blue"
+            android:background="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -99,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:text="我的分享"
                 android:textColor="@color/gray_dark"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 

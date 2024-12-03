@@ -49,6 +49,32 @@
         app:layout_constraintStart_toEndOf="@id/number_area_code"
         app:layout_constraintTop_toTopOf="@id/number_area_code" />
 
+    <LinearLayout
+        android:id="@+id/login_number_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/edit_text_phone_number">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_error_icon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请输入正确的手机号码"
+            android:textSize="12sp"
+            android:textColor="@color/red_primary"/>
+
+    </LinearLayout>
+
     <EditText
         android:id="@+id/edit_text_phone_number"
         android:layout_width="0dp"
@@ -137,7 +163,7 @@
         android:layout_marginTop="15dp"
         android:clickable="true"
         android:text="获取验证码"
-        android:textColor="@color/new_blue"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_bottom_line_password" />
@@ -147,7 +173,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/new_blue"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:enabled="false"
         android:paddingVertical="10dp"
         android:text="登录"

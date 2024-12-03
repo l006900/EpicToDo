@@ -10,7 +10,11 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.example.epictodo.R;
+
 import android.graphics.Color;
+
+import androidx.core.content.ContextCompat;
 
 import com.example.epictodo.m.FocusSession;
 
@@ -40,11 +44,7 @@ public class FocusProportionCard extends View {
     private Paint circlePaint;
     private Paint whitePaint;
     private List<FocusSession> focusSessions = new ArrayList<>();
-    private static final int[] COLORS = {
-            Color.parseColor("#FF4081"), Color.parseColor("#3F51B5"),
-            Color.parseColor("#009688"), Color.parseColor("#FF9800"),
-            Color.parseColor("#9C27B0")
-    };
+    private static final int[] COLORS = new int[9];
 
     private RectF pieRect;//饼状图矩形区域
     private int lastMeasuredHeight = 0;
@@ -69,6 +69,20 @@ public class FocusProportionCard extends View {
 
     private void init() {
         initPaint();
+        initColors();
+    }
+
+    private void initColors() {
+        COLORS[0] = ContextCompat.getColor(getContext(), R.color.blue_primary);
+        COLORS[1] = ContextCompat.getColor(getContext(), R.color.green_primary);
+        COLORS[2] = ContextCompat.getColor(getContext(), R.color.red_primary);
+        COLORS[3] = ContextCompat.getColor(getContext(), R.color.orange_primary);
+        COLORS[4] = ContextCompat.getColor(getContext(), R.color.purple_primary);
+        COLORS[5] = ContextCompat.getColor(getContext(), R.color.yellow_primary);
+        COLORS[6] = ContextCompat.getColor(getContext(), R.color.brown_primary);
+        COLORS[7] = ContextCompat.getColor(getContext(), R.color.cyan_primary);
+        COLORS[8] = ContextCompat.getColor(getContext(), R.color.pink_primary);
+
     }
 
     private void initPaint() {
@@ -103,7 +117,7 @@ public class FocusProportionCard extends View {
         pieRect = new RectF();
     }
 
-     public void setTimeRange(long startTime, long endTime) {
+    public void setTimeRange(long startTime, long endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
         invalidate();

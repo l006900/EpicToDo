@@ -136,7 +136,7 @@
         android:layout_marginTop="15dp"
         android:clickable="true"
         android:text="忘记密码"
-        android:textColor="@color/new_blue"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_bottom_line_password" />
@@ -148,7 +148,7 @@
         android:layout_marginTop="15dp"
         android:clickable="true"
         android:text="注册"
-        android:textColor="@color/new_blue"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_bottom_line_password" />
@@ -158,7 +158,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/new_blue"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:enabled="false"
         android:paddingVertical="10dp"
         android:text="登录"
