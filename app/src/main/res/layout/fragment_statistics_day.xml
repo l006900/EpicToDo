@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#11333333">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/day_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingTop="10dp"
+        android:layout_marginVertical="16dp"
         android:text="11月18日 周一"
         app:layout_constraintEnd_toStartOf="@+id/day_button_right"
         app:layout_constraintStart_toEndOf="@+id/day_button_left"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/day_scrollview"/>
 
     <TextView
         android:id="@+id/day_button_left"
@@ -24,8 +24,9 @@
         android:clickable="true"
         android:text="&lt;"
         android:textSize="40dp"
-        app:layout_constraintEnd_toStartOf="@+id/day_title"
+        app:layout_constraintBaseline_toBottomOf="@id/day_title"
         app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintEnd_toStartOf="@+id/day_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/day_title"
         app:layout_constraintBottom_toBottomOf="@+id/day_title"/>
@@ -37,6 +38,7 @@
         android:clickable="true"
         android:text="&gt;"
         android:textSize="40dp"
+        app:layout_constraintBaseline_toBottomOf="@id/day_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/day_title"
         app:layout_constraintTop_toTopOf="@id/day_title"
@@ -46,7 +48,6 @@
         android:id="@+id/day_scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/day_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

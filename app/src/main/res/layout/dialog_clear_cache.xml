@@ -6,7 +6,7 @@
 
     <View
         android:id="@+id/dialog_cache_view"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="140dp"
         android:background="@drawable/background_radio_rounder"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,8 +15,9 @@
 
     <TextView
         android:id="@+id/dialog_cache_title"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginTop="20dp"
         android:text="清理缓存后不会丢失您的设备数据和个人消息"
         android:textColor="@color/gray_dark"
@@ -38,13 +39,11 @@
 
     <TextView
         android:id="@+id/dialog_cache_no"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="取消"
         android:textColor="#FF999999"
-        android:textSize="16sp"
-        android:paddingVertical="8dp"
-        android:paddingHorizontal="52dp"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/dialog_cache_line"
         app:layout_constraintEnd_toStartOf="@+id/dialog_cache_vertical_line"
         app:layout_constraintStart_toStartOf="@+id/dialog_cache_view"
@@ -56,23 +55,20 @@
         android:layout_height="0dp"
         android:background="#F0F0F5"
         app:layout_constraintBottom_toBottomOf="@+id/dialog_cache_view"
-        app:layout_constraintStart_toEndOf="@+id/dialog_cache_no"
-        app:layout_constraintEnd_toStartOf="@+id/dialog_cache_yes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dialog_cache_line" />
 
     <TextView
         android:id="@+id/dialog_cache_yes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="立即清理"
-        android:textColor="#F74F4F"
-        android:textSize="16sp"
-        android:paddingVertical="8dp"
-        android:paddingHorizontal="52dp"
+        android:textColor="@color/new_deep_red"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="@+id/dialog_cache_no"
         app:layout_constraintStart_toEndOf="@+id/dialog_cache_vertical_line"
         app:layout_constraintEnd_toEndOf="@+id/dialog_cache_view"
         app:layout_constraintBottom_toBottomOf="@+id/dialog_cache_no"/>
-
-
+    
 </androidx.constraintlayout.widget.ConstraintLayout>
