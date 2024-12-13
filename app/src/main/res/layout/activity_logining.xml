@@ -127,12 +127,12 @@
         android:id="@+id/login_tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="45dp"
-        android:paddingVertical="8dp"
         android:text="更多登录方式"
         android:textSize="12sp"
         android:textColor="@color/gray_dark"
         android:textStyle="bold"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

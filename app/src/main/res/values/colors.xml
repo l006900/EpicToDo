@@ -18,6 +18,7 @@
     <color name="gray_dark">#616161</color>
 
     <!-- 蓝色系列 -->
+    <color name="blue_more_shallow">#EBF5FA</color>
     <color name="blue_shallow">#AFCDDB</color>
     <color name="blue_light">#81D4FA</color>
     <color name="blue_primary">#2196F3</color>

@@ -17,6 +17,8 @@ import com.example.epictodo.vm.StatusBarUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.Scanner;
+
 public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;

@@ -4,11 +4,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fast_login"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="123"
+        android:text="一键登录"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:cornerRadius="100dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

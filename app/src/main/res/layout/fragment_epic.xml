@@ -15,9 +15,11 @@
         app:title="番茄钟" />
 
     <TextView
+        android:id="@+id/epic_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="学习>"
+        android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/tomato"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
