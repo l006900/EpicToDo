@@ -18,7 +18,7 @@
 
         <!--登录Activity-->
         <activity
-            android:name=".v.LoginActivity"
+            android:name=".login.common.LoginingActivity"
             android:exported="true"
             android:launchMode="singleTask">
 
@@ -32,20 +32,28 @@
 
         <!--实际登录页面-->
         <activity
-            android:name=".v.LoginingActivity"
+            android:name=".login.common.LoginActivity"
             android:exported="true">
 
         </activity>
 
         <activity
-            android:name=".v.LoginProblem"
+            android:name=".login.common.LoginProblemActivity"
             android:exported="true">
 
         </activity>
+
+        <!--注册-->
+        <activity android:name=".login.register.SignInPhone" android:exported="true" />
+        <activity android:name=".login.register.SignInPassword" android:exported="true"/>
+
+        <!--忘记密码-->
+        <activity android:name=".login.forgot.ForgotPhoneActivity" android:exported="true"/>
+        <activity android:name=".login.forgot.ForgotPasswordActivity" android:exported="true"/>
 
         <!--主页Activity-->
         <activity
-            android:name=".v.HomeActivity"
+            android:name=".home.HomeActivity"
             android:exported="true"
             android:launchMode="singleTask">
 
@@ -53,14 +61,14 @@
 
         <!--统计页面Activity-->
         <activity
-            android:name=".v.StatisticsActivity"
+            android:name=".epic.statistics.StatisticsActivity"
             android:exported="true">
 
         </activity>
 
         <!--设置页面-->
         <activity
-            android:name=".v.SettingActivity"
+            android:name=".mine.setting.SettingActivity"
             android:exported="true">
 
         </activity>

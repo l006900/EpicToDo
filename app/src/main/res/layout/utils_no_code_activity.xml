@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/no_code_back"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_back_icon"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/no_code_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="没有收到验证码？"
+        android:textColor="#2A363E"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="24dp"
+        app:layout_constraintVertical_bias="0.13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <View
+        android:id="@+id/no_code_dot_first"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/background_circle"
+        app:layout_constraintStart_toStartOf="@+id/no_code_title"
+        app:layout_constraintTop_toBottomOf="@+id/no_code_title" />
+
+    <TextView
+        android:id="@+id/no_code_text_first"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="检查号码正确"
+        android:textColor="#4D94FF"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/no_code_dot_first"
+        app:layout_constraintStart_toEndOf="@+id/no_code_dot_first"
+        app:layout_constraintTop_toTopOf="@+id/no_code_dot_first" />
+
+    <TextView
+        android:id="@+id/no_code_main_first"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="请检查您输入的手机号码为正确号码或是有效的号码。"
+        android:textColor="@color/gray_dark"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="39dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_code_text_first" />
+
+    <View
+        android:id="@+id/no_code_dot_second"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/background_circle"
+        app:layout_constraintStart_toStartOf="@+id/no_code_title"
+        app:layout_constraintTop_toBottomOf="@+id/no_code_main_first" />
+
+    <TextView
+        android:id="@+id/no_code_text_second"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="检查号码状态"
+        android:textColor="#4D94FF"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/no_code_dot_second"
+        app:layout_constraintStart_toEndOf="@+id/no_code_dot_second"
+        app:layout_constraintTop_toTopOf="@+id/no_code_dot_second" />
+
+    <TextView
+        android:id="@+id/no_code_main_second"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="请检查您输入的手机号码是否存在欠费或已经被停机状态，需要充值话费后待号码重启后再试。"
+        android:textColor="@color/gray_dark"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="39dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_code_text_second" />
+
+    <View
+        android:id="@+id/no_code_dot_three"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/background_circle"
+        app:layout_constraintStart_toStartOf="@+id/no_code_title"
+        app:layout_constraintTop_toBottomOf="@+id/no_code_main_second" />
+
+    <TextView
+        android:id="@+id/no_code_text_three"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="检查手机网络或流量正常"
+        android:textColor="#4D94FF"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/no_code_dot_three"
+        app:layout_constraintStart_toEndOf="@+id/no_code_dot_three"
+        app:layout_constraintTop_toTopOf="@+id/no_code_dot_three" />
+
+    <TextView
+        android:id="@+id/no_code_main_three"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="请检查您的手机网络或流量状态是否正常，能否正常使用网络。部分区域存在网络延迟可以等待一段时间或者到其他区域再次尝试。"
+        android:textColor="@color/gray_dark"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="39dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_code_text_three" />
+
+    <View
+        android:id="@+id/no_code_dot_four"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/background_circle"
+        app:layout_constraintStart_toStartOf="@+id/no_code_title"
+        app:layout_constraintTop_toBottomOf="@+id/no_code_main_three" />
+
+    <TextView
+        android:id="@+id/no_code_text_four"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="检查短信是否被拦截"
+        android:textColor="#4D94FF"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/no_code_dot_four"
+        app:layout_constraintStart_toEndOf="@+id/no_code_dot_four"
+        app:layout_constraintTop_toTopOf="@+id/no_code_dot_four" />
+
+    <TextView
+        android:id="@+id/no_code_main_four"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="如果您设置的短信拦截功能，请检查拦截信息中是否存在验证码信息。"
+        android:textColor="@color/gray_dark"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="39dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_code_text_four" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
