@@ -1,18 +1,19 @@
 package com.example.epictodo.utils.camera
 
 import android.Manifest
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
@@ -20,8 +21,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.video.*
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
-import com.bumptech.glide.Glide
 import com.example.epictodo.R
 import java.io.File
 import java.text.SimpleDateFormat
@@ -41,15 +40,20 @@ class CustomCameraActivity : AppCompatActivity() {
     private lateinit var viewFinder: PreviewView
     private lateinit var captureButton: Button
     private lateinit var switchCameraButton: ImageButton
-    private lateinit var lastCapturedImageView: ImageView
-    private lateinit var gestureDetector: GestureDetector
+    private lateinit var switchModeButton: ImageButton
+    private var isPhotoMode = true
+    private var recordingStartTime: Long = 0
+
+    // 动画集
+    private lateinit var recordStartAnimation: AnimatorSet
+    private lateinit var recordStopAnimation: AnimatorSet
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             if (permissions[Manifest.permission.CAMERA] == true) {
                 startCamera()
             } else {
-                Toast.makeText(this, "Camera permission is required to use the camera", Toast.LENGTH_SHORT).show()
+                setResult(Activity.RESULT_CANCELED)
                 finish()
             }
         }
@@ -62,42 +66,56 @@ class CustomCameraActivity : AppCompatActivity() {
         viewFinder = findViewById(R.id.viewFinder)
         captureButton = findViewById(R.id.captureButton)
         switchCameraButton = findViewById(R.id.switchCameraButton)
-        lastCapturedImageView = findViewById(R.id.lastCapturedImageView)
+        switchModeButton = findViewById(R.id.switchModeButton)
 
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onLongPress(e: MotionEvent) {
-                if (isRecording) {
-                    stopRecording()
-                } else {
-                    startRecording()
-                }
-            }
-        })
+        // 加载动画
+        recordStartAnimation = AnimatorInflater.loadAnimator(this, R.anim.record_start_animation) as AnimatorSet
+        recordStopAnimation = AnimatorInflater.loadAnimator(this, R.anim.record_stop_animation) as AnimatorSet
 
         captureButton.setOnTouchListener { _, event ->
-            gestureDetector.onTouchEvent(event)
             when (event.action) {
-                MotionEvent.ACTION_UP -> {
-                    if (!isRecording) {
-                        takePhoto()
+                MotionEvent.ACTION_DOWN -> {
+                    if (!isPhotoMode) {
+                        startRecording()
+                        recordStartAnimation.setTarget(captureButton)
+                        recordStartAnimation.start()
+                        recordingStartTime = System.currentTimeMillis()
                     }
+                    true
                 }
+                MotionEvent.ACTION_UP -> {
+                    if (isPhotoMode) {
+                        takePhoto()
+                    } else if (isRecording) {
+                        val recordingDuration = System.currentTimeMillis() - recordingStartTime
+                        if (recordingDuration >= 1000) { // Only stop if recording lasted at least 1 second
+                            stopRecording()
+                            recordStopAnimation.setTarget(captureButton)
+                            recordStopAnimation.start()
+                        } else {
+                            cancelRecording()
+                            recordStopAnimation.setTarget(captureButton)
+                            recordStopAnimation.start()
+                        }
+                    }
+                    true
+                }
+                else -> false
             }
-            true
         }
+
 
         switchCameraButton.setOnClickListener {
             lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK) CameraSelector.LENS_FACING_FRONT else CameraSelector.LENS_FACING_BACK
             startCamera()
         }
 
-        lastCapturedImageView.setOnClickListener {
-            // Open gallery or last captured media
-            // This is a placeholder. You should implement the actual functionality.
-            Toast.makeText(this, "Open gallery or last captured media", Toast.LENGTH_SHORT).show()
+        switchModeButton.setOnClickListener {
+            isPhotoMode = !isPhotoMode
+            updateCaptureMode()
         }
 
         if (allPermissionsGranted()) {
@@ -150,14 +168,18 @@ class CustomCameraActivity : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                    setResult(Activity.RESULT_CANCELED)
+                    finish()
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
-                    val msg = "Photo capture succeeded: $savedUri"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
-                    updateLastCapturedImage(savedUri)
+                    Log.d(TAG, "Photo capture succeeded: $savedUri")
+                    setResult(Activity.RESULT_OK, Intent().apply {
+                        putExtra("mediaUri", savedUri.toString())
+                        putExtra("mediaType", "photo")
+                    })
+                    finish()
                 }
             }
         )
@@ -166,7 +188,7 @@ class CustomCameraActivity : AppCompatActivity() {
     private fun startRecording() {
         val videoCapture = videoCapture ?: return
 
-        captureButton.isEnabled = false
+        isRecording = true
 
         val videoFile = createFile(outputDirectory, FILENAME, VIDEO_EXTENSION)
         val outputOptions = FileOutputOptions.Builder(videoFile).build()
@@ -176,25 +198,23 @@ class CustomCameraActivity : AppCompatActivity() {
             .start(ContextCompat.getMainExecutor(this)) { recordEvent ->
                 when(recordEvent) {
                     is VideoRecordEvent.Start -> {
-                        captureButton.text = "Recording"
-                        isRecording = true
                     }
                     is VideoRecordEvent.Finalize -> {
                         if (!recordEvent.hasError()) {
-                            val msg = "Video capture succeeded: " +
-                                    "${recordEvent.outputResults.outputUri}"
-                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                            Log.d(TAG, msg)
-                            updateLastCapturedImage(recordEvent.outputResults.outputUri)
+                            val savedUri = recordEvent.outputResults.outputUri
+                            Log.d(TAG, "Video capture succeeded: $savedUri")
+                            setResult(Activity.RESULT_OK, Intent().apply {
+                                putExtra("mediaUri", savedUri.toString())
+                                putExtra("mediaType", "video")
+                            })
                         } else {
                             recording?.close()
                             recording = null
-                            Log.e(TAG, "Video capture ends with error: " +
-                                    "${recordEvent.error}")
+                            Log.e(TAG, "Video capture ends with error: ${recordEvent.error}")
+                            setResult(Activity.RESULT_CANCELED)
                         }
-                        captureButton.text = "Capture"
-                        captureButton.isEnabled = true
                         isRecording = false
+                        finish()
                     }
                 }
             }
@@ -205,8 +225,16 @@ class CustomCameraActivity : AppCompatActivity() {
         recording = null
     }
 
-    private fun updateLastCapturedImage(uri: Uri) {
-        Glide.with(this).load(uri).into(lastCapturedImageView)
+    private fun cancelRecording() {
+        recording?.close()
+        recording = null
+        isRecording = false
+    }
+
+    private fun updateCaptureMode() {
+        switchModeButton.setImageResource(
+            if (isPhotoMode) R.drawable.ic_photo_camera else R.drawable.ic_videocam
+        )
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

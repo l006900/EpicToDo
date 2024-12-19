@@ -12,9 +12,6 @@ class MediaSelectionDialog(context: Context, private val listener: MediaSelectio
     interface MediaSelectionListener {
         fun openCamera()
         fun pickMediaFromGallery()
-        fun onRecordVideo()
-        fun onPickImageFromGallery()
-        fun onPickVideoFromGallery()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

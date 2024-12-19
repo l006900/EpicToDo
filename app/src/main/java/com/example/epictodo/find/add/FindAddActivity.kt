@@ -30,30 +30,30 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import android.graphics.Rect
+import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.location.LocationManagerCompat.getCurrentLocation
 import com.example.epictodo.utils.camera.CustomCameraActivity
+import com.google.android.material.chip.ChipGroup
 
 class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelectionListener {
 
-    private lateinit var titleInput: android.widget.EditText
-    private lateinit var contentInput: android.widget.EditText
+    private lateinit var titleInput: EditText
+    private lateinit var contentInput: EditText
     private lateinit var addMediaButton: ImageView
     private lateinit var mediaRecyclerView: RecyclerView
-    private lateinit var tagChipGroup: com.google.android.material.chip.ChipGroup
-    private lateinit var customTagInput: android.widget.EditText
-    private lateinit var privacyRadioGroup: android.widget.RadioGroup
-    private lateinit var scrollView: android.widget.ScrollView
+    private lateinit var tagChipGroup: ChipGroup
+    private lateinit var customTagInput: EditText
+    private lateinit var scrollView: ScrollView
     private lateinit var vibrator: Vibrator
+    private lateinit var privacySettingValue: TextView
+    private lateinit var locationSettingValue: TextView
 
     private lateinit var mediaAdapter: MediaAdapter
     private val predefinedTags = listOf("旅行", "美食", "健康", "求助", "学习", "工作")
     private lateinit var viewModel: FindViewModel
-
-    companion object {
-        const val MEDIA_FILE_PROVIDER_AUTHORITY = "com.example.epictodo.fileprovider"
-        const val CUSTOM_CAMERA_REQUEST_CODE = 106 // 添加这个常量
-    }
 
     private val PERMISSION_REQUEST_CODE = 100
     private val IMAGE_CAPTURE_REQUEST_CODE = 101
@@ -100,14 +100,49 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
         mediaRecyclerView = findViewById(R.id.mediaRecyclerView)
         tagChipGroup = findViewById(R.id.tagChipGroup)
         customTagInput = findViewById(R.id.customTagInput)
-        privacyRadioGroup = findViewById(R.id.privacyRadioGroup)
         scrollView = findViewById(R.id.find_add_scroll)
+        privacySettingValue = findViewById(R.id.privacySettingValue)
+        locationSettingValue = findViewById(R.id.locationSettingValue)
 
         scrollView.isVerticalScrollBarEnabled = false // Hide scrollbar
 
         // 设置返回按钮和发布按钮的点击事件
         findViewById<android.widget.ImageButton>(R.id.backButton).setOnClickListener { onBackPressed() }
         findViewById<android.widget.Button>(R.id.publishButton).setOnClickListener { publishContent() }
+    }
+
+    private fun showPrivacySettingDialog() {
+        val options = arrayOf("公开", "仅好友可见", "私密")
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("选择隐私设置")
+            .setItems(options) { _, which ->
+                privacySettingValue.text = options[which]
+            }
+            .show()
+    }
+
+    private fun showLocationSettingDialog() {
+        val options = arrayOf("获取当前位置", "选择位置", "不显示位置")
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("选择位置设置")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> getCurrentLocation()
+                    1 -> selectLocation()
+                    2 -> locationSettingValue.text = "不显示位置"
+                }
+            }
+            .show()
+    }
+
+    private fun getCurrentLocation() {
+        // Implement location retrieval logic here
+        locationSettingValue.text = "当前位置"
+    }
+
+    private fun selectLocation() {
+        // Implement location selection logic here
+        locationSettingValue.text = "选择的位置"
     }
 
     // 设置监听器
@@ -119,6 +154,14 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
         customTagInput.setOnEditorActionListener { _, _, _ ->
             addCustomTag()
             true
+        }
+
+        privacySettingValue.setOnClickListener {
+            showPrivacySettingDialog()
+        }
+
+        locationSettingValue.setOnClickListener {
+            showLocationSettingDialog()
         }
     }
 
@@ -186,6 +229,9 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
                 text = tagText
                 isCheckable = true
                 isChecked = true
+                setChipBackgroundColorResource(R.color.chip_background_color)
+                setTextColor(ContextCompat.getColor(this@FindAddActivity, R.color.chip_text_color))
+                checkedIcon = null
             }
             tagChipGroup.addView(chip)
             customTagInput.text.clear()
@@ -218,41 +264,19 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
         MediaSelectionDialog(this, this).show()
     }
 
-    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            // 处理相机返回的结果
-            currentPhotoPath?.let { mediaAdapter.addMedia(it) }
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.getStringExtra("mediaUri")?.let { mediaUri ->
+                    mediaAdapter.addMedia(mediaUri)
+                }
+            }
         }
-    }
 
     // 打开相机
     override fun openCamera() {
         val intent = Intent(this, CustomCameraActivity::class.java)
         cameraLauncher.launch(intent)
-    }
-
-
-    // 录像
-    override fun onRecordVideo() {
-        Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
-            takeVideoIntent.resolveActivity(packageManager)?.also {
-                startActivityForResult(takeVideoIntent, VIDEO_CAPTURE_REQUEST_CODE)
-            }
-        }
-    }
-
-    // 从图库选择图片
-    override fun onPickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        startActivityForResult(Intent.createChooser(intent, "选择图片"), PICK_IMAGE_REQUEST_CODE)
-    }
-
-    // 从图库选择视频
-    override fun onPickVideoFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_VIDEO_REQUEST_CODE)
     }
 
     // 从图库选择图片和视频
@@ -262,46 +286,10 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
         val mimeTypes = arrayOf("image/*", "video/*")
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        startActivityForResult(Intent.createChooser(intent, "选择图片和视频"), PICK_MEDIA_REQUEST_CODE)
-    }
-
-    // 创建临时图片文件
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        val timeStamp: String =
-            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir: File? = getExternalFilesDir(null)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_",
-            ".jpg",
-            storageDir
-        ).apply {
-            currentPhotoPath = absolutePath
-        }
-    }
-
-    // 创建临时图片文件
-    @Throws(IOException::class)
-    private fun createMediaFile(isPhoto: Boolean): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir: File = getExternalFilesDir(null)!!
-        return if (isPhoto) {
-            File.createTempFile(
-                "JPEG_${timeStamp}_",
-                ".jpg",
-                storageDir
-            ).apply {
-                currentPhotoPath = absolutePath
-            }
-        } else {
-            File.createTempFile(
-                "VID_${timeStamp}_",
-                ".mp4",
-                storageDir
-            ).apply {
-                currentPhotoPath = absolutePath
-            }
-        }
+        startActivityForResult(
+            Intent.createChooser(intent, "选择图片和视频"),
+            PICK_MEDIA_REQUEST_CODE
+        )
     }
 
     // 处理权限请求结果
@@ -325,7 +313,19 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                PICK_MEDIA_REQUEST_CODE -> {
+                IMAGE_CAPTURE_REQUEST_CODE -> {
+                    currentPhotoPath?.let { path ->
+                        mediaAdapter.addMedia(path)
+                    }
+                }
+
+                VIDEO_CAPTURE_REQUEST_CODE -> {
+                    data?.data?.let { uri ->
+                        mediaAdapter.addMedia(uri.toString())
+                    }
+                }
+
+                PICK_IMAGE_REQUEST_CODE, PICK_VIDEO_REQUEST_CODE -> {
                     if (data?.clipData != null) {
                         val count = data.clipData!!.itemCount
                         for (i in 0 until count) {
@@ -349,12 +349,7 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
             val content = contentInput.text.toString()
             val tags =
                 tagChipGroup.checkedChipIds.map { tagChipGroup.findViewById<Chip>(it).text.toString() }
-            val privacy = when (privacyRadioGroup.checkedRadioButtonId) {
-                R.id.publicRadio -> "public"
-                R.id.friendsOnlyRadio -> "friends"
-                R.id.privateRadio -> "private"
-                else -> "public"
-            }
+            val privacy = privacySettingValue.text.toString()
             val mediaItems = mediaAdapter.getMediaItems()
 
             // 创建 FindEntity 对象
@@ -393,11 +388,6 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
             isValid = false
         }
 
-        if (privacyRadioGroup.checkedRadioButtonId == -1) {
-            Toast.makeText(this, "请选择隐私设置", Toast.LENGTH_SHORT).show()
-            isValid = false
-        }
-
         return isValid
     }
 
@@ -410,7 +400,11 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
             ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
             0
         ) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
                 val fromPos = viewHolder.adapterPosition
                 val toPos = target.adapterPosition
                 mediaAdapter.moveItem(fromPos, toPos)
@@ -430,18 +424,29 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
                 }
             }
 
-            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
                 super.clearView(recyclerView, viewHolder)
                 if (deleteZone.visibility == View.VISIBLE) {
                     val deleteZoneLocation = IntArray(2)
                     deleteZone.getLocationOnScreen(deleteZoneLocation)
-                    val deleteZoneRect = Rect(deleteZoneLocation[0], deleteZoneLocation[1],
-                        deleteZoneLocation[0] + deleteZone.width, deleteZoneLocation[1] + deleteZone.height)
+                    val deleteZoneRect = Rect(
+                        deleteZoneLocation[0],
+                        deleteZoneLocation[1],
+                        deleteZoneLocation[0] + deleteZone.width,
+                        deleteZoneLocation[1] + deleteZone.height
+                    )
 
                     val viewLocation = IntArray(2)
                     viewHolder.itemView.getLocationOnScreen(viewLocation)
-                    val viewRect = Rect(viewLocation[0], viewLocation[1],
-                        viewLocation[0] + viewHolder.itemView.width, viewLocation[1] + viewHolder.itemView.height)
+                    val viewRect = Rect(
+                        viewLocation[0],
+                        viewLocation[1],
+                        viewLocation[0] + viewHolder.itemView.width,
+                        viewLocation[1] + viewHolder.itemView.height
+                    )
 
                     if (Rect.intersects(deleteZoneRect, viewRect)) {
                         mediaAdapter.removeItem(viewHolder.adapterPosition)

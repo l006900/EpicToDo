@@ -42,6 +42,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mediaRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true"/>
+
             <ImageView
                 android:id="@+id/addMediaButton"
                 android:layout_width="120dp"
@@ -49,13 +56,6 @@
                 android:src="@drawable/ic_add_media"
                 android:scaleType="centerInside"
                 android:layout_marginTop="16dp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/mediaRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="true"/>
 
             <EditText
                 android:id="@+id/titleInput"
@@ -65,7 +65,8 @@
                 android:inputType="text"
                 android:textSize="18sp"
                 android:maxLines="1"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:background="@null"/>
 
             <EditText
                 android:id="@+id/contentInput"
@@ -74,7 +75,8 @@
                 android:hint="添加正文"
                 android:inputType="textMultiLine"
                 android:minLines="3"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:background="@null"/>
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/tagChipGroup"
@@ -82,49 +84,52 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"/>
 
-            <EditText
-                android:id="@+id/customTagInput"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="添加自定义标签"
-                android:inputType="text"
-                android:maxLines="1"
+                android:layout_marginTop="8dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/customTagInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="添加自定义标签"
+                    android:inputType="text"
+                    android:maxLines="1"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/privacySettingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="隐私设置"
                 android:layout_marginTop="16dp"/>
 
             <TextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="隐私设置"/>
-
-            <RadioGroup
-                android:id="@+id/privacyRadioGroup"
+                android:id="@+id/privacySettingValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text">
+                android:text="公开"
+                android:layout_marginTop="8dp"
+                android:padding="12dp"
+                android:background="@drawable/rounded_border_background"/>
 
-                <RadioButton
-                    android:id="@+id/publicRadio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="公开" />
+            <TextView
+                android:id="@+id/locationSettingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="位置"
+                android:layout_marginTop="16dp"/>
 
-                <RadioButton
-                    android:id="@+id/friendsOnlyRadio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="仅好友可见" />
-
-                <RadioButton
-                    android:id="@+id/privateRadio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="私密" />
-
-            </RadioGroup>
+            <TextView
+                android:id="@+id/locationSettingValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取当前位置"
+                android:layout_marginTop="8dp"
+                android:padding="12dp"
+                android:background="@drawable/rounded_border_background"/>
 
         </LinearLayout>
 
