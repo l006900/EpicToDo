@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Epic ToDo"
 include(":app")
- 

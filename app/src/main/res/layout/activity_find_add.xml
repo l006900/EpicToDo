@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".find.add.FindAddActivity">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="返回" />
+
+    <Button
+        android:id="@+id/publishButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发布"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:id="@+id/find_add_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/backButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/deleteZone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/addMediaButton"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_add_media"
+                android:scaleType="centerInside"
+                android:layout_marginTop="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mediaRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="true"/>
+
+            <EditText
+                android:id="@+id/titleInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="添加标题"
+                android:inputType="text"
+                android:textSize="18sp"
+                android:maxLines="1"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/contentInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="添加正文"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:layout_marginTop="16dp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/tagChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/customTagInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="添加自定义标签"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="隐私设置"/>
+
+            <RadioGroup
+                android:id="@+id/privacyRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text">
+
+                <RadioButton
+                    android:id="@+id/publicRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="公开" />
+
+                <RadioButton
+                    android:id="@+id/friendsOnlyRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="仅好友可见" />
+
+                <RadioButton
+                    android:id="@+id/privateRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="私密" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/deleteZone"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFCCCC"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/deleteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="拖动到此处删除"
+        android:textColor="#FF0000"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/deleteZone"
+        app:layout_constraintBottom_toBottomOf="@id/deleteZone"
+        app:layout_constraintStart_toStartOf="@id/deleteZone"
+        app:layout_constraintEnd_toEndOf="@id/deleteZone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

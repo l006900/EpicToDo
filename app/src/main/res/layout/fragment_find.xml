@@ -1,11 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:id="@+id/find_title"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RadioButton
+            android:id="@+id/find_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_radio_drawable"
+            android:button="@null"
+            android:text="关注"
+            android:gravity="center"
+            android:textColor="@color/selector_radio_color"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/find_find"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_radio_drawable"
+            android:button="@null"
+            android:text="发现"
+            android:gravity="center"
+            android:textColor="@color/selector_radio_color"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/find_team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_radio_drawable"
+            android:button="@null"
+            android:text="团队"
+            android:gravity="center"
+            android:textColor="@color/selector_radio_color"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/find_search"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/ic_search"
+        app:layout_constraintEnd_toEndOf="@+id/find_title"
+        app:layout_constraintTop_toTopOf="@+id/find_title"
+        app:layout_constraintBottom_toBottomOf="@+id/find_title"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/find_recycler"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="find"/>
+        android:paddingVertical="5dp"
+        android:background="@color/gray_light"
+        app:layout_constraintTop_toBottomOf="@+id/find_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
