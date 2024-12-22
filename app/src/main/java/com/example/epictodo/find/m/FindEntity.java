@@ -3,6 +3,10 @@ package com.example.epictodo.find.m;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.TypeConverters;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FindEntity
@@ -11,6 +15,7 @@ import androidx.room.Ignore;
  * @date 2024/12/18
  */
 @Entity(tableName = "find", primaryKeys = {"userId", "timestamp"})
+@TypeConverters(MediaUrlConverter.class)
 public class FindEntity {
     // 用户id
     @NonNull
@@ -23,7 +28,7 @@ public class FindEntity {
     public String description = "";
 
     @NonNull
-    public String imageUrl = "";
+    public List<String> mediaUrls = new ArrayList<>(); // Initialize with empty list
 
     @NonNull
     public String userName = ""; // 新增字段
@@ -33,16 +38,20 @@ public class FindEntity {
 
     public long timestamp = 0;
 
+    public int starCount = 0;
+    public int favoriteCount = 0;
+    public int commentCount = 0;
+
     public FindEntity() {}
 
     @Ignore
-    public FindEntity(@NonNull String userId, @NonNull String title, @NonNull String description, @NonNull String imageUrl, @NonNull String userName, @NonNull String userAvatar) {
+    public FindEntity(@NonNull String userId, @NonNull String title, @NonNull String description, @NonNull List<String> mediaUrls, @NonNull String userName, @NonNull String userAvatar) {
         this.userId = userId;
         this.title = title;
         this.description = description;
-        this.imageUrl = imageUrl;
-        this.userName = userName; // 初始化新字段
-        this.userAvatar = userAvatar; // 初始化新字段
+        this.mediaUrls = mediaUrls != null ? mediaUrls : new ArrayList<>();
+        this.userName = userName;
+        this.userAvatar = userAvatar;
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -56,12 +65,12 @@ public class FindEntity {
     }
 
     @NonNull
-    public String getImageUrl() {
-        return imageUrl;
+    public List<String> getMediaUrls() {
+        return mediaUrls != null ? mediaUrls : new ArrayList<>();
     }
 
-    public void setImageUrl(@NonNull String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setMediaUrls(@NonNull List<String> mediaUrls) {
+        this.mediaUrls = mediaUrls != null ? mediaUrls : new ArrayList<>();
     }
 
     public long getTimestamp() {
@@ -108,6 +117,30 @@ public class FindEntity {
         this.userAvatar = userAvatar;
     }
 
+    public int getStarCount() {
+        return starCount;
+    }
+
+    public void setStarCount(int starCount) {
+        this.starCount = starCount;
+    }
+
+    public int getFavoriteCount() {
+        return favoriteCount;
+    }
+
+    public void setFavoriteCount(int favoriteCount) {
+        this.favoriteCount = favoriteCount;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -115,10 +148,13 @@ public class FindEntity {
                 "userId='" + userId + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", mediaUrls=" + mediaUrls +
                 ", userName='" + userName + '\'' + // 包含新字段
                 ", userAvatar='" + userAvatar + '\'' + // 包含新字段
-                ", timestamp='" + timestamp +
+                ", timestamp=" + timestamp +
+                ", starCount=" + starCount +
+                ", favoriteCount=" + favoriteCount +
+                ", commentCount=" + commentCount +
                 '}';
     }
 }

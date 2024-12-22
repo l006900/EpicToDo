@@ -94,6 +94,9 @@ dependencies {
     implementation("androidx.camera:camera-view:1.4.1")
     implementation("androidx.camera:camera-video:1.0.0-alpha27")
 
+    //
+    implementation("com.google.code.gson:gson:2.8.9")
+
 
 //    implementation("androidx.appcompat:appcompat-resources:1.7.0")
 //    implementation("androidx.appcompat:appcompat:1.7.0")

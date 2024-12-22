@@ -2,13 +2,13 @@ package com.example.epictodo.find.add
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -26,15 +26,14 @@ import com.example.epictodo.find.m.FindEntity
 import com.example.epictodo.find.vm.FindViewModel
 import com.google.android.material.chip.Chip
 import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
 import android.graphics.Rect
+import android.net.Uri
+import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.location.LocationManagerCompat.getCurrentLocation
 import com.example.epictodo.utils.camera.CustomCameraActivity
 import com.google.android.material.chip.ChipGroup
 
@@ -57,9 +56,6 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
 
     private val PERMISSION_REQUEST_CODE = 100
     private val IMAGE_CAPTURE_REQUEST_CODE = 101
-    private val VIDEO_CAPTURE_REQUEST_CODE = 102
-    private val PICK_IMAGE_REQUEST_CODE = 103
-    private val PICK_VIDEO_REQUEST_CODE = 104
     private val PICK_MEDIA_REQUEST_CODE = 105 // 添加这个常量
 
     private var currentPhotoPath: String? = null
@@ -231,7 +227,6 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
                 isChecked = true
                 setChipBackgroundColorResource(R.color.chip_background_color)
                 setTextColor(ContextCompat.getColor(this@FindAddActivity, R.color.chip_text_color))
-                checkedIcon = null
             }
             tagChipGroup.addView(chip)
             customTagInput.text.clear()
@@ -268,7 +263,7 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.getStringExtra("mediaUri")?.let { mediaUri ->
-                    mediaAdapter.addMedia(mediaUri)
+                    handleMediaUri(Uri.parse(mediaUri))
                 }
             }
         }
@@ -286,10 +281,7 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
         val mimeTypes = arrayOf("image/*", "video/*")
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        startActivityForResult(
-            Intent.createChooser(intent, "选择图片和视频"),
-            PICK_MEDIA_REQUEST_CODE
-        )
+        startActivityForResult(Intent.createChooser(intent, "选择图片和视频"), PICK_MEDIA_REQUEST_CODE)
     }
 
     // 处理权限请求结果
@@ -308,38 +300,51 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
         }
     }
 
-    // 处理活动结果
+    // 处理活动结果的方法
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                IMAGE_CAPTURE_REQUEST_CODE -> {
-                    currentPhotoPath?.let { path ->
-                        mediaAdapter.addMedia(path)
-                    }
-                }
-
-                VIDEO_CAPTURE_REQUEST_CODE -> {
-                    data?.data?.let { uri ->
-                        mediaAdapter.addMedia(uri.toString())
-                    }
-                }
-
-                PICK_IMAGE_REQUEST_CODE, PICK_VIDEO_REQUEST_CODE -> {
+                PICK_MEDIA_REQUEST_CODE -> {
                     if (data?.clipData != null) {
                         val count = data.clipData!!.itemCount
                         for (i in 0 until count) {
                             val uri = data.clipData!!.getItemAt(i).uri
-                            mediaAdapter.addMedia(uri.toString())
+                            handleMediaUri(uri)
                         }
-                    } else {
-                        data?.data?.let { uri ->
-                            mediaAdapter.addMedia(uri.toString())
-                        }
+                    } else if (data?.data != null) {
+                        val uri = data.data!!
+                        handleMediaUri(uri)
+                    }
+                }
+                IMAGE_CAPTURE_REQUEST_CODE -> {
+                    data?.getStringExtra("mediaUri")?.let { mediaUri ->
+                        handleMediaUri(Uri.parse(mediaUri))
                     }
                 }
             }
         }
+    }
+
+    // 提取公共方法来处理媒体路径的获取和添加
+    private fun handleMediaUri(uri: Uri) {
+        val mediaPath = getMediaPath(uri)
+        mediaAdapter.addMedia(mediaPath)
+    }
+
+    private fun getMediaPath(uri: Uri): String {
+        val contentResolver: ContentResolver = applicationContext.contentResolver
+        val mimeType = contentResolver.getType(uri)
+        val fileExtension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType) ?: "unknown"
+        val fileName = "media_${System.currentTimeMillis()}.$fileExtension"
+        val inputStream = contentResolver.openInputStream(uri)
+        val file = File(applicationContext.filesDir, fileName)
+        inputStream?.use { input ->
+            file.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+        return file.absolutePath
     }
 
     // 发布内容
@@ -347,21 +352,22 @@ class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelection
         if (validateInput()) {
             val title = titleInput.text.toString()
             val content = contentInput.text.toString()
-            val tags =
-                tagChipGroup.checkedChipIds.map { tagChipGroup.findViewById<Chip>(it).text.toString() }
+            val tags = tagChipGroup.checkedChipIds.map { tagChipGroup.findViewById<Chip>(it).text.toString() }
             val privacy = privacySettingValue.text.toString()
             val mediaItems = mediaAdapter.getMediaItems()
 
-            // 创建 FindEntity 对象
+            // Create FindEntity object
             val findEntity = FindEntity().apply {
                 userId = "user123" // Replace with actual user ID
                 this.title = title
                 description = content
-                imageUrl = mediaItems.firstOrNull() ?: ""
+                mediaUrls = mediaItems // Set mediaUrls directly
+                userName = "Current User" // Replace with actual user name
+                userAvatar = "https://example.com/avatar.jpg" // Replace with actual user avatar
                 timestamp = System.currentTimeMillis()
             }
 
-            // 插入新实体到数据库
+            // Insert new entity into database
             viewModel.insert(findEntity)
 
             Toast.makeText(this, "分享已发布", Toast.LENGTH_SHORT).show()

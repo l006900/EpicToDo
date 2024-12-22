@@ -8,8 +8,11 @@
     <!--摄像头/允许写入-->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -35,7 +38,8 @@
 
         <!--登录Activity-->
         <activity
-            android:name=".login.common.LoginingActivity" android:exported="true"
+            android:name=".login.common.LoginingActivity"
+            android:exported="true"
             android:launchMode="singleTask">
 
             <intent-filter>
@@ -47,38 +51,64 @@
         </activity>
 
         <!--实际登录页面-->
-        <activity android:name=".login.common.LoginActivity" android:exported="true"/>
-        <activity android:name=".login.common.LoginProblemActivity" android:exported="true"/>
+        <activity
+            android:name=".login.common.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".login.common.LoginProblemActivity"
+            android:exported="true" />
 
         <!--注册-->
-        <activity android:name=".login.register.SignInPhone" android:exported="true" />
-        <activity android:name=".login.register.SignInPassword" android:exported="true"/>
+        <activity
+            android:name=".login.register.SignInPhone"
+            android:exported="true" />
+        <activity
+            android:name=".login.register.SignInPassword"
+            android:exported="true" />
 
         <!--忘记密码-->
-        <activity android:name=".login.forgot.ForgotPhoneActivity" android:exported="true"/>
-        <activity android:name=".login.forgot.ForgotPasswordActivity" android:exported="true"/>
+        <activity
+            android:name=".login.forgot.ForgotPhoneActivity"
+            android:exported="true" />
+        <activity
+            android:name=".login.forgot.ForgotPasswordActivity"
+            android:exported="true" />
 
         <!--Home-->
-        <activity android:name=".home.HomeActivity" android:exported="true"
+        <activity
+            android:name=".home.HomeActivity"
+            android:exported="true"
             android:launchMode="singleTask">
 
         </activity>
 
         <!--Find-->
         <!--Statistics-->
-        <activity android:name=".epic.statistics.StatisticsActivity" android:exported="true"/>
-        <activity android:name=".find.add.FindAddActivity" android:exported="true"/>
-        <activity android:name=".find.add.FindDetailActivity" android:exported="true"/>
-        <activity android:name=".find.add.MediaViewActivity" android:exported="true"/>
-        <activity android:name=".utils.camera.CustomCameraActivity" android:exported="true"/>
+        <activity
+            android:name=".epic.statistics.StatisticsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".find.add.FindAddActivity"
+            android:exported="true" />
+        <activity
+            android:name=".find.add.FindDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".find.add.MediaViewActivity"
+            android:exported="true" />
+        <activity
+            android:name=".utils.camera.CustomCameraActivity"
+            android:exported="true" />
 
         <!--设置页面-->
-        <activity android:name=".mine.setting.SettingActivity" android:exported="true"/>
+        <activity
+            android:name=".mine.setting.SettingActivity"
+            android:exported="true" />
 
 
-
-
-        <activity android:name=".MainActivity" android:exported="true"/>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
 
     </application>
 

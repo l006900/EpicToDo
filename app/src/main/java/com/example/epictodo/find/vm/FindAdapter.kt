@@ -13,6 +13,7 @@ import com.example.epictodo.R
 import com.example.epictodo.find.add.FindDetailActivity
 import com.example.epictodo.find.m.FindEntity
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.File
 
 class FindAdapter : RecyclerView.Adapter<FindAdapter.FindViewHolder>() {
     private var findEntities: List<FindEntity> = listOf()
@@ -43,17 +44,19 @@ class FindAdapter : RecyclerView.Adapter<FindAdapter.FindViewHolder>() {
             authorTextView.text = findEntity.userName
             titleTextView.text = findEntity.title
 
-            Glide.with(imageView.context)
-                .load(findEntity.imageUrl)
-                .placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image)
-                .into(imageView)
-
-            Glide.with(avatarView.context)
-                .load(findEntity.userAvatar)
-                .placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image)
-                .into(avatarView)
+            // Load the first media item (if available)
+            if (findEntity.mediaUrls.isNotEmpty()) {
+                Glide.with(imageView.context)
+                    .load(File(findEntity.mediaUrls.first()))
+                    .placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.error_image)
+                    .into(imageView)
+            } else {
+                // Load a default image if no media is available
+                Glide.with(imageView.context)
+                    .load(R.drawable.placeholder_image)
+                    .into(imageView)
+            }
 
             // Adjust the layout params for the waterfall effect
             val layoutParams = itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
