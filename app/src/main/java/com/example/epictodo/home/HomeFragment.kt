@@ -2,9 +2,7 @@ package com.example.epictodo.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.GestureDetector
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -33,7 +31,6 @@ class HomeFragment : Fragment() {
     private lateinit var addEventButton: FloatingActionButton
     private lateinit var previousMonthButton: ImageButton
     private lateinit var nextMonthButton: ImageButton
-    private var currentViewMode = ViewMode.MONTH
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
@@ -49,7 +46,6 @@ class HomeFragment : Fragment() {
         setupEventList()
         setupAddEventButton()
         setupMonthNavigation()
-        setupSwipeGestures()
 
         return view
     }
@@ -62,11 +58,27 @@ class HomeFragment : Fragment() {
         calendarView.setOnDayClickListener { selectedDate ->
             updateEventList(selectedDate)
         }
+
+        calendarView.setOnViewChangeListener { viewMode, date ->
+            updateMonthYearText(date)
+        }
     }
 
     private fun updateMonthYearText(date: Calendar) {
-        val sdf = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-        monthYearText.text = sdf.format(date.time)
+        val sdf = when (calendarView.getCurrentViewMode()) {
+            AppleStyleCalendarView.ViewMode.MONTH -> SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+            AppleStyleCalendarView.ViewMode.WEEK -> SimpleDateFormat("MMM d - ", Locale.getDefault())
+        }
+        val formattedDate = sdf.format(date.time)
+
+        if (calendarView.getCurrentViewMode() == AppleStyleCalendarView.ViewMode.WEEK) {
+            val endOfWeek = date.clone() as Calendar
+            endOfWeek.add(Calendar.DAY_OF_WEEK, 6)
+            val endDateFormat = SimpleDateFormat("MMM d, yyyy", Locale.getDefault())
+            monthYearText.text = formattedDate + endDateFormat.format(endOfWeek.time)
+        } else {
+            monthYearText.text = formattedDate
+        }
     }
 
     private fun setupEventList() {
@@ -114,57 +126,11 @@ class HomeFragment : Fragment() {
 
     private fun setupMonthNavigation() {
         previousMonthButton.setOnClickListener {
-            calendarView.previousMonth()
-            updateMonthYearText(calendarView.getCurrentDate())
+            calendarView.previousPeriod()
         }
 
         nextMonthButton.setOnClickListener {
-            calendarView.nextMonth()
-            updateMonthYearText(calendarView.getCurrentDate())
+            calendarView.nextPeriod()
         }
-    }
-
-    private fun setupSwipeGestures() {
-        val gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
-                if (kotlin.math.abs(velocityY) > kotlin.math.abs(velocityX)) {
-                    if (velocityY < 0) {
-                        // Swipe up
-                        if (currentViewMode == ViewMode.MONTH) {
-                            switchToWeekView()
-                        }
-                    } else {
-                        // Swipe down
-                        if (currentViewMode == ViewMode.WEEK) {
-                            switchToMonthView()
-                        }
-                    }
-                    return true
-                }
-                return false
-            }
-        })
-
-        calendarView.setOnTouchListener { _, event ->
-            gestureDetector.onTouchEvent(event)
-            false
-        }
-    }
-    private fun switchToWeekView() {
-        currentViewMode = ViewMode.WEEK
-        calendarView.switchToWeekView()
-        // Update UI for week view
-    }
-
-    private fun switchToMonthView() {
-        currentViewMode = ViewMode.MONTH
-        calendarView.switchToMonthView()
-        // Update UI for month view
-    }
-
-    // ... (other methods)
-
-    enum class ViewMode {
-        MONTH, WEEK
     }
 }
