@@ -15,6 +15,10 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
+/**
+ * AppleStyleCalendarView 是一个自定义的日历视图。
+ * 它支持两种视图模式：月视图（MONTH）和周视图（WEEK），并且可以通过手势切换视图模式。
+ */
 class AppleStyleCalendarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -56,13 +60,14 @@ class AppleStyleCalendarView @JvmOverloads constructor(
         strokeWidth = 2f
     }
 
+    // 底部拖动条
     private val dragBarPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.black)
+        color = ContextCompat.getColor(context, R.color.gray_dark)
     }
 
     private var dragBarHeight = 20f
-    private var dragBarMargin = 10f
+    private var dragBarMargin = 15f
     private var isDragging = false
     private var lastTouchY = 0f
     private var touchSlop = ViewConfiguration.get(context).scaledTouchSlop
