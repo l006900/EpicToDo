@@ -35,14 +35,12 @@ android {
         jvmTarget = "17"
     }
 
-    // 启用 Data Binding
-    viewBinding {
-        enable = true
-    }
-
+    // 启用 ViewBinding 和 DataBinding
     buildFeatures {
+        viewBinding = true
         dataBinding = true
     }
+
 }
 
 dependencies {
