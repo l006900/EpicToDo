@@ -12,32 +12,28 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.epictodo.R
+import com.example.epictodo.databinding.ActivityLoginingBinding
 import com.example.epictodo.home.HomeActivity
 
 class LoginingActivity : AppCompatActivity() {
-    private lateinit var loginButton: Button
-    private lateinit var moreLogin: TextView
-    private lateinit var skipLogin: TextView
+    private lateinit var binding: ActivityLoginingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_logining)
+        binding = ActivityLoginingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        loginButton = findViewById(R.id.login_number)
-        moreLogin = findViewById(R.id.login_more)
-        skipLogin = findViewById(R.id.login_skip)
-
-        loginButton.setOnClickListener {
+        binding.loginNumber.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
-        moreLogin.setOnClickListener {
+        binding.loginMore.setOnClickListener {
             showMoreButton()
         }
 
-        skipLogin.setOnClickListener{
+        binding.loginSkip.setOnClickListener{
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()

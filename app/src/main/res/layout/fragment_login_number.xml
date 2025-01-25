@@ -11,17 +11,17 @@
         android:layout_height="wrap_content"
         android:text="手机号"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_bottom_line"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/number_area_code"
-        android:layout_width="60dp"
+        android:layout_width="58dp"
         android:layout_height="30dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/edit_text_phone_number"
         app:layout_constraintEnd_toStartOf="@+id/view_divider"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_bottom_line"
         app:layout_constraintTop_toTopOf="@id/edit_text_phone_number">
 
         <TextView
@@ -29,15 +29,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="+86  "
+            android:text="+86"
             android:textColor="@color/black" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <ImageView
-            android:layout_width="8dp"
-            android:layout_height="8dp"
+            android:layout_width="6dp"
+            android:layout_height="7dp"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="10dp"
-            android:src="@drawable/ic_dialog_arrow_icon" />
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/login_drop_arrow" />
     </LinearLayout>
 
     <View
@@ -53,25 +58,24 @@
         android:id="@+id/login_number_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/edit_text_phone_number">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/number_title_number"
+        app:layout_constraintEnd_toEndOf="@+id/view_bottom_line">
 
         <ImageView
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_error_icon"/>
+            android:src="@drawable/login_input_alert" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="请输入正确的手机号码"
-            android:textSize="12sp"
-            android:textColor="@color/red_primary"/>
+            android:textColor="@color/red_dark"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -79,14 +83,14 @@
         android:id="@+id/edit_text_phone_number"
         android:layout_width="0dp"
         android:layout_height="25dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:background="@null"
         android:hint="输入手机号"
-        android:inputType="phone"
+        android:inputType="number"
         android:paddingStart="10dp"
         android:singleLine="true"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/clear_button_number"
         app:layout_constraintStart_toEndOf="@id/view_divider"
         app:layout_constraintTop_toBottomOf="@+id/number_title_number" />
@@ -95,17 +99,33 @@
         android:id="@+id/clear_button_number"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:src="@drawable/ic_clear_icon"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/login_input_cancel"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/edit_text_phone_number"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/number_history"
+        app:layout_constraintStart_toEndOf="@+id/edit_text_phone_number"
         app:layout_constraintTop_toTopOf="@+id/edit_text_phone_number" />
+
+    <ImageView
+        android:id="@+id/number_history"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginEnd="20dp"
+        android:padding="8dp"
+        android:src="@drawable/login_drop_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_phone_number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/clear_button_number"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_phone_number" />
+
 
     <View
         android:id="@+id/view_bottom_line"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="3dp"
         android:background="@color/gray_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,50 +138,128 @@
         android:layout_marginTop="25dp"
         android:text="验证码"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_bottom_line"
         app:layout_constraintTop_toBottomOf="@+id/view_bottom_line" />
+
+    <LinearLayout
+        android:id="@+id/number_no_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/number_title_password"
+        app:layout_constraintEnd_toEndOf="@+id/view_bottom_line_password">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/login_ic_question" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="没有收到验证码"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/number_code_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/number_title_password"
+        app:layout_constraintEnd_toEndOf="@+id/view_bottom_line_password">
+
+    <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/login_input_alert" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="验证码发送失败"
+            android:textColor="@color/red_dark"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/number_is_code_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@+id/number_title_password"
+        app:layout_constraintBottom_toBottomOf="@+id/number_title_password"
+        app:layout_constraintEnd_toEndOf="@+id/view_bottom_line_password">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/login_input_alert" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="验证码错误"
+            android:textColor="@color/red_dark"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/edit_text_phone_number_password"
         android:layout_width="0dp"
         android:layout_height="25dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:background="@null"
         android:hint="输入验证码"
         android:inputType="number"
         android:singleLine="true"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/clear_button_number_password"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_bottom_line"
         app:layout_constraintTop_toBottomOf="@id/number_title_password" />
 
     <ImageView
         android:id="@+id/clear_button_number_password"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:src="@drawable/ic_clear_icon"
+        android:src="@drawable/login_input_cancel"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/edit_text_phone_number_password"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view_bottom_line"
         app:layout_constraintTop_toTopOf="@+id/edit_text_phone_number_password" />
 
     <View
         android:id="@+id/view_bottom_line_password"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:background="@color/gray_medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view_bottom_line"
+        app:layout_constraintStart_toStartOf="@+id/view_bottom_line"
         app:layout_constraintTop_toBottomOf="@id/edit_text_phone_number_password" />
 
     <TextView
         android:id="@+id/number_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="16dp"
         android:clickable="true"
+        android:padding="8dp"
         android:text="获取验证码"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="12sp"
@@ -170,18 +268,44 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/number_login"
-        android:layout_width="match_parent"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:backgroundTint="@color/blue_shallow"
         android:enabled="false"
-        android:paddingVertical="10dp"
+        android:paddingVertical="9dp"
         android:text="登录"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:cornerRadius="100dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view_bottom_line"
+        app:layout_constraintStart_toStartOf="@+id/view_bottom_line"
         app:layout_constraintTop_toBottomOf="@+id/number_password" />
+
+    <ImageView
+        android:id="@+id/login_label_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-20dp"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/login_label_last"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/number_login"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/login_label_number_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="上次登录"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/login_label_number"
+        app:layout_constraintStart_toStartOf="@+id/login_label_number"
+        app:layout_constraintTop_toTopOf="@+id/login_label_number" />
 
     <CheckBox
         android:id="@+id/number_check_button"
@@ -189,10 +313,9 @@
         android:layout_height="16dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/selector_checkbox"
-
         android:button="@null"
         app:layout_constraintEnd_toStartOf="@+id/number_user"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_bottom_line"
         app:layout_constraintTop_toBottomOf="@+id/number_login" />
 
     <TextView

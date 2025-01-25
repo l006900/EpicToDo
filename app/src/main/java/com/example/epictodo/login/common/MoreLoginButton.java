@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.example.epictodo.R;
+import com.example.epictodo.databinding.ViewMoreLoginBinding;
 
 /**
  * ButtonMore
@@ -17,10 +18,7 @@ import com.example.epictodo.R;
  * @date 2024/11/25
  */
 public class MoreLoginButton extends LinearLayout {
-    private ImageView expandIcon;
-    private ImageView shrinkIcon;
-    private ImageView google, qq;
-    private boolean isExpanded = false;
+    private ViewMoreLoginBinding binding;
 
     public MoreLoginButton(Context context) {
         super(context, null);
@@ -38,40 +36,36 @@ public class MoreLoginButton extends LinearLayout {
     }
 
     private void init(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.view_more_login, this, true);
-        expandIcon = findViewById(R.id.expand_icon);
-        shrinkIcon = findViewById(R.id.shrink_icon);
-        google = findViewById(R.id.google_icon);
-        qq = findViewById(R.id.qq_icon);
+        binding = ViewMoreLoginBinding.inflate(LayoutInflater.from(context), this, true);
 
-        expandIcon.setOnClickListener(v -> {
-            expandIcon.setVisibility(GONE);
-            shrinkIcon.setVisibility(VISIBLE);
-            google.setVisibility(VISIBLE);
-            qq.setVisibility(VISIBLE);
+        binding.expandIcon.setOnClickListener(v -> {
+            binding.expandIcon.setVisibility(GONE);
+            binding.shrinkIcon.setVisibility(VISIBLE);
+            binding.googleIcon.setVisibility(VISIBLE);
+            binding.qqIcon.setVisibility(VISIBLE);
         });
 
-        shrinkIcon.setOnClickListener(v -> {
-            expandIcon.setVisibility(VISIBLE);
-            shrinkIcon.setVisibility(GONE);
-            google.setVisibility(GONE);
-            qq.setVisibility(GONE);
+        binding.shrinkIcon.setOnClickListener(v -> {
+            binding.expandIcon.setVisibility(VISIBLE);
+            binding.shrinkIcon.setVisibility(GONE);
+            binding.googleIcon.setVisibility(GONE);
+            binding.qqIcon.setVisibility(GONE);
         });
 
-        shrinkIcon.setVisibility(GONE);
-        google.setVisibility(GONE);
-        qq.setVisibility(GONE);
+        binding.shrinkIcon.setVisibility(GONE);
+        binding.googleIcon.setVisibility(GONE);
+        binding.qqIcon.setVisibility(GONE);
     }
 
     public ImageView getGoogle() {
-        return google;
+        return binding.googleIcon;
     }
 
     public ImageView getShrinkIcon() {
-        return shrinkIcon;
+        return binding.shrinkIcon;
     }
 
     public ImageView getQq() {
-        return qq;
+        return binding.qqIcon;
     }
 }

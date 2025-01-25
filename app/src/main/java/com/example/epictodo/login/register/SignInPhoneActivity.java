@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.epictodo.R;
+import com.example.epictodo.databinding.ActivitySignInPhoneBinding;
 import com.example.epictodo.login.account.LoginAccountViewModel;
 import com.example.epictodo.utils.LoginUtils;
 import com.example.epictodo.utils.areacode.AreaCodeBottomSheetDialog;
@@ -30,36 +31,20 @@ import com.google.android.material.button.MaterialButton;
  * @author 31112
  * @date 2024/12/10
  */
-public class SignInPhone extends AppCompatActivity implements RacketDialogFragment.OnRacketInteractionListener {
-    private TextView user, areaCodeText;
-    private CheckBox checkBox;
-    private EditText phoneNumber;
-    private LinearLayout areaCode, errorTip, passwordError;
-    private ImageView clear, back;
-    private MaterialButton signIn;
-    private View line;
+public class SignInPhoneActivity extends AppCompatActivity implements RacketDialogFragment.OnRacketInteractionListener {
 
     private RacketDialogFragment racketDialogFragment;
     private AreaCodeBottomSheetDialog areaCodeBottomSheetDialog;
 
     private LoginAccountViewModel viewModel;
 
+    private ActivitySignInPhoneBinding binding;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in_phone_activity);
-
-        user = findViewById(R.id.sign_in_phone_number_user);
-        checkBox = findViewById(R.id.sign_in_check_button);
-        phoneNumber = findViewById(R.id.sign_in_phone_number);
-        areaCode = findViewById(R.id.sign_in_area_code);
-        clear = findViewById(R.id.sign_in_phone_clear_button_number);
-        errorTip = findViewById(R.id.sign_in_error);
-        signIn = findViewById(R.id.sign_in);
-        line = findViewById(R.id.view_bottom_line);
-        areaCodeText = findViewById(R.id.sign_in_area_code_number);
-        back = findViewById(R.id.sign_in_phone_back);
-        passwordError = findViewById(R.id.sign_in_code_error);
+        binding = ActivitySignInPhoneBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
 
         areaCodeBottomSheetDialog = new AreaCodeBottomSheetDialog();
         racketDialogFragment = new RacketDialogFragment();
@@ -68,26 +53,26 @@ public class SignInPhone extends AppCompatActivity implements RacketDialogFragme
         viewModel = new ViewModelProvider(this).get(LoginAccountViewModel.class);
 
         // 调用公共方法
-        LoginUtils.setupClickableTermsForSignIn(user, this);
-        LoginUtils.setupClearButtons(clear, phoneNumber);
+        LoginUtils.setupClickableTermsForSignIn(binding.signInPhoneNumberUser, this);
+        LoginUtils.setupClearButtons(binding.signInPhoneClearButtonNumber, binding.signInPhoneNumber);
 
         // 文本变化监听
         setupTextWatchers();
         // 焦点变化监听
         setupFocusChangeListeners();
 
-        back.setOnClickListener(v -> finish());
+        binding.signInPhoneBack.setOnClickListener(v -> finish());
 
-        signIn.setOnClickListener(new View.OnClickListener() {
+        binding.signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                passwordError.setVisibility(View.GONE);
-                errorTip.setVisibility(View.GONE);
+                binding.signInCodeError.setVisibility(View.GONE);
+                binding.signInError.setVisibility(View.GONE);
 
-                String phone = phoneNumber.getText().toString().trim();
-                String area = areaCodeText.getText().toString().replace("+", "");
+                String phone = binding.signInPhoneNumber.getText().toString().trim();
+                String area = binding.signInAreaCodeNumber.getText().toString().replace("+", "");
                 if (!isValidPhoneNumber(phone)) {
-                    errorTip.setVisibility(View.VISIBLE);
+                    binding.signInCheckButton.setVisibility(View.VISIBLE);
                 } else if (viewModel.loginDialog(phone)) {
                     showAccountExistsDialog();
                 } else {
@@ -96,15 +81,15 @@ public class SignInPhone extends AppCompatActivity implements RacketDialogFragme
             }
         });
 
-        areaCode.setOnClickListener(v -> {
+        binding.signInAreaCode.setOnClickListener(v -> {
             areaCodeBottomSheetDialog.show(getSupportFragmentManager(), "AreaCodeBottomSheet");
         });
 
         areaCodeBottomSheetDialog.setOnAreaCodeSelectedListener(item -> {
-            areaCodeText.setText("+" + item.getAreaCode());
+            binding.signInAreaCodeNumber.setText("+" + item.getAreaCode());
         });
 
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.signInCheckButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateLoginButtonState();
         });
 
@@ -122,31 +107,31 @@ public class SignInPhone extends AppCompatActivity implements RacketDialogFragme
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateLoginButtonState();
-                errorTip.setVisibility(View.GONE);
-                passwordError.setVisibility(View.GONE);
+                binding.signInError.setVisibility(View.GONE);
+                binding.signInCodeError.setVisibility(View.GONE);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
             }
         };
-        phoneNumber.addTextChangedListener(textWatcher);
+        binding.signInPhoneNumber.addTextChangedListener(textWatcher);
     }
 
     // 更新登录按钮状态
     private void updateLoginButtonState() {
-        boolean isNumberValid = !phoneNumber.getText().toString().trim().isEmpty();
-        boolean isAgree = checkBox.isChecked();
+        boolean isNumberValid = !binding.signInPhoneNumber.getText().toString().trim().isEmpty();
+        boolean isAgree = binding.signInCheckButton.isChecked();
 
-        signIn.setEnabled(isNumberValid && isAgree);
+        binding.signIn.setEnabled(isNumberValid && isAgree);
         if (isNumberValid && isAgree) {
-            signIn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            signIn.setEnabled(true);
+            binding.signIn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            binding.signIn.setEnabled(true);
         } else {
-            signIn.setBackgroundColor(getResources().getColor(R.color.blue_shallow));
+            binding.signIn.setBackgroundColor(getResources().getColor(R.color.blue_shallow));
         }
 
-        clear.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
+        binding.signInPhoneClearButtonNumber.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
     }
 
     // 设置焦点变化监听器
@@ -157,9 +142,9 @@ public class SignInPhone extends AppCompatActivity implements RacketDialogFragme
             bottomLine.setBackgroundResource(colorId);
         };
 
-        phoneNumber.setTag(line);
+        binding.signInPhoneNumber.setTag(binding.viewBottomLine);
 
-        phoneNumber.setOnFocusChangeListener(onFocusChangeListener);
+        binding.signInPhoneNumber.setOnFocusChangeListener(onFocusChangeListener);
     }
 
     // 验证手机号码
@@ -183,7 +168,7 @@ public class SignInPhone extends AppCompatActivity implements RacketDialogFragme
         alertDialog.show();
 
         logoutCancel.setOnClickListener(v -> {
-            phoneNumber.setText("");
+            binding.signInPhoneNumber.setText("");
             alertDialog.dismiss();
         });
 
@@ -195,15 +180,15 @@ public class SignInPhone extends AppCompatActivity implements RacketDialogFragme
 
     @Override
     public void onError() {
-        passwordError.setVisibility(View.VISIBLE);
+        binding.signInCodeError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onPassRed() {
-        String phone = phoneNumber.getText().toString().trim();
-        String area = areaCodeText.getText().toString().replace("+", "");
+        String phone = binding.signInPhoneNumber.getText().toString().trim();
+        String area = binding.signInAreaCodeNumber.getText().toString().replace("+", "");
 
-        Intent intent = new Intent(SignInPhone.this, SignInPassword.class);
+        Intent intent = new Intent(SignInPhoneActivity.this, SignInPasswordActivity.class);
         intent.putExtra("phone", phone); // 传递手机号
         intent.putExtra("area", area); // 如果需要传递区号
         startActivity(intent);

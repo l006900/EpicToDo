@@ -61,10 +61,10 @@
 
         <!--注册-->
         <activity
-            android:name=".login.register.SignInPhone"
+            android:name=".login.register.SignInPhoneActivity"
             android:exported="true" />
         <activity
-            android:name=".login.register.SignInPassword"
+            android:name=".login.register.SignInPasswordActivity"
             android:exported="true" />
 
         <!--忘记密码-->

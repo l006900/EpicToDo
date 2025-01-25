@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.epictodo.R;
+import com.example.epictodo.databinding.LoginActivityBinding;
 import com.example.epictodo.login.account.LoginAccountFragment;
 import com.example.epictodo.login.phone.LoginNumberFragment;
 
@@ -30,23 +31,14 @@ public class LoginActivity extends AppCompatActivity {
     private LoginNumberFragment loginNumberFragment;
     private LoginFastFragment loginFastFragment;
     private LoginAccountFragment loginAccountFragment;
-    private RadioGroup loginGroup;
-    private RadioButton loginNumber, loginAccount;
-    private ImageView loginWeChat;
-    private MoreLoginButton moreLoginButton;
-    private TextView problem;
+
+    private LoginActivityBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity);
-
-        loginNumber = findViewById(R.id.login_radio_number);
-        loginAccount = findViewById(R.id.login_radio_account);
-        loginGroup = findViewById(R.id.login_button);
-        loginWeChat = findViewById(R.id.login_wechat);
-        moreLoginButton = findViewById(R.id.login_expand);
-        problem = findViewById(R.id.problem);
+        binding = LoginActivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // 读取 SharedPreferences 中的登录状态
         SharedPreferences sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE);
@@ -55,20 +47,20 @@ public class LoginActivity extends AppCompatActivity {
         boolean isSignInPassword = sharedPreferences.getBoolean("isSignIn", false);
 
         if (isLoggedInPhone) {
-            loginNumber.setChecked(true);
+            binding.loginRadioNumber.setChecked(true);
             selectedFragment(0);
         } else if (isLoggedInPassword) {
-            loginAccount.setChecked(true);
+            binding.loginRadioAccount.setChecked(true);
             selectedFragment(1);
         } else if (isSignInPassword) {
-            loginAccount.setChecked(true);
+            binding.loginRadioAccount.setChecked(true);
             selectedFragment(1);
         } else {
-            loginNumber.setChecked(true);
+            binding.loginRadioNumber.setChecked(true);
             selectedFragment(0);
         }
 
-        loginGroup.setOnCheckedChangeListener((group, checkedId) -> {
+        binding.loginButton.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.login_radio_number) {
                 selectedFragment(0);
             } else if (checkedId == R.id.login_radio_account) {
@@ -79,19 +71,19 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //
-        loginWeChat.setOnClickListener(v -> {
+        binding.loginWechat.setOnClickListener(v -> {
             openWeChat();
         });
 
-        moreLoginButton.getGoogle().setOnClickListener(v -> {
+        binding.loginExpand.getGoogle().setOnClickListener(v -> {
             openGoogle();
         });
 
-        moreLoginButton.getQq().setOnClickListener(v -> {
+        binding.loginExpand.getQq().setOnClickListener(v -> {
             openQq();
         });
 
-        problem.setOnClickListener(v -> {
+        binding.problem.setOnClickListener(v -> {
             Intent intent = new Intent(this, LoginProblemActivity.class);
             startActivity(intent);
         });

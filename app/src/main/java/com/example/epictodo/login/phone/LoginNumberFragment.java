@@ -10,11 +10,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.epictodo.R;
+import com.example.epictodo.databinding.FragmentLoginNumberBinding;
 import com.example.epictodo.login.phone.m.LoginPhoneEntity;
 import com.example.epictodo.utils.LoginUtils;
 import com.example.epictodo.utils.areacode.AreaCodeBottomSheetDialog;
@@ -29,7 +25,6 @@ import com.example.epictodo.utils.dialog.AgreementBottomSheetDialog;
 import com.example.epictodo.utils.dialog.RacketDialogFragment;
 import com.example.epictodo.utils.tip.NoCodeActivity;
 import com.example.epictodo.home.HomeActivity;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -41,18 +36,6 @@ import java.util.List;
  * @date 2024/11/26
  */
 public class LoginNumberFragment extends Fragment implements AgreementBottomSheetDialog.OnAgreementAcceptedListener, RacketDialogFragment.OnRacketInteractionListener {
-    private EditText numberEditText;
-    private EditText passwordEditText;
-    private MaterialButton loginButton;
-    private View bottomLineNumber;
-    private View bottomLinePassword;
-    private TextView user, historyText;
-    private ImageView clearButtonNumber, clearButtonPassword, historyTip;
-    private CheckBox checkBox;
-    private LinearLayout errorTip, areaCodeButton, codeTip, codeError, codeIsError;
-    private TextView areaCodeTextView;
-    private ImageView historyButton;
-    private TextView getCode;
 
     private AgreementBottomSheetDialog agreementBottomSheetDialog;
     private AreaCodeBottomSheetDialog areaCodeBottomSheetDialog;
@@ -61,32 +44,15 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
     private LoginNumberViewModel viewModel;
     private List<LoginPhoneEntity> loginPhoneEntities;
 
+    private FragmentLoginNumberBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login_number_fragment, container, false);
+        binding = FragmentLoginNumberBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        numberEditText = view.findViewById(R.id.edit_text_phone_number);
-        passwordEditText = view.findViewById(R.id.edit_text_phone_number_password);
-        loginButton = view.findViewById(R.id.number_login);
-        bottomLineNumber = view.findViewById(R.id.view_bottom_line);
-        bottomLinePassword = view.findViewById(R.id.view_bottom_line_password);
-        user = view.findViewById(R.id.number_user);
-        clearButtonNumber = view.findViewById(R.id.clear_button_number);
-        clearButtonPassword = view.findViewById(R.id.clear_button_number_password);
-        checkBox = view.findViewById(R.id.number_check_button);
-        errorTip = view.findViewById(R.id.login_number_error);
-        areaCodeButton = view.findViewById(R.id.number_area_code);
-        areaCodeTextView = view.findViewById(R.id.number_area_code_number);
-        historyButton = view.findViewById(R.id.number_history);
-        historyTip = view.findViewById(R.id.login_label_number);
-        historyText = view.findViewById(R.id.login_label_number_textview);
-        getCode = view.findViewById(R.id.number_password);
-        codeTip = view.findViewById(R.id.number_no_tip);
-        codeError = view.findViewById(R.id.number_code_error);
-        codeIsError = view.findViewById(R.id.number_is_code_error);
-
-        agreementBottomSheetDialog = new AgreementBottomSheetDialog(getActivity(), checkBox, this);
+        agreementBottomSheetDialog = new AgreementBottomSheetDialog(getActivity(), binding.numberCheckButton, this);
         areaCodeBottomSheetDialog = new AreaCodeBottomSheetDialog();
         historyNumberDialog = new HistoryNumberDialog();
 
@@ -98,11 +64,11 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
         String areaCode = sharedPreferences.getString("last_area_code", "+86");
 
         if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {
-            historyTip.setVisibility(View.VISIBLE);
-            historyText.setVisibility(View.VISIBLE);
+            binding.loginLabelNumber.setVisibility(View.VISIBLE);
+            binding.loginLabelNumberTextview.setVisibility(View.VISIBLE);
 
-            numberEditText.setText(phoneNumber);
-            areaCodeTextView.setText(areaCode);
+            binding.editTextPhoneNumber.setText(phoneNumber);
+            binding.numberAreaCodeNumber.setText(areaCode);
         }
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -113,33 +79,33 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
         updateLoginButtonState();
 
         // 调用公共方法设置点击事件和清除按钮
-        LoginUtils.setupClickableTerms(user, checkBox, requireContext());
-        LoginUtils.setupClearButtons(clearButtonNumber, numberEditText);
-        LoginUtils.setupClearButtons(clearButtonPassword, passwordEditText);
+        LoginUtils.setupClickableTerms(binding.numberUser, binding.numberCheckButton, requireContext());
+        LoginUtils.setupClearButtons(binding.clearButtonNumber, binding.editTextPhoneNumber);
+        LoginUtils.setupClearButtons(binding.clearButtonNumberPassword, binding.editTextPhoneNumberPassword);
 
         // 文本变化监听
         setupTextWatchers();
         // 焦点变化监听
         setupFocusChangeListeners();
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        binding.numberLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                errorTip.setVisibility(View.GONE);
-                codeTip.setVisibility(View.GONE);
-                codeError.setVisibility(View.GONE);
-                codeIsError.setVisibility(View.GONE);
+                binding.loginNumberError.setVisibility(View.GONE);
+                binding.numberNoTip.setVisibility(View.GONE);
+                binding.numberCodeError.setVisibility(View.GONE);
+                binding.numberIsCodeError.setVisibility(View.GONE);
 
-                String phone = numberEditText.getText().toString().trim();
-                String area = areaCodeTextView.getText().toString().replace("+", "");
-                String code = passwordEditText.getText().toString().trim();
+                String phone = binding.editTextPhoneNumber.getText().toString().trim();
+                String area = binding.numberAreaCodeNumber.getText().toString().replace("+", "");
+                String code = binding.editTextPhoneNumberPassword.getText().toString().trim();
 
-                if (!checkBox.isChecked()) {
+                if (!binding.numberCheckButton.isChecked()) {
                     agreementBottomSheetDialog.show();
                 } else if (!isValidPhoneNumber(phone)) {
-                    errorTip.setVisibility(View.VISIBLE);
+                    binding.loginNumberError.setVisibility(View.VISIBLE);
                 } else if (!code.equals("1")) {
-                    codeIsError.setVisibility(View.VISIBLE);
+                    binding.numberIsCodeError.setVisibility(View.VISIBLE);
                 } else {
                     LoginPhoneEntity loginPhoneEntities = new LoginPhoneEntity(area, phone, null);
                     viewModel.insert(loginPhoneEntities);
@@ -153,33 +119,33 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
             }
         });
 
-        areaCodeButton.setOnClickListener(v -> {
+        binding.numberAreaCode.setOnClickListener(v -> {
             areaCodeBottomSheetDialog.show(getChildFragmentManager(), "AreaCodeBottomSheet");
         });
 
         areaCodeBottomSheetDialog.setOnAreaCodeSelectedListener(item -> {
-            areaCodeTextView.setText("+" + item.getAreaCode());
+            binding.numberAreaCodeNumber.setText("+" + item.getAreaCode());
         });
 
-        historyButton.setOnClickListener(v -> {
+        binding.numberHistory.setOnClickListener(v -> {
             historyNumberDialog.show(getChildFragmentManager(), "HistoryNumberDialog");
             historyNumberDialog.setOnNumberClickListener(loginPhoneEntity -> {
-                numberEditText.setText(loginPhoneEntity.phone);
-                areaCodeTextView.setText("+" + loginPhoneEntity.area);
+                binding.editTextPhoneNumber.setText(loginPhoneEntity.phone);
+                binding.numberAreaCodeNumber.setText("+" + loginPhoneEntity.area);
                 historyNumberDialog.dismiss();
             });
         });
 
-        getCode.setOnClickListener(v -> {
-            codeIsError.setVisibility(View.GONE);
-            codeTip.setVisibility(View.GONE);
-            codeError.setVisibility(View.GONE);
+        binding.numberPassword.setOnClickListener(v -> {
+            binding.numberIsCodeError.setVisibility(View.GONE);
+            binding.numberNoTip.setVisibility(View.GONE);
+            binding.numberCodeError.setVisibility(View.GONE);
             racketDialogFragment = new RacketDialogFragment();
             racketDialogFragment.setOnRacketInteractionListener(this);
             racketDialogFragment.show(getChildFragmentManager(), "RacketDialogFragment");
         });
 
-        codeTip.setOnClickListener(v -> {
+        binding.numberNoTip.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), NoCodeActivity.class);
             startActivity(intent);
         });
@@ -200,10 +166,10 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateLoginButtonState();
-                errorTip.setVisibility(View.GONE);
-                codeTip.setVisibility(View.GONE);
-                codeError.setVisibility(View.GONE);
-                codeIsError.setVisibility(View.GONE);
+                binding.loginNumberError.setVisibility(View.GONE);
+                binding.numberNoTip.setVisibility(View.GONE);
+                binding.numberCodeError.setVisibility(View.GONE);
+                binding.numberIsCodeError.setVisibility(View.GONE);
             }
 
             @Override
@@ -211,8 +177,8 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
             }
         };
 
-        numberEditText.addTextChangedListener(textWatcher);
-        passwordEditText.addTextChangedListener(textWatcher);
+        binding.editTextPhoneNumber.addTextChangedListener(textWatcher);
+        binding.editTextPhoneNumberPassword.addTextChangedListener(textWatcher);
     }
 
     // 设置焦点变化监听器
@@ -223,28 +189,28 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
             bottomLine.setBackgroundResource(colorId);
         };
 
-        numberEditText.setTag(bottomLineNumber);
-        passwordEditText.setTag(bottomLinePassword);
+        binding.editTextPhoneNumber.setTag(binding.viewBottomLine);
+        binding.editTextPhoneNumberPassword.setTag(binding.viewBottomLinePassword);
 
-        numberEditText.setOnFocusChangeListener(onFocusChangeListener);
-        passwordEditText.setOnFocusChangeListener(onFocusChangeListener);
+        binding.editTextPhoneNumber.setOnFocusChangeListener(onFocusChangeListener);
+        binding.editTextPhoneNumberPassword.setOnFocusChangeListener(onFocusChangeListener);
     }
 
     // 更新登录按钮状态
     private void updateLoginButtonState() {
-        boolean isNumberValid = !numberEditText.getText().toString().trim().isEmpty();
-        boolean isPasswordValid = !passwordEditText.getText().toString().trim().isEmpty();
+        boolean isNumberValid = !binding.editTextPhoneNumber.getText().toString().trim().isEmpty();
+        boolean isPasswordValid = !binding.editTextPhoneNumberPassword.getText().toString().trim().isEmpty();
 
-        loginButton.setEnabled(isNumberValid && isPasswordValid);
+        binding.numberLogin.setEnabled(isNumberValid && isPasswordValid);
         if (isNumberValid && isPasswordValid) {
-            loginButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            loginButton.setEnabled(true);
+            binding.numberLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            binding.numberLogin.setEnabled(true);
         } else {
-            loginButton.setBackgroundColor(getResources().getColor(R.color.blue_shallow));
+            binding.numberLogin.setBackgroundColor(getResources().getColor(R.color.blue_shallow));
         }
 
-        clearButtonNumber.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
-        clearButtonPassword.setVisibility(isPasswordValid ? View.VISIBLE : View.GONE);
+        binding.clearButtonNumber.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
+        binding.clearButtonNumberPassword.setVisibility(isPasswordValid ? View.VISIBLE : View.GONE);
     }
 
     // 验证手机号码
@@ -260,18 +226,18 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
             historyNumberDialog.setNumberEntities(numbers); // 更新历史号码列表
             // 添加逻辑判断历史列表里有没有数据
             if (numbers != null && !numbers.isEmpty()) {
-                historyButton.setVisibility(View.VISIBLE);
+                binding.numberHistory.setVisibility(View.VISIBLE);
             } else {
-                historyButton.setVisibility(View.GONE);
+                binding.numberHistory.setVisibility(View.GONE);
             }
         });
     }
 
     // 重置输入字段
     public void resetInputFields() {
-        numberEditText.setText("");
-        areaCodeTextView.setText("+86"); // 假设默认区号为 +86
-        historyButton.setVisibility(View.GONE);
+        binding.editTextPhoneNumber.setText("");
+        binding.numberAreaCodeNumber.setText("+86"); // 假设默认区号为 +86
+        binding.numberHistory.setVisibility(View.GONE);
     }
 
     // 保存登录状态
@@ -279,22 +245,22 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("isLoggedIn_phone", isLoggedIn);
-        editor.putString("last_phone_number", numberEditText.getText().toString().trim());
-        editor.putString("last_area_code", areaCodeTextView.getText().toString().replace("+", ""));
+        editor.putString("last_phone_number", binding.editTextPhoneNumber.getText().toString().trim());
+        editor.putString("last_area_code", binding.numberAreaCodeNumber.getText().toString().replace("+", ""));
         editor.apply();
     }
 
     // 用户同意协议后的回调
     @Override
     public void onAgreementAccepted() {
-        String phone = numberEditText.getText().toString().trim();
-        String area = areaCodeTextView.getText().toString().replace("+", "");
-        String code = passwordEditText.getText().toString().trim();
+        String phone = binding.editTextPhoneNumber.getText().toString().trim();
+        String area = binding.numberAreaCodeNumber.getText().toString().replace("+", "");
+        String code = binding.editTextPhoneNumberPassword.getText().toString().trim();
 
         if (!isValidPhoneNumber(phone)) {
-            errorTip.setVisibility(View.VISIBLE);
+            binding.loginNumberError.setVisibility(View.VISIBLE);
         } else if (!code.equals("1")) {
-            codeIsError.setVisibility(View.VISIBLE);
+            binding.numberIsCodeError.setVisibility(View.VISIBLE);
         } else {
             LoginPhoneEntity loginPhoneEntities = new LoginPhoneEntity(area, phone, null);
             viewModel.insert(loginPhoneEntities);
@@ -309,27 +275,27 @@ public class LoginNumberFragment extends Fragment implements AgreementBottomShee
 
     @Override
     public void onError() {
-        codeError.setVisibility(View.VISIBLE);
+        binding.numberCodeError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onPassRed() {
-        getCode.setText("120s");
-        getCode.setClickable(false);
+        binding.numberPassword.setText("120s");
+        binding.numberPassword.setClickable(false);
 
         new CountDownTimer(120000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                getCode.setText((millisUntilFinished / 1000) + "s");
+                binding.numberPassword.setText((millisUntilFinished / 1000) + "s");
             }
 
             @Override
             public void onFinish() {
-                getCode.setText("重新获取");
-                getCode.setClickable(true);
+                binding.numberPassword.setText("重新获取");
+                binding.numberPassword.setClickable(true);
 
-                if (passwordEditText.getText().toString().isEmpty()) {
-                    codeTip.setVisibility(View.VISIBLE);
+                if (binding.editTextPhoneNumberPassword.getText().toString().isEmpty()) {
+                    binding.numberNoTip.setVisibility(View.VISIBLE);
                 }
             }
         }.start();

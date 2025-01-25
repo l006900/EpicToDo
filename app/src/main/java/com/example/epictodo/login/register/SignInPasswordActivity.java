@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.epictodo.R;
+import com.example.epictodo.databinding.ActivitySignInPasswordBinding;
 import com.example.epictodo.login.account.LoginAccountViewModel;
 import com.example.epictodo.login.account.m.LoginPasswordEntity;
 import com.example.epictodo.utils.LoginUtils;
@@ -34,59 +35,31 @@ import com.google.android.material.button.MaterialButton;
  * @author 31112
  * @date 2024/12/10
  */
-public class SignInPassword extends AppCompatActivity implements RacketDialogFragment.OnRacketInteractionListener {
-    private TextView title;
-    private EditText code, password, confirmPassword;
-    private MaterialButton signIn;
-    private TextView tip;
-    private LinearLayout errorTip, codeError, timeNo, codeTip;
-    private ImageView clearCode, clearPassword, clearConfirmPassword, back;
-    private TextView timeTip;
-    private ImageView seePassword, seeConfirmPassword;
-    private TextView passwordTip;
-    private View codeLine, passwordLine, confirmPasswordLine;
+public class SignInPasswordActivity extends AppCompatActivity implements RacketDialogFragment.OnRacketInteractionListener {
     private String phone, area;
     private TextWatcher passwordTextWatcher;
 
     private RacketDialogFragment racketDialogFragment;
 
+    private ActivitySignInPasswordBinding binding;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in_password_activity);
+        binding = ActivitySignInPasswordBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+//        setContentView(R.layout.activity_sign_in_password);
 
         // 接收传递的手机号
         phone = getIntent().getStringExtra("phone");
         area = getIntent().getStringExtra("area");
-
-        title = findViewById(R.id.sign_in_password_get_phone);
-        code = findViewById(R.id.sign_in_password_number);
-        password = findViewById(R.id.sign_in_input_password);
-        confirmPassword = findViewById(R.id.sign_in_input_ensure_password);
-        signIn = findViewById(R.id.sign_in_confirm_login);
-        tip = findViewById(R.id.tip);
-        errorTip = findViewById(R.id.sign_in_ensure_password_error);
-        clearCode = findViewById(R.id.sign_in_password_clear_button_number);
-        clearPassword = findViewById(R.id.sign_in_clear_button_account_password);
-        clearConfirmPassword = findViewById(R.id.clear_button_account_ensure_password);
-        timeTip = findViewById(R.id.sign_in_password_time);
-        seePassword = findViewById(R.id.sign_in_toggle_password_visibility);
-        seeConfirmPassword = findViewById(R.id.toggle_ensure_password_visibility);
-        passwordTip = findViewById(R.id.sign_in_password_error);
-        codeLine = findViewById(R.id.sign_in_password_view_bottom_line);
-        passwordLine = findViewById(R.id.sign_in_password_line_password);
-        confirmPasswordLine = findViewById(R.id.sign_in_ensure_password_line_ensure_password);
-        back = findViewById(R.id.sign_in_password_back);
-        timeNo = findViewById(R.id.sign_in_no_tip);
-        codeTip = findViewById(R.id.sign_in_send_code_error);
-        codeError = findViewById(R.id.sign_in_password_code_error);
 
         racketDialogFragment = new RacketDialogFragment();
         racketDialogFragment.setOnRacketInteractionListener(this);
 
         onPassRed();
 
-        String phoneTitle = title.getText().toString();
+        String phoneTitle = binding.getPhone.getText().toString();
         String formattedTitle = "+12312341234";
         int startIndex = phoneTitle.indexOf(formattedTitle);
         int endIndex = startIndex + formattedTitle.length();
@@ -96,13 +69,13 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
             spannableStringBuilder.replace(startIndex, endIndex, "+" + area + phone);
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark));
             spannableStringBuilder.setSpan(colorSpan, startIndex, endIndex + area.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            title.setText(spannableStringBuilder);
+            binding.getPhone.setText(spannableStringBuilder);
         }
 
         // 调用公共方法
-        LoginUtils.setupClearButtons(clearCode, code);
-        LoginUtils.setupClearButtons(clearPassword, password);
-        LoginUtils.setupClearButtons(clearConfirmPassword, confirmPassword);
+        LoginUtils.setupClearButtons(binding.clearButtonNumber, binding.passwordNumber);
+        LoginUtils.setupClearButtons(binding.clearButtonAccountPassword, binding.inputPassword);
+        LoginUtils.setupClearButtons(binding.clearButtonAccountEnsurePassword, binding.inputEnsurePassword);
 
         // 文本变化监听
         setupTextWatchers();
@@ -111,51 +84,51 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
         // 更新按钮状态
         updateLoginButtonState();
 
-        back.setOnClickListener(v -> finish());
+        binding.back.setOnClickListener(v -> finish());
 
-        timeTip.setOnClickListener(v -> {
-            codeTip.setVisibility(View.GONE);
-            timeNo.setVisibility(View.GONE);
+        binding.passwordTime.setOnClickListener(v -> {
+            binding.sendCodeError.setVisibility(View.GONE);
+            binding.noTip.setVisibility(View.GONE);
             racketDialogFragment.show(getSupportFragmentManager(), "racketDialog");
         });
 
-        timeNo.setOnClickListener(v -> {
-            Intent intent = new Intent(SignInPassword.this, NoCodeActivity.class);
+        binding.noTip.setOnClickListener(v -> {
+            Intent intent = new Intent(SignInPasswordActivity.this, NoCodeActivity.class);
             startActivity(intent);
         });
 
-        signIn.setOnClickListener(new View.OnClickListener() {
+        binding.confirmLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timeNo.setVisibility(View.GONE);
-                codeTip.setVisibility(View.GONE);
-                codeError.setVisibility(View.GONE);
+                binding.noTip.setVisibility(View.GONE);
+                binding.sendCodeError.setVisibility(View.GONE);
+                binding.codeError.setVisibility(View.GONE);
 
-                String codeText = code.getText().toString().trim(); // 假设验证码输入框是 code
-                String passwordText = password.getText().toString().trim();
-                String confirmPasswordText = confirmPassword.getText().toString().trim();
+                String codeText = binding.passwordNumber.getText().toString().trim(); // 假设验证码输入框是 code
+                String passwordText = binding.inputPassword.getText().toString().trim();
+                String confirmPasswordText = binding.inputEnsurePassword.getText().toString().trim();
 
                 // 验证密码是否一致
                 if (!passwordText.equals(confirmPasswordText)) {
-                    errorTip.setVisibility(View.VISIBLE);
+                    binding.ensurePasswordError.setVisibility(View.VISIBLE);
                     return;
                 } else {
-                    errorTip.setVisibility(View.GONE);
+                    binding.ensurePasswordError.setVisibility(View.GONE);
                 }
 
                 // 验证验证码是否等于1
                 if (!codeText.equals("1")) {
-                    codeError.setVisibility(View.VISIBLE);
+                    binding.codeError.setVisibility(View.VISIBLE);
                     return;
                 } else {
-                    codeError.setVisibility(View.GONE);
+                    binding.codeError.setVisibility(View.GONE);
                 }
 
                 // 保存手机号和密码到数据库
                 saveToDatabase(area, phone, passwordText);
 
                 // 如果验证码正确且两个密码一致，则进行页面跳转
-                Intent intent = new Intent(SignInPassword.this, HomeActivity.class);
+                Intent intent = new Intent(SignInPasswordActivity.this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 清除当前任务栈内的所有活动
                 startActivity(intent);
                 saveLoginStatus(true);
@@ -163,8 +136,8 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
             }
         });
 
-        seePassword.setOnClickListener(v -> LoginUtils.passwordVisibility(password, seePassword));
-        seeConfirmPassword.setOnClickListener(v -> LoginUtils.passwordVisibility(confirmPassword, seeConfirmPassword));
+        binding.togglePasswordVisibility.setOnClickListener(v -> LoginUtils.passwordVisibility(binding.inputPassword, binding.togglePasswordVisibility));
+        binding.toggleEnsurePasswordVisibility.setOnClickListener(v -> LoginUtils.passwordVisibility(binding.inputEnsurePassword, binding.toggleEnsurePasswordVisibility));
     }
 
     // 设置文本变化监听器
@@ -179,10 +152,10 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
                 updateLoginButtonState();
 
                 // 验证码输入
-                if (s == code.getText()) {
-                    timeNo.setVisibility(View.GONE);
-                    codeTip.setVisibility(View.GONE);
-                    codeError.setVisibility(View.GONE);
+                if (s == binding.passwordNumber.getText()) {
+                    binding.noTip.setVisibility(View.GONE);
+                    binding.sendCodeError.setVisibility(View.GONE);
+                    binding.codeError.setVisibility(View.GONE);
                 }
             }
 
@@ -190,7 +163,7 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
             public void afterTextChanged(Editable s) {
             }
         };
-        code.addTextChangedListener(textWatcher);
+        binding.passwordNumber.addTextChangedListener(textWatcher);
 
         passwordTextWatcher = new TextWatcher() {
             @Override
@@ -207,7 +180,7 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
             public void afterTextChanged(Editable s) {
             }
         };
-        password.addTextChangedListener(passwordTextWatcher);
+        binding.inputPassword.addTextChangedListener(passwordTextWatcher);
 
         TextWatcher confirmPasswordTextWatcher = new TextWatcher() {
             @Override
@@ -217,34 +190,34 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateLoginButtonState();
-                errorTip.setVisibility(View.GONE);
+                binding.ensurePasswordError.setVisibility(View.GONE);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
             }
         };
-        confirmPassword.addTextChangedListener(confirmPasswordTextWatcher);
+        binding.inputEnsurePassword.addTextChangedListener(confirmPasswordTextWatcher);
     }
 
     // 更新登录按钮状态
     private void updateLoginButtonState() {
-        boolean isNumberValid = !code.getText().toString().trim().isEmpty();
-        boolean isPasswordValid = !password.getText().toString().trim().isEmpty();
-        boolean isConfirmPasswordValid = !confirmPassword.getText().toString().trim().isEmpty();
-        boolean isPasswordStrengthValid = isValidPassword(password.getText().toString()).isValidLength;
+        boolean isNumberValid = !binding.passwordNumber.getText().toString().trim().isEmpty();
+        boolean isPasswordValid = !binding.inputPassword.getText().toString().trim().isEmpty();
+        boolean isConfirmPasswordValid = !binding.inputEnsurePassword.getText().toString().trim().isEmpty();
+        boolean isPasswordStrengthValid = isValidPassword(binding.inputPassword.getText().toString()).isValidLength;
 
-        signIn.setEnabled(isNumberValid && isPasswordValid && isConfirmPasswordValid && isPasswordStrengthValid);
+        binding.confirmLogin.setEnabled(isNumberValid && isPasswordValid && isConfirmPasswordValid && isPasswordStrengthValid);
         if (isNumberValid && isPasswordValid && isConfirmPasswordValid && isPasswordStrengthValid) {
-            signIn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            signIn.setEnabled(true);
+            binding.confirmLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            binding.confirmLogin.setEnabled(true);
         } else {
-            signIn.setBackgroundColor(getResources().getColor(R.color.blue_shallow));
+            binding.confirmLogin.setBackgroundColor(getResources().getColor(R.color.blue_shallow));
         }
 
-        clearCode.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
-        clearPassword.setVisibility(isPasswordValid ? View.VISIBLE : View.GONE);
-        clearConfirmPassword.setVisibility(isConfirmPasswordValid ? View.VISIBLE : View.GONE);
+        binding.clearButtonNumber.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
+        binding.clearButtonAccountPassword.setVisibility(isPasswordValid ? View.VISIBLE : View.GONE);
+        binding.clearButtonAccountEnsurePassword.setVisibility(isConfirmPasswordValid ? View.VISIBLE : View.GONE);
     }
 
     // 设置焦点变化监听器
@@ -255,25 +228,25 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
             bottomLine.setBackgroundResource(colorId);
         };
 
-        code.setTag(codeLine);
-        password.setTag(passwordLine);
-        confirmPassword.setTag(confirmPasswordLine);
+        binding.passwordNumber.setTag(binding.line);
+        binding.inputPassword.setTag(binding.passwordLinePassword);
+        binding.inputEnsurePassword.setTag(binding.lineEnsurePassword);
 
-        code.setOnFocusChangeListener(onFocusChangeListener);
-        password.setOnFocusChangeListener(onFocusChangeListener);
-        confirmPassword.setOnFocusChangeListener(onFocusChangeListener);
+        binding.passwordNumber.setOnFocusChangeListener(onFocusChangeListener);
+        binding.inputPassword.setOnFocusChangeListener(onFocusChangeListener);
+        binding.inputEnsurePassword.setOnFocusChangeListener(onFocusChangeListener);
     }
 
     private void validatePassword() {
-        String passwordText = password.getText().toString();
+        String passwordText = binding.inputPassword.getText().toString();
         PasswordStrength passwordStrength = isValidPassword(passwordText);
 
         if (!passwordStrength.isValidLength) {
-            tip.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-            passwordTip.setVisibility(View.GONE);
+            binding.tip.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            binding.passwordError.setVisibility(View.GONE);
         } else {
-            tip.setTextColor(getResources().getColor(android.R.color.black));
-            passwordTip.setVisibility(View.VISIBLE);
+            binding.tip.setTextColor(getResources().getColor(android.R.color.black));
+            binding.passwordError.setVisibility(View.VISIBLE);
             String strengthText;
             int textColor;
 
@@ -299,7 +272,7 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder("密码强度：" + strengthText);
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(textColor);
             spannableStringBuilder.setSpan(colorSpan, 5, 5 + strengthText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            passwordTip.setText(spannableStringBuilder);
+            binding.passwordError.setText(spannableStringBuilder);
         }
     }
 
@@ -332,7 +305,7 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("isSignIn", isLoggedIn);
         editor.putString("sign_in_phone_number", phone);
-        editor.putString("sign_in_password", password.getText().toString().trim());
+        editor.putString("sign_in_password", binding.inputPassword.getText().toString().trim());
         editor.apply();
     }
 
@@ -348,27 +321,27 @@ public class SignInPassword extends AppCompatActivity implements RacketDialogFra
 
     @Override
     public void onError() {
-        codeTip.setVisibility(View.VISIBLE);
+        binding.sendCodeError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onPassRed() {
-        timeTip.setText("120s");
-        timeTip.setClickable(false);
+        binding.passwordTime.setText("120s");
+        binding.passwordTime.setClickable(false);
 
         new CountDownTimer(120000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timeTip.setText((millisUntilFinished / 1000) + "s");
+                binding.passwordTime.setText((millisUntilFinished / 1000) + "s");
             }
 
             @Override
             public void onFinish() {
-                timeTip.setText("重新获取");
-                timeTip.setClickable(true);
+                binding.passwordTime.setText("重新获取");
+                binding.passwordTime.setClickable(true);
 
-                if (code.getText().toString().isEmpty()) {
-                    timeNo.setVisibility(View.VISIBLE);
+                if (binding.passwordNumber.getText().toString().isEmpty()) {
+                    binding.noTip.setVisibility(View.VISIBLE);
                 }
             }
         }.start();

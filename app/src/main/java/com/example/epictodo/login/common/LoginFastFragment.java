@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.epictodo.R;
+import com.example.epictodo.databinding.FragmentLoginFastBinding;
 import com.example.epictodo.home.HomeActivity;
 import com.google.android.material.button.MaterialButton;
 
@@ -21,15 +22,15 @@ import com.google.android.material.button.MaterialButton;
  * @date 2024/11/26
  */
 public class LoginFastFragment extends Fragment {
-    private MaterialButton login;
+    private FragmentLoginFastBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login_fast, container, false);
+        binding = FragmentLoginFastBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        login = view.findViewById(R.id.fast_login);
-
-        login.setOnClickListener(v -> {
+        binding.fastLogin.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
             getActivity().finish();

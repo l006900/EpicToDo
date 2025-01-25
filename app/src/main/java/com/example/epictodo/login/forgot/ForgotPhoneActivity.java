@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.epictodo.R;
+import com.example.epictodo.databinding.ActivityForgotPhoneBinding;
 import com.example.epictodo.login.account.LoginAccountViewModel;
 import com.example.epictodo.utils.LoginUtils;
 import com.example.epictodo.utils.areacode.AreaCodeBottomSheetDialog;
@@ -28,34 +29,18 @@ import com.google.android.material.button.MaterialButton;
  * @date 2024/12/13
  */
 public class ForgotPhoneActivity extends AppCompatActivity implements RacketDialogFragment.OnRacketInteractionListener {
-    private TextView mailbox, areaCodeText;
-    private EditText phoneNumber;
-    private LinearLayout areaCode, errorTip, passwordError, sendError;
-    private ImageView clear, back;
-    private MaterialButton send;
-    private View line;
-
     private RacketDialogFragment racketDialogFragment;
     private AreaCodeBottomSheetDialog areaCodeBottomSheetDialog;
 
     private LoginAccountViewModel viewModel;
 
+    private ActivityForgotPhoneBinding binding;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.forgot_phone_activity);
-
-        mailbox = findViewById(R.id.forgot_mailbox);
-        phoneNumber = findViewById(R.id.forgot_phone_number);
-        areaCode = findViewById(R.id.forgot_area_code);
-        clear = findViewById(R.id.forgot_phone_clear_button_number);
-        errorTip = findViewById(R.id.forgot_error);
-        send = findViewById(R.id.forgot);
-        line = findViewById(R.id.view_bottom_line);
-        areaCodeText = findViewById(R.id.forgot_area_code_number);
-        back = findViewById(R.id.forgot_phone_back);
-        passwordError = findViewById(R.id.forgot_code_error);
-        sendError = findViewById(R.id.forgot_send_error);
+        binding = ActivityForgotPhoneBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         areaCodeBottomSheetDialog = new AreaCodeBottomSheetDialog();
         racketDialogFragment = new RacketDialogFragment();
@@ -64,38 +49,38 @@ public class ForgotPhoneActivity extends AppCompatActivity implements RacketDial
         viewModel = new ViewModelProvider(this).get(LoginAccountViewModel.class);
 
         // 调用公共方法
-        LoginUtils.setupClearButtons(clear, phoneNumber);
+        LoginUtils.setupClearButtons(binding.forgotPhoneClearButtonNumber, binding.forgotPhoneNumber);
 
         // 文本变化监听
         setupTextWatchers();
         // 焦点变化监听
         setupFocusChangeListeners();
 
-        back.setOnClickListener(v -> finish());
+        binding.forgotPhoneBack.setOnClickListener(v -> finish());
 
-        send.setOnClickListener(new View.OnClickListener() {
+        binding.forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                passwordError.setVisibility(View.GONE);
-                errorTip.setVisibility(View.GONE);
-                sendError.setVisibility(View.GONE);
+                binding.forgotCodeError.setVisibility(View.GONE);
+                binding.forgotError.setVisibility(View.GONE);
+                binding.forgotSendError.setVisibility(View.GONE);
 
-                String phone = phoneNumber.getText().toString().trim();
-                String area = areaCodeText.getText().toString().replace("+", "");
+                String phone = binding.forgotPhoneNumber.getText().toString().trim();
+                String area = binding.forgotAreaCodeNumber.getText().toString().replace("+", "");
                 if (!isValidPhoneNumber(phone)) {
-                    errorTip.setVisibility(View.VISIBLE);
+                    binding.forgotError.setVisibility(View.VISIBLE);
                 } else {
                     racketDialogFragment.show(getSupportFragmentManager(), "RacketDialogFragment");
                 }
             }
         });
 
-        areaCode.setOnClickListener(v -> {
+        binding.forgotAreaCode.setOnClickListener(v -> {
             areaCodeBottomSheetDialog.show(getSupportFragmentManager(), "AreaCodeBottomSheet");
         });
 
         areaCodeBottomSheetDialog.setOnAreaCodeSelectedListener(item -> {
-            areaCodeText.setText("+" + item.getAreaCode());
+            binding.forgotAreaCodeNumber.setText("+" + item.getAreaCode());
         });
 
 
@@ -113,31 +98,31 @@ public class ForgotPhoneActivity extends AppCompatActivity implements RacketDial
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateLoginButtonState();
-                errorTip.setVisibility(View.GONE);
-                passwordError.setVisibility(View.GONE);
-                sendError.setVisibility(View.GONE);
+                binding.forgotError.setVisibility(View.GONE);
+                binding.forgotCodeError.setVisibility(View.GONE);
+                binding.forgotSendError.setVisibility(View.GONE);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
             }
         };
-        phoneNumber.addTextChangedListener(textWatcher);
+        binding.forgotPhoneNumber.addTextChangedListener(textWatcher);
     }
 
     // 更新登录按钮状态
     private void updateLoginButtonState() {
-        boolean isNumberValid = !phoneNumber.getText().toString().trim().isEmpty();
+        boolean isNumberValid = !binding.forgotPhoneNumber.getText().toString().trim().isEmpty();
 
-        send.setEnabled(isNumberValid);
+        binding.forgot.setEnabled(isNumberValid);
         if (isNumberValid) {
-            send.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            send.setEnabled(true);
+            binding.forgot.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            binding.forgot.setEnabled(true);
         } else {
-            send.setBackgroundColor(getResources().getColor(R.color.blue_shallow));
+            binding.forgot.setBackgroundColor(getResources().getColor(R.color.blue_shallow));
         }
 
-        clear.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
+        binding.forgotPhoneClearButtonNumber.setVisibility(isNumberValid ? View.VISIBLE : View.GONE);
     }
 
     // 设置焦点变化监听器
@@ -148,9 +133,9 @@ public class ForgotPhoneActivity extends AppCompatActivity implements RacketDial
             bottomLine.setBackgroundResource(colorId);
         };
 
-        phoneNumber.setTag(line);
+        binding.forgotPhoneNumber.setTag(binding.viewBottomLine);
 
-        phoneNumber.setOnFocusChangeListener(onFocusChangeListener);
+        binding.forgotPhoneNumber.setOnFocusChangeListener(onFocusChangeListener);
     }
 
     // 验证手机号码
@@ -161,16 +146,16 @@ public class ForgotPhoneActivity extends AppCompatActivity implements RacketDial
 
     @Override
     public void onError() {
-        passwordError.setVisibility(View.VISIBLE);
+        binding.forgotCodeError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onPassRed() {
-        String phone = phoneNumber.getText().toString().trim();
-        String area = areaCodeText.getText().toString().replace("+", "");
+        String phone = binding.forgotPhoneNumber.getText().toString().trim();
+        String area = binding.forgotAreaCodeNumber.getText().toString().replace("+", "");
 
         if (!viewModel.loginDialog(phone)) {
-            sendError.setVisibility(View.VISIBLE);
+            binding.forgotSendError.setVisibility(View.VISIBLE);
         } else {
             Intent intent = new Intent(ForgotPhoneActivity.this, ForgotPasswordActivity.class);
             intent.putExtra("phone", phone); // 传递手机号

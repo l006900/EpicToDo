@@ -53,7 +53,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements RacketD
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.forgot_password_activity);
+        setContentView(R.layout.activity_forgot_password);
 
         // 接收传递的手机号
         phone = getIntent().getStringExtra("phone");

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.epictodo.R;
+import com.example.epictodo.databinding.ActivityLoginProblemBinding;
 import com.google.android.material.button.MaterialButton;
 
 /**
@@ -16,22 +17,19 @@ import com.google.android.material.button.MaterialButton;
  * @date 2024/11/27
  */
 public class LoginProblemActivity extends AppCompatActivity {
-    private ImageView back;
-    private MaterialButton button;
+    private ActivityLoginProblemBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_problem);
+        binding = ActivityLoginProblemBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        back = findViewById(R.id.login_problem_back);
-        button = findViewById(R.id.login_problem_button);
-
-        back.setOnClickListener(v -> {
+        binding.loginProblemBack.setOnClickListener(v -> {
             finish();
         });
 
-        button.setOnClickListener(v -> {
+        binding.loginProblemButton.setOnClickListener(v -> {
             finish();
         });
     }
