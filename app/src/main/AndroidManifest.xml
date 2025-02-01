@@ -37,24 +37,31 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!--应用启动页-->
+        <activity
+            android:name=".login.common.SplashActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!--登录Activity-->
         <activity
             android:name=".login.common.LoginingActivity"
             android:exported="true"
             android:launchMode="singleTask">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
 
         <!--实际登录页面-->
         <activity
             android:name=".login.common.LoginActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".login.common.LoginProblemActivity"
             android:exported="true" />

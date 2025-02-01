@@ -1,6 +1,8 @@
 package com.example.epictodo.mine.setting;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -143,9 +145,17 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         logoutConfirm.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            SharedPreferences sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isLoggedIn_phone", false);
+            editor.putBoolean("isLoggedIn_password", false);
+            editor.putBoolean("isSignIn", false);
+            editor.apply();
+
             Intent intent = new Intent(this, LoginingActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 清除当前任务栈内的所有活动
             startActivity(intent);
+            alertDialog.dismiss();
             finish();
         });
 
