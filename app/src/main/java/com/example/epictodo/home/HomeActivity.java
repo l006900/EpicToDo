@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.epictodo.R;
+import com.example.epictodo.base.BaseActivity;
 import com.example.epictodo.epic.EpicFragment;
 import com.example.epictodo.find.FindFragment;
 import com.example.epictodo.group.GroupFragment;
@@ -17,7 +18,7 @@ import com.example.epictodo.mine.MineFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     private BottomNavigationView bottomNavigationView;
 

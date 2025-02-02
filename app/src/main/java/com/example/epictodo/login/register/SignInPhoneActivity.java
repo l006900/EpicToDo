@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.epictodo.R;
+import com.example.epictodo.base.BaseActivity;
 import com.example.epictodo.databinding.ActivitySignInPhoneBinding;
 import com.example.epictodo.login.account.LoginAccountViewModel;
 import com.example.epictodo.utils.LoginUtils;
@@ -31,7 +32,7 @@ import com.google.android.material.button.MaterialButton;
  * @author 31112
  * @date 2024/12/10
  */
-public class SignInPhoneActivity extends AppCompatActivity implements RacketDialogFragment.OnRacketInteractionListener {
+public class SignInPhoneActivity extends BaseActivity implements RacketDialogFragment.OnRacketInteractionListener {
 
     private RacketDialogFragment racketDialogFragment;
     private AreaCodeBottomSheetDialog areaCodeBottomSheetDialog;
@@ -72,7 +73,7 @@ public class SignInPhoneActivity extends AppCompatActivity implements RacketDial
                 String phone = binding.signInPhoneNumber.getText().toString().trim();
                 String area = binding.signInAreaCodeNumber.getText().toString().replace("+", "");
                 if (!isValidPhoneNumber(phone)) {
-                    binding.signInCheckButton.setVisibility(View.VISIBLE);
+                    binding.signInError.setVisibility(View.VISIBLE);
                 } else if (viewModel.loginDialog(phone)) {
                     showAccountExistsDialog();
                 } else {

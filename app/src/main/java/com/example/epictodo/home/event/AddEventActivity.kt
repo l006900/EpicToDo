@@ -7,11 +7,12 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.epictodo.R
+import com.example.epictodo.base.BaseActivity
 import com.example.epictodo.database.EventDatabase
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddEventActivity : AppCompatActivity(){
+class AddEventActivity : BaseActivity(){
 
     private lateinit var titleEditText: EditText
     private lateinit var startTimeButton: Button

@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.epictodo.R;
+import com.example.epictodo.base.BaseActivity;
 import com.example.epictodo.login.account.LoginAccountViewModel;
 import com.example.epictodo.login.account.m.LoginPasswordEntity;
 import com.example.epictodo.utils.LoginUtils;
@@ -34,7 +35,7 @@ import com.google.android.material.button.MaterialButton;
  * @author 31112
  * @date 2024/12/13
  */
-public class ForgotPasswordActivity extends AppCompatActivity implements RacketDialogFragment.OnRacketInteractionListener {
+public class ForgotPasswordActivity extends BaseActivity implements RacketDialogFragment.OnRacketInteractionListener {
     private TextView title;
     private EditText code, password, confirmPassword;
     private MaterialButton signIn;

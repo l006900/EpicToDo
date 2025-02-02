@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.epictodo.R;
+import com.example.epictodo.base.BaseActivity;
 import com.example.epictodo.databinding.ActivityForgotPhoneBinding;
 import com.example.epictodo.login.account.LoginAccountViewModel;
 import com.example.epictodo.utils.LoginUtils;
@@ -28,7 +29,7 @@ import com.google.android.material.button.MaterialButton;
  * @author 31112
  * @date 2024/12/13
  */
-public class ForgotPhoneActivity extends AppCompatActivity implements RacketDialogFragment.OnRacketInteractionListener {
+public class ForgotPhoneActivity extends BaseActivity implements RacketDialogFragment.OnRacketInteractionListener {
     private RacketDialogFragment racketDialogFragment;
     private AreaCodeBottomSheetDialog areaCodeBottomSheetDialog;
 

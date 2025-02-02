@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epictodo.R;
+import com.example.epictodo.base.BaseActivity;
 import com.example.epictodo.login.common.LoginActivity;
 import com.example.epictodo.login.common.LoginingActivity;
 import com.example.epictodo.mine.SettingAdapter;
@@ -32,7 +33,7 @@ import java.util.List;
  * @author 31112
  * @date 2024/11/28
  */
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
     private RecyclerView settingRecycler;
     private SettingAdapter settingAdapter;
     private MaterialButton loginButton;
@@ -152,7 +153,7 @@ public class SettingActivity extends AppCompatActivity {
             editor.putBoolean("isSignIn", false);
             editor.apply();
 
-            Intent intent = new Intent(this, LoginingActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 清除当前任务栈内的所有活动
             startActivity(intent);
             alertDialog.dismiss();

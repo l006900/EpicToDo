@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.epictodo.R;
+import com.example.epictodo.base.BaseActivity;
 import com.example.epictodo.databinding.ActivityLoginBinding;
 import com.example.epictodo.login.account.LoginAccountFragment;
 import com.example.epictodo.login.phone.LoginNumberFragment;
@@ -23,7 +24,7 @@ import com.example.epictodo.login.phone.LoginNumberFragment;
  * @author 31112
  * @date 2024/11/25
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private LoginNumberFragment loginNumberFragment;
     private LoginFastFragment loginFastFragment;
     private LoginAccountFragment loginAccountFragment;

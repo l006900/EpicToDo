@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.epictodo.R;
+import com.example.epictodo.base.BaseActivity;
 import com.example.epictodo.databinding.ActivityLoginProblemBinding;
 import com.google.android.material.button.MaterialButton;
 
@@ -16,7 +17,7 @@ import com.google.android.material.button.MaterialButton;
  * @author 31112
  * @date 2024/11/27
  */
-public class LoginProblemActivity extends AppCompatActivity {
+public class LoginProblemActivity extends BaseActivity {
     private ActivityLoginProblemBinding binding;
 
     @Override

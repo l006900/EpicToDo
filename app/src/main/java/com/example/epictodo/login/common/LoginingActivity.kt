@@ -12,10 +12,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.epictodo.R
+import com.example.epictodo.base.BaseActivity
 import com.example.epictodo.databinding.ActivityLoginingBinding
 import com.example.epictodo.home.HomeActivity
 
-class LoginingActivity : AppCompatActivity() {
+class LoginingActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

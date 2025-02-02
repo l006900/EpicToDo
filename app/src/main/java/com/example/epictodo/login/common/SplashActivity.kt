@@ -15,10 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.epictodo.MainActivity
 import com.example.epictodo.R
+import com.example.epictodo.base.BaseActivity
 import com.example.epictodo.databinding.ActivitySplashBinding
 import com.example.epictodo.home.HomeActivity
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySplashBinding
 
@@ -76,9 +77,9 @@ class SplashActivity : AppCompatActivity() {
                 val intent: Intent
 
                 if (isLoggedInPassword || isLoggedInPhone || isSignInPassword) {
-                    intent = Intent(this@SplashActivity, LoginingActivity::class.java)
-                } else {
                     intent = Intent(this@SplashActivity, HomeActivity::class.java)
+                } else {
+                    intent = Intent(this@SplashActivity, LoginActivity::class.java)
                 }
 
                 startActivity(intent)

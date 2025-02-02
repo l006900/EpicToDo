@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.epictodo.R
 import com.example.epictodo.databinding.ActivityFindDetailBinding
 import com.example.epictodo.find.vm.FindViewModel
+import com.google.android.material.internal.EdgeToEdgeUtils
 import java.io.File
 
 class FindDetailActivity : AppCompatActivity() {
@@ -32,6 +36,15 @@ class FindDetailActivity : AppCompatActivity() {
         setupViews()
         loadData()
         setupListeners()
+
+        // 设置状态栏和导航栏图标颜色
+        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = true
+        windowInsetsController.isAppearanceLightNavigationBars = true
+
+        // 隐藏导航栏
+        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 
     private fun setupViews() {
