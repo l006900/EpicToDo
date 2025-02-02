@@ -1,4 +1,4 @@
-package com.example.epictodo.find
+package com.example.epictodo.find.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -20,7 +20,6 @@ class FindFragment : Fragment() {
     private lateinit var viewModel: FindViewModel
     private lateinit var adapter: FindAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var findAdd: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,11 +29,9 @@ class FindFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_find, container, false)
 
         recyclerView = view.findViewById(R.id.find_recycler)
-        findAdd = view.findViewById(R.id.find_search)
 
         setupRecyclerView()
         setupViewModel()
-        setupListeners()
 
         return view
     }
@@ -49,13 +46,6 @@ class FindFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(FindViewModel::class.java)
         viewModel.allItems.observe(viewLifecycleOwner) { items ->
             adapter.setFindEntities(items)
-        }
-    }
-
-    private fun setupListeners() {
-        findAdd.setOnClickListener {
-            val intent = Intent(context, FindAddActivity::class.java)
-            startActivity(intent)
         }
     }
 }

@@ -47,13 +47,14 @@
             app:layout_constraintTop_toTopOf="@+id/backButton"
             tools:text="Author Name" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/followButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
             android:layout_marginEnd="8dp"
             android:text="关注"
             android:textSize="14sp"
+            app:cornerRadius="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/shareButton"
             app:layout_constraintTop_toTopOf="parent" />
@@ -166,12 +167,15 @@
 
         <ImageButton
             android:id="@+id/starButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Like"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/baseline_star_24"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/commentInput"
+            app:layout_constraintBottom_toTopOf="@+id/starCount"
             app:layout_constraintEnd_toStartOf="@+id/favoriteButton"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -179,20 +183,24 @@
             android:id="@+id/starCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:text="0"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/starButton"
             app:layout_constraintStart_toStartOf="@+id/starButton"
-            app:layout_constraintTop_toBottomOf="@+id/starButton"
-            tools:text="999" />
+            app:layout_constraintTop_toBottomOf="@+id/starButton"/>
 
         <ImageButton
             android:id="@+id/favoriteButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Favorite"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/baseline_favorite_24"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/starButton"
+            app:layout_constraintBottom_toTopOf="@+id/favoriteCount"
             app:layout_constraintEnd_toStartOf="@+id/commentButton"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -200,20 +208,24 @@
             android:id="@+id/favoriteCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:text="0"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/favoriteButton"
             app:layout_constraintStart_toStartOf="@+id/favoriteButton"
-            app:layout_constraintTop_toBottomOf="@+id/favoriteButton"
-            tools:text="999" />
+            app:layout_constraintTop_toBottomOf="@+id/favoriteButton"/>
 
         <ImageButton
             android:id="@+id/commentButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Comment"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/baseline_comment_24"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/favoriteButton"
+            app:layout_constraintBottom_toTopOf="@+id/commentCount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -221,11 +233,12 @@
             android:id="@+id/commentCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:text="0"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/commentButton"
             app:layout_constraintStart_toStartOf="@+id/commentButton"
-            app:layout_constraintTop_toBottomOf="@+id/commentButton"
-            tools:text="999" />
+            app:layout_constraintTop_toBottomOf="@+id/commentButton"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -6,13 +6,12 @@ import android.view.MenuItem;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.epictodo.R;
 import com.example.epictodo.base.BaseActivity;
 import com.example.epictodo.epic.EpicFragment;
-import com.example.epictodo.find.FindFragment;
+import com.example.epictodo.find.main.FindMainFragment;
 import com.example.epictodo.group.GroupFragment;
 import com.example.epictodo.mine.MineFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,7 +24,7 @@ public class HomeActivity extends BaseActivity {
     private HomeFragment mHomeFragment;
     private GroupFragment mGroupFragment;
     private EpicFragment mEpicFragment;
-    private FindFragment mFindFragment;
+    private FindMainFragment mFindFragment;
     private MineFragment mMineFragment;
 
     @Override
@@ -83,7 +82,7 @@ public class HomeActivity extends BaseActivity {
             }
         } else if (position == 3) {
             if (mFindFragment == null) {
-                mFindFragment = new FindFragment();
+                mFindFragment = new FindMainFragment();
                 fragmentTransaction.add(R.id.home_framelayout, mFindFragment);
             } else {
                 fragmentTransaction.show(mFindFragment);
