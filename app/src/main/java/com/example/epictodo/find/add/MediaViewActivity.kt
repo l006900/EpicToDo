@@ -11,8 +11,9 @@ import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.epictodo.R
+import com.example.epictodo.base.BaseActivity
 
-class MediaViewActivity : AppCompatActivity() {
+class MediaViewActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

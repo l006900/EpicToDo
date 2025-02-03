@@ -34,10 +34,11 @@ import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.epictodo.base.BaseActivity
 import com.example.epictodo.utils.camera.CustomCameraActivity
 import com.google.android.material.chip.ChipGroup
 
-class FindAddActivity : AppCompatActivity(), MediaSelectionDialog.MediaSelectionListener {
+class FindAddActivity : BaseActivity(), MediaSelectionDialog.MediaSelectionListener {
 
     private lateinit var titleInput: EditText
     private lateinit var contentInput: EditText

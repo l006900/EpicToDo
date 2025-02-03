@@ -3,18 +3,21 @@ package com.example.epictodo.find.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.epictodo.R;
 import com.example.epictodo.databinding.FragmentFindMainBinding;
 import com.example.epictodo.find.add.FindAddActivity;
+import com.google.android.material.navigation.NavigationView;
 
 /**
  * FindMainFragment
@@ -46,6 +49,24 @@ public class FindMainFragment extends Fragment {
             } else {
                 selectedFragment(2);
             }
+        });
+
+        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                int itemId = item.getItemId();
+
+                switch (itemId) {
+
+                }
+                return false;
+            }
+
+        });
+
+        binding.findMenu.setOnClickListener(v -> {
+            binding.findDrawer.openDrawer(GravityCompat.START);
         });
 
         binding.findSearch.setOnClickListener(v -> {

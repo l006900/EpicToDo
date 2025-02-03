@@ -21,7 +21,24 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupEdgeToEdge();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupEdgeToEdge();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            setupEdgeToEdge();
+        }
+    }
+
+    private void setupEdgeToEdge() {
         EdgeToEdge.enable(this);
         // 启用 EdgeToEdge 模式
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);

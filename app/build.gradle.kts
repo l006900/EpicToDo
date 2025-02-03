@@ -97,6 +97,8 @@ dependencies {
     //
     implementation("com.google.code.gson:gson:2.8.9")
 
+    // 抽屉式导航栏
+    implementation("androidx.drawerlayout:drawerlayout:1.2.0")
 
 //    implementation("androidx.appcompat:appcompat-resources:1.7.0")
 //    implementation("androidx.appcompat:appcompat:1.7.0")
