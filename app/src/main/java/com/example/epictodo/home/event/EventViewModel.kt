@@ -11,6 +11,10 @@ class EventViewModel(private val eventDao: EventDao) : ViewModel() {
         return eventDao.getEventsBetweenDates(startDate, endDate)
     }
 
+    fun getAllEventsBetweenDates(startDate: Long, endDate: Long): LiveData<List<Event>> {
+        return eventDao.getEventsBetweenDates(startDate, endDate)
+    }
+
     fun insert(event: Event) = viewModelScope.launch {
         eventDao.insert(event)
     }

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -29,8 +29,8 @@ class HomeFragment : Fragment() {
     private lateinit var eventAdapter: EventAdapter
     private lateinit var eventViewModel: EventViewModel
     private lateinit var addEventButton: FloatingActionButton
-    private lateinit var previousMonthButton: ImageButton
-    private lateinit var nextMonthButton: ImageButton
+    private lateinit var previousMonthButton: ImageView
+    private lateinit var nextMonthButton: ImageView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
@@ -39,8 +39,8 @@ class HomeFragment : Fragment() {
         monthYearText = view.findViewById(R.id.monthYearText)
         eventList = view.findViewById(R.id.eventList)
         addEventButton = view.findViewById(R.id.addEventButton)
-        previousMonthButton = view.findViewById(R.id.previousMonthButton)
-        nextMonthButton = view.findViewById(R.id.nextMonthButton)
+        previousMonthButton = view.findViewById(R.id.start)
+        nextMonthButton = view.findViewById(R.id.end)
 
         setupCalendar()
         setupEventList()
@@ -48,6 +48,12 @@ class HomeFragment : Fragment() {
         setupMonthNavigation()
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val currentDate = Calendar.getInstance()
+        updateEventList(currentDate)
     }
 
     private fun setupCalendar() {
@@ -90,9 +96,8 @@ class HomeFragment : Fragment() {
         val viewModelFactory = EventViewModelFactory(dao)
         eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventViewModel::class.java)
 
-        eventViewModel.allEvents.observe(viewLifecycleOwner) { events ->
-            eventAdapter.updateEvents(events)
-        }
+        val currentDate = Calendar.getInstance()
+        updateEventList(currentDate)
     }
 
     private fun updateEventList(selectedDate: Calendar) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -8,41 +9,78 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/login_problem_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_back_icon" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:text="Epic目标" />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/titleEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter goal name"
+            android:layout_marginTop="16dp"
+            android:hint="输入你的目标"
             android:inputType="text" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/startTimeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Select start time" />
+            android:text="开始时间"
+            app:cornerRadius="25dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/endTimeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Select end time" />
+            android:text="结束时间"
+            app:cornerRadius="25dp" />
 
-        <Spinner
-            android:id="@+id/frequencySpinner"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.8"
+                android:text="打卡频率" />
+
+            <Spinner
+                android:id="@+id/frequencySpinner"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/dailyCheckInsEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Daily check-ins"
+            android:hint="每日签到"
             android:inputType="number" />
 
         <EditText
@@ -50,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Check-in records"
+            android:hint="签到记录"
             android:inputType="text" />
 
         <Switch
@@ -58,21 +96,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Reminder" />
+            android:text="提醒" />
 
         <Switch
             android:id="@+id/journalSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Journal after check-in" />
+            android:text="打卡后写日志" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Save" />
+            android:text="保存"
+            app:cornerRadius="25dp" />
 
     </LinearLayout>
 </ScrollView>
